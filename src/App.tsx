@@ -15,6 +15,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
 import NotFound from "./pages/NotFound";
 import Athletes from "./pages/Athletes";
+import CourtPage from "./pages/CourtPage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/tournaments/submit" element={<TournamentSubmit />} />
           <Route path="/services" element={<Services />} />
           <Route path="/athletes" element={<Athletes />} />
+          <Route path="/courts" element={<CourtPage />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="*" element={<NotFound />} />
