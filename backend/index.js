@@ -46,6 +46,7 @@ app.use("/users", userRoutes);
 app.use("/tournaments",tournamentRoutes);
 app.use("/athletes",athleteRoutes);
 app.use("/court",courtRoutes);
+app.use("/auth", googleAuthRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
