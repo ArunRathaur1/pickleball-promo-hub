@@ -16,19 +16,27 @@ router.post("/", async (req, res) => {
 // 📌 2️⃣ Get all athletes (with filtering and sorting)
 router.get("/", async (req, res) => {
   try {
-    const { gender, country, sort } = req.query;
+    let { gender, country, sort } = req.query;
     let filter = {};
 
+    // Apply gender filter if provided
     if (gender) filter.gender = gender;
+
+    // Apply country filter if provided
     if (country) filter.country = country;
 
-    let sortOption = {};
-    if (sort === "points") sortOption.points = -1; // Sorting by points (highest first)
+    // Fetch filtered athletes
+    let athletesQuery = Athlete.find(filter);
 
-    const athletes = await Athlete.find(filter).sort(sortOption);
+    // Sort by points (Descending)
+    if (sort === "points") {
+      athletesQuery = athletesQuery.sort({ points: -1 });
+    }
+
+    const athletes = await athletesQuery;
     res.json(athletes);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err });
   }
 });
 
