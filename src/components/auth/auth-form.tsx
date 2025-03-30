@@ -45,32 +45,8 @@ export function AuthForm({ type, userType }) {
   };
   
   const handleGoogleAuth = async () => {
-    setLoading(true);
-    
-    try {
-      // This would be replaced with actual Google auth logic
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      window.open(`http://localhost:5000/auth/google`, "_self");
       
-      toast({
-        title: "Google authentication successful",
-        description: "Welcome to Pickleball Official!",
-      });
-      
-      // Redirect based on user type
-      if (userType === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Google authentication failed",
-        description: "Please try again later.",
-      });
-    } finally {
-      setLoading(false);
-    }
   };
   
   return (

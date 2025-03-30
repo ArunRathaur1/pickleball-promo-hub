@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarIcon, MapPin, Clock, PlusCircle, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
+import { LoggedNavbar } from "@/components/layout/loggednavbar";
 
 // Mock user's tournament data
 const USER_TOURNAMENTS = [
@@ -31,7 +32,7 @@ const USER_TOURNAMENTS = [
 const UserDashboard = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <LoggedNavbar></LoggedNavbar>
       <main className="flex-1 py-12">
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">

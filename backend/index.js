@@ -3,19 +3,45 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const passport = require("passport");
+const session = require("express-session"); 
+const MongoStore = require("connect-mongo"); 
 const userRoutes = require("./routes/userRoutes");
 const tournamentRoutes=require("./routes/tournamentRoutes");
 // const athleteRoutes=require("./routes/")
 const athleteRoutes=require("./routes/athleteRoutes");
 const courtRoutes=require("./routes/courtRoutes");
+const googleAuthRoutes = require("./routes/goolgeauth"); 
+const passportStrategy = require("./passport");
 
 const app = express();
 
-// Middleware
-app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET || "default_key",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }), // ✅ Store sessions in MongoDB
+    cookie: {
+      maxAge: 60, 
+      secure: false, 
+      httpOnly: true,
+    },
+  })
+);
 
-// Routes
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(bodyParser.json());
+app.use(
+  cors({
+    origin: "http://localhost:8080",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
+
 app.use("/users", userRoutes);
 app.use("/tournaments",tournamentRoutes);
 app.use("/athletes",athleteRoutes);
@@ -27,7 +53,15 @@ mongoose.connect(process.env.MONGO_URI, {
     useUnifiedTopology: true
 }).then(() => console.log("MongoDB Connected"))
   .catch(err => console.error("MongoDB Connection Error:", err));
+app.use("/auth", googleAuthRoutes);
 
-// Start Server
+
+mongoose
+  .connect(process.env.MONGO_URI)
+
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
