@@ -6,9 +6,6 @@ interface Tournament {
   location: string;
   country: string;
   startDate: string;
-  endDate: string;
-  description: string;
-  organizerContact: string;
 }
 
 const TournamentList = () => {
@@ -59,19 +56,27 @@ const TournamentList = () => {
         />
       </div>
 
-      {/* Tournament List */}
-      <ul>
-        {filteredTournaments.map((tournament) => (
-          <li key={tournament._id} className="border-b py-3">
-            <h3 className="font-bold">{tournament.name}</h3>
-            <p>{tournament.location}, {tournament.country}</p>
-            <p>
-              📅 {new Date(tournament.startDate).toLocaleDateString()} - {new Date(tournament.endDate).toLocaleDateString()}
-            </p>
-            <p className="text-sm text-gray-500">{tournament.description}</p>
-          </li>
-        ))}
-      </ul>
+      {/* Tournament Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border p-2 text-left text-purple-600">Tournament Name</th>
+              <th className="border p-2 text-left text-purple-600">Start Date</th>
+              <th className="border p-2 text-left text-purple-600">Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTournaments.map((tournament) => (
+              <tr key={tournament._id} className="hover:bg-gray-50">
+                <td className="border p-2">{tournament.name}</td>
+                <td className="border p-2">{new Date(tournament.startDate).toLocaleDateString()}</td>
+                <td className="border p-2">{tournament.location}, {tournament.country}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
