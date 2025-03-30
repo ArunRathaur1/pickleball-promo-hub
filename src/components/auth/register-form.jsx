@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useNavigate } from "react-router-dom";
- // Assuming you're using Next.js
 
 export function RegisterForm() {
   const navigate = useNavigate();
@@ -51,8 +50,8 @@ export function RegisterForm() {
       if (response.ok) {
         localStorage.setItem('userData', JSON.stringify(data.user));
         
-        // Redirect to dashboard
-        router.push('/dashboard');
+        // Redirect to dashboard using react-router's navigate
+        navigate('/dashboard');
       } else {
         setError(data.message || "Registration failed");
         setLoading(false);
