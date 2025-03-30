@@ -49,7 +49,6 @@ export function LoginForm({ onSubmit, loading }) {
             className="text-xs text-pickle hover:text-pickle-dark"
             onClick={(e) => {
               e.preventDefault();
-              // Password reset logic would go here
             }}
           >
             Forgot password?

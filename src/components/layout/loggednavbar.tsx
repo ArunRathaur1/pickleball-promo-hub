@@ -14,6 +14,8 @@ const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
 ];
   const handleLogout = async () => {
+    console.log('deleted the user data');
+    localStorage.removeItem("userData");
     try {
       const response = await fetch("http://localhost:5000/auth/logout", {
         method: "GET",
