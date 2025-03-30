@@ -5,13 +5,17 @@ const Court = require("../models/Court");
 // ✅ Create a new court
 router.post("/add", async (req, res) => {
   try {
-    const { name, location, numberOfCourts, contact, description } = req.body;
+    const { name, location, country, locationCoordinates, numberOfCourts, contact, description } = req.body;
 
-    if (!name || !location || !numberOfCourts || !contact || !description) {
+    if (!name || !location || !country || !locationCoordinates || !numberOfCourts || !contact || !description) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const newCourt = new Court({ name, location, numberOfCourts, contact, description });
+    if (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2) {
+      return res.status(400).json({ message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude]." });
+    }
+
+    const newCourt = new Court({ name, location, country, locationCoordinates, numberOfCourts, contact, description });
     await newCourt.save();
     res.status(201).json({ message: "Court added successfully", court: newCourt });
   } catch (error) {
@@ -45,6 +49,12 @@ router.get("/:id", async (req, res) => {
 // ✅ Update a court by ID
 router.put("/update/:id", async (req, res) => {
   try {
+    const { locationCoordinates } = req.body;
+
+    if (locationCoordinates && (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2)) {
+      return res.status(400).json({ message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude]." });
+    }
+
     const updatedCourt = await Court.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedCourt) {
       return res.status(404).json({ message: "Court not found" });
@@ -71,8 +81,16 @@ router.delete("/delete/:id", async (req, res) => {
 // ✅ Filter courts by minimum number of courts
 router.get("/filter", async (req, res) => {
   try {
-    const { minCourts } = req.query;
-    const query = minCourts ? { numberOfCourts: { $gte: parseInt(minCourts) } } : {};
+    const { minCourts, country } = req.query;
+    let query = {};
+
+    if (minCourts) {
+      query.numberOfCourts = { $gte: parseInt(minCourts) };
+    }
+    if (country) {
+      query.country = country;
+    }
+
     const courts = await Court.find(query);
     res.status(200).json(courts);
   } catch (error) {

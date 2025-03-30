@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 interface Court {
   _id: string;
   name: string;
-  location: [number, number]; // Latitude & Longitude
+  location: string; // City name
+  country: string;  // Corrected typo
+  locationCoordinates: [number, number]; // Latitude & Longitude
   contact: string;
 }
 
@@ -48,7 +50,9 @@ const CourtList = () => {
           <thead>
             <tr className="bg-gray-100">
               <th className="border p-2 text-left text-purple-600">Court Name</th>
-              <th className="border p-2 text-left text-purple-600">Location (Lat, Lng)</th>
+              <th className="border p-2 text-left text-purple-600">Location</th>
+              <th className="border p-2 text-left text-purple-600">Country</th>
+              {/* <th className="border p-2 text-left text-purple-600">Coordinates</th> */}
               <th className="border p-2 text-left text-purple-600">Contact</th>
             </tr>
           </thead>
@@ -56,9 +60,13 @@ const CourtList = () => {
             {filteredCourts.map((court) => (
               <tr key={court._id} className="hover:bg-gray-50">
                 <td className="border p-2">{court.name}</td>
-                <td className="border p-2">
-                  {court.location[0]}, {court.location[1]}
-                </td>
+                <td className="border p-2">{court.location}</td>
+                <td className="border p-2">{court.country}</td>
+                {/* <td className="border p-2">
+                  {court.locationCoordinates
+                    ? `${court.locationCoordinates[0]}, ${court.locationCoordinates[1]}`
+                    : "N/A"}
+                </td> */}
                 <td className="border p-2">{court.contact}</td>
               </tr>
             ))}

@@ -48,19 +48,19 @@ app.use("/athletes",athleteRoutes);
 app.use("/court",courtRoutes);
 
 // // Connect to MongoDB
-// mongoose.connect(process.env.MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// }).then(() => console.log("MongoDB Connected"))
-//   .catch(err => console.error("MongoDB Connection Error:", err));
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => console.log("MongoDB Connected"))
+  .catch(err => console.error("MongoDB Connection Error:", err));
 // app.use("/auth", googleAuthRoutes);
 
 
-mongoose
-  .connect(process.env.MONGO_URI)
+// mongoose
+  // .connect(process.env.MONGO_URI)
 
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+  // .then(() => console.log("✅ MongoDB Connected"))
+  // .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;

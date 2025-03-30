@@ -9,9 +9,12 @@ import markerIconPng from "leaflet/dist/images/marker-icon.png";
 interface Court {
   _id: string;
   name: string;
-  location: [number, number];
+  location: string; // City Name
+  locationCoordinates: [number, number]; // Latitude & Longitude
   numberOfCourts: number;
   contact: string;
+  country: string;
+  description: string;
 }
 
 const CourtMap = () => {
@@ -25,15 +28,20 @@ const CourtMap = () => {
   }, []);
 
   return (
-    <MapContainer center={[37.7749, -122.4194]} zoom={4} className="h-80 w-full rounded-lg border">
+    <MapContainer
+      center={[37.7749, -122.4194]} // Default center (San Francisco)
+      zoom={4}
+      className="h-96 w-full rounded-lg border"
+    >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
+      
       {courts.map((court) => (
         <Marker
           key={court._id}
-          position={court.location}
+          position={court.locationCoordinates}
           icon={L.icon({
             iconUrl: markerIconPng,
             iconSize: [25, 41],
@@ -41,11 +49,17 @@ const CourtMap = () => {
           })}
         >
           <Popup>
-            <strong>{court.name}</strong>
-            <br />
-            🏆 Courts: {court.numberOfCourts}
-            <br />
-            📞 Contact: {court.contact}
+            <div className="text-sm">
+              <strong className="text-lg">{court.name}</strong>
+              <br />
+              📍 Location: {court.location}, {court.country}
+              <br />
+              🏆 Courts Available: {court.numberOfCourts}
+              <br />
+              📞 Contact: {court.contact}
+              <br />
+              📝 Description: {court.description}
+            </div>
           </Popup>
         </Marker>
       ))}

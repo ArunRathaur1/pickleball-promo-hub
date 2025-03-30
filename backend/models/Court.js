@@ -7,6 +7,16 @@ const courtSchema = new mongoose.Schema({
     trim: true,
   },
   location: {
+    type: String, // User-entered location name
+    required: true,
+    trim: true,
+  },
+  country: {
+    type: String, // Country name
+    required: true,
+    trim: true,
+  },
+  locationCoordinates: {
     type: [Number], // [latitude, longitude]
     required: true,
     validate: {
@@ -14,7 +24,7 @@ const courtSchema = new mongoose.Schema({
         return v.length === 2;
       },
       message:
-        "Location must be an array with exactly 2 elements [latitude, longitude]",
+        "LocationCoordinates must be an array with exactly 2 elements [latitude, longitude]",
     },
   },
   numberOfCourts: {
