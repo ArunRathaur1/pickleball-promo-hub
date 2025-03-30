@@ -52,7 +52,7 @@ const UserDashboard = () => {
             </div>
           </div>
 
-          <Tabs defaultValue="tournaments">
+          <Tabs defaultValue="profile">
             <TabsList className="mb-8">
               <TabsTrigger value="tournaments">My Tournaments</TabsTrigger>
               <TabsTrigger value="services">My Services</TabsTrigger>
