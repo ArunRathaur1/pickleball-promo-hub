@@ -2,7 +2,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export const Logo = ({ size = "md", className }) => {
+export const Logo = ({ size = "md", className = "" }) => {
   const sizeClasses = {
     sm: "text-xl",
     md: "text-2xl",

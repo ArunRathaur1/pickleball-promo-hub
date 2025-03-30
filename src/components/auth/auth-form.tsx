@@ -92,7 +92,7 @@ export function AuthForm({ type, userType }) {
           </div>
         </div>
         
-        <GoogleAuthButton onClick={handleGoogleAuth} loading={loading} />
+        <GoogleAuthButton onClick={handleGoogleAuth} loading={loading} authType={type} />
       </CardContent>
       <AuthFormFooter type={type} userType={userType} />
     </Card>
