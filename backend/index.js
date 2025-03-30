@@ -7,6 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const tournamentRoutes=require("./routes/tournamentRoutes");
 // const athleteRoutes=require("./routes/")
 const athleteRoutes=require("./routes/athleteRoutes");
+const courtRoutes=require("./routes/courtRoutes");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use("/users", userRoutes);
 app.use("/tournaments",tournamentRoutes);
 app.use("/athletes",athleteRoutes);
+app.use("/court",courtRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
