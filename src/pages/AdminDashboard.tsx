@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarIcon, MapPin, Clock, CheckCircle, XCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { LoggedNavbar } from "@/components/layout/loggednavbar";
 
 // Mock pending tournament data
 const PENDING_TOURNAMENTS = [
@@ -53,7 +54,7 @@ const AdminDashboard = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <LoggedNavbar />
       <main className="flex-1 py-12">
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">

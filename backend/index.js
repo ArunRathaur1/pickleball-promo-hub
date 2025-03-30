@@ -13,6 +13,7 @@ const athleteRoutes=require("./routes/athleteRoutes");
 const courtRoutes=require("./routes/courtRoutes");
 const googleAuthRoutes = require("./routes/goolgeauth"); 
 const passportStrategy = require("./passport");
+const Admin =require('./routes/adminroute');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use("/tournaments",tournamentRoutes);
 app.use("/athletes",athleteRoutes);
 app.use("/court",courtRoutes);
 app.use('/auth',googleAuthRoutes);
+app.use('/admin',Admin);
 // // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     // useNewUrlParser: true,
