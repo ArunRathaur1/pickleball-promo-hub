@@ -23,25 +23,29 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    try {
-        // Check if user exists
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: "Invalid email or password" });
-        }
-
-        // Compare passwords directly (since they are not encrypted)
-        if (user.password !== password) {
-            return res.status(400).json({ message: "Invalid email or password" });
-        }
-
-        res.json({ message: "Login successful", userId: user._id, name: user.name });
-    } catch (err) {
-        res.status(500).json({ message: "Server error", error: err.message });
+  try {
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or password" });
     }
+
+    // Compare passwords directly (since they are not encrypted)
+    if (user.password !== password) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    // Send the entire user data (excluding the password)
+    const { password: _, ...userData } = user.toObject(); // Convert to plain object & exclude password
+
+    res.json({ message: "Login successful", user: userData });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
 });
+
 
 // Get all users
 router.get("/", async (req, res) => {
