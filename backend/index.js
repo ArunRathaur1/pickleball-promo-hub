@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
+const tournamentRoutes=require("./routes/tournamentRoutes")
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors());
 
 // Routes
 app.use("/users", userRoutes);
+app.use("/tournaments",tournamentRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
