@@ -2,12 +2,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-interface LogoProps {
-  size?: "sm" | "md" | "lg";
-  className?: string;
-}
-
-export const Logo = ({ size = "md", className }: LogoProps) => {
+export const Logo = ({ size = "md", className }) => {
   const sizeClasses = {
     sm: "text-xl",
     md: "text-2xl",
