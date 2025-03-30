@@ -1,9 +1,7 @@
-
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { TournamentList } from "@/components/tournaments/tournament-list";
 import { TournamentMap } from "@/components/tournaments/tournament-map";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Tournaments = () => {
   return (
@@ -14,27 +12,23 @@ const Tournaments = () => {
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h1 className="text-3xl font-bold mb-4">Pickleball Tournaments</h1>
             <p className="text-muted-foreground">
-              Discover upcoming pickleball tournaments and events across the country. 
+              Discover upcoming pickleball tournaments and events across the country.
               Submit your own tournament for promotion and gain exposure in the pickleball community.
             </p>
           </div>
-          
-          <Tabs defaultValue="list">
-            <div className="flex justify-center mb-8">
-              <TabsList>
-                <TabsTrigger value="list">List View</TabsTrigger>
-                <TabsTrigger value="map">Map View</TabsTrigger>
-              </TabsList>
-            </div>
-            
-            <TabsContent value="list">
+
+          {/* Display both List and Map side by side */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="border p-4 rounded-lg shadow">
+              <h2 className="text-xl font-bold mb-4">List View</h2>
               <TournamentList />
-            </TabsContent>
-            
-            <TabsContent value="map">
+            </div>
+            <div className="border p-4 rounded-lg shadow">
+              <h2 className="text-xl font-bold mb-4">Map View</h2>
               <TournamentMap />
-            </TabsContent>
-          </Tabs>
+            </div>
+          </div>
+
         </div>
       </main>
       <Footer />
