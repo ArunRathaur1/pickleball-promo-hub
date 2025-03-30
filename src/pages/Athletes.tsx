@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { Link } from "react-router-dom";
 
 interface Athlete {
   _id: string;
@@ -22,8 +23,10 @@ const Athletes = () => {
   const [countryFilter, setCountryFilter] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/athletes")
+    axios
+      .get("http://localhost:5000/athletes")
       .then((res) => {
+        console.log(res.data);
         setAthletes(res.data);
         setFilteredAthletes(res.data);
       })
@@ -38,7 +41,9 @@ const Athletes = () => {
       filtered = filtered.filter((athlete) => athlete.gender === genderFilter);
     }
     if (countryFilter) {
-      filtered = filtered.filter((athlete) => athlete.country === countryFilter);
+      filtered = filtered.filter(
+        (athlete) => athlete.country === countryFilter
+      );
     }
 
     // Sort by points in descending order
@@ -47,9 +52,14 @@ const Athletes = () => {
     setFilteredAthletes(filtered);
   }, [genderFilter, countryFilter, athletes]);
 
+  // Store athlete data in localStorage
+  const handlePlayerClick = (athlete: Athlete) => {
+    localStorage.setItem("playerProfileData", JSON.stringify(athlete));
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-        <Navbar/>
+      <Navbar />
       <h1 className="text-3xl font-bold text-center mb-6">Athlete Rankings</h1>
 
       {/* Filters */}
@@ -72,7 +82,9 @@ const Athletes = () => {
         >
           <option value="">All Countries</option>
           {[...new Set(athletes.map((a) => a.country))].map((country) => (
-            <option key={country} value={country}>{country}</option>
+            <option key={country} value={country}>
+              {country}
+            </option>
           ))}
         </select>
       </div>
@@ -86,7 +98,6 @@ const Athletes = () => {
               <th className="p-3 border">Player</th>
               <th className="p-3 border">Country</th>
               <th className="p-3 border">Age</th>
-              {/* <th className="p-3 border">Titles Won</th> */}
               <th className="p-3 border">Points</th>
             </tr>
           </thead>
@@ -95,19 +106,31 @@ const Athletes = () => {
               <tr key={athlete._id} className="text-center border">
                 <td className="p-3 border">{index + 1}</td>
                 <td className="p-3 border flex items-center gap-3">
-                  <img src={athlete.imageUrl} alt={athlete.name} className="w-10 h-10 rounded-full" />
-                  {athlete.name}
+                  <img
+                    src={athlete.imageUrl}
+                    alt={athlete.name}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <Link
+                    to="/playerprofile"
+                    target="_blank" // Open in a new tab
+                    className="text-blue-600"
+                    onClick={() => handlePlayerClick(athlete)}
+                  >
+                    {athlete.name}
+                  </Link>
                 </td>
                 <td className="p-3 border">{athlete.country}</td>
                 <td className="p-3 border">{athlete.age}</td>
-                {/* <td className="p-3 border">{athlete.titlesWon.join(", ") || "None"}</td> */}
-                <td className="p-3 border font-bold text-purple-600">{athlete.points}</td>
+                <td className="p-3 border font-bold text-purple-600">
+                  {athlete.points}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

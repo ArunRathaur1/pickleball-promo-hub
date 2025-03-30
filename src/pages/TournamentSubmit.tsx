@@ -2,11 +2,12 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { TournamentForm } from "@/components/tournaments/tournament-form";
+import { LoggedNavbar } from "@/components/layout/loggednavbar";
 
 const TournamentSubmit = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <LoggedNavbar />
       <main className="flex-1 py-12">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
