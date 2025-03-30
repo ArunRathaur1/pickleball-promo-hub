@@ -47,9 +47,9 @@ const CourtList = () => {
         <table className="min-w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Court Name</th>
-              <th className="border p-2 text-left">Location (Lat, Lng)</th>
-              <th className="border p-2 text-left">Contact</th>
+              <th className="border p-2 text-left text-purple-600">Court Name</th>
+              <th className="border p-2 text-left text-purple-600">Location (Lat, Lng)</th>
+              <th className="border p-2 text-left text-purple-600">Contact</th>
             </tr>
           </thead>
           <tbody>
