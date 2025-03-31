@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/footer";
 import TournamentRequestsPage from "../components/admin/Tournament";
 import AnalyticsPage from "../components/admin/Analytics";
 import UsersPage from "../components/admin/userpage";
+import AddAthlete from "../components/athletes/AddAthlete"
 
 const AdminDashboard = () => {
   return (
@@ -27,12 +28,17 @@ const AdminDashboard = () => {
           <Tabs defaultValue="tournaments">
             <TabsList className="mb-8">
               <TabsTrigger value="tournaments">Tournament Requests</TabsTrigger>
+              <TabsTrigger value="athlete">Add Athlete</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
             </TabsList>
 
             <TabsContent value="tournaments">
               <TournamentRequestsPage />
+            </TabsContent>
+
+            <TabsContent value="athlete">
+              <AddAthlete />
             </TabsContent>
 
             <TabsContent value="analytics">
