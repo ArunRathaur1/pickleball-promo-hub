@@ -5,10 +5,12 @@ const Court = require("../models/Court");
 // ✅ Create a new court
 router.post("/add", async (req, res) => {
   try {
+    // console.log("Received data:", req.body); // Log incoming data  
+
     const { name, location, country, locationCoordinates, numberOfCourts, contact, description } = req.body;
 
     if (!name || !location || !country || !locationCoordinates || !numberOfCourts || !contact || !description) {
-      return res.status(400).json({ message: "All fields are required." });
+      return res.status(400).json({ message: "All fields are required.", receivedData: req.body });
     }
 
     if (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2) {
@@ -17,11 +19,14 @@ router.post("/add", async (req, res) => {
 
     const newCourt = new Court({ name, location, country, locationCoordinates, numberOfCourts, contact, description });
     await newCourt.save();
+
     res.status(201).json({ message: "Court added successfully", court: newCourt });
   } catch (error) {
+    console.error("Error in /add route:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
 
 // ✅ Get all courts
 router.get("/all", async (req, res) => {

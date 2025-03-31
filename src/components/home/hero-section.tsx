@@ -1,15 +1,17 @@
-
 import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
+// Import images correctly
+import hero1 from "../../images/1.jpeg";
+import hero2 from "../../images/2.jpeg";
+import hero3 from "../../images/3.jpeg";
+import hero4 from "../../images/4.jpeg";
+import hero5 from "../../images/5.jpeg";
+
 // Sample images for carousel
-const HERO_IMAGES = [
-  "/images/hero1.jpg",
-  "/images/hero2.jpg",
-  "/images/hero3.jpg",
-];
+const HERO_IMAGES = [hero1, hero2, hero3,hero4,hero5];
 
 export function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);
@@ -64,7 +66,7 @@ export function HeroSection() {
               </Button>
             </Link>
             <Link to="/services">
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+              <Button size="lg" variant="outline" className="text-black border-white hover:bg-purple-500">
                 Our Services
               </Button>
             </Link>

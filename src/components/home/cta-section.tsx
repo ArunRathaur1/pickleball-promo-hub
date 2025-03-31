@@ -23,7 +23,7 @@ export function CTASection() {
               </Button>
             </Link>
             <Link to="/services">
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+              <Button size="lg" variant="outline" className="text-black border-white hover:bg-white/10">
                 Explore Services
               </Button>
             </Link>

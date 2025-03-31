@@ -18,6 +18,8 @@ import PlayerProfile from "./pages/Playerprofile.js";
 import AdminLogin from "./components/admin/admin-login.js";
 import AdminSingup from './components/admin/admin-signup.js';
 import { useState } from "react";
+import CourtSubmit from "./pages/CourtSubmit.js";
+import ContactPage from "./pages/ContactPage.js";
 
 const queryClient = new QueryClient();
 
@@ -36,7 +38,9 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/tournaments" element={<Tournaments />} />
             <Route path="/tournaments/submit" element={<TournamentSubmit />} />
+            <Route path="/courts/submit" element={<CourtSubmit />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route
               path="/athletes"
               element={<Athletes/>}
