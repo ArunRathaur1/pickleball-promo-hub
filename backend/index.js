@@ -14,6 +14,7 @@ const athleteRoutes = require("./routes/athleteRoutes");
 const courtRoutes = require("./routes/courtRoutes");
 const googleAuthRoutes = require("./routes/goolgeauth");
 const adminRoutes = require("./routes/adminroute");
+const blogRoutes = require("./routes/blogRoutes");
 
 require("./passport"); // Passport Config
 
@@ -59,6 +60,7 @@ app.use("/athletes", athleteRoutes);
 app.use("/court", courtRoutes);
 app.use("/auth", googleAuthRoutes);
 app.use("/admin", adminRoutes);
+app.use("/blogs", blogRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI, {

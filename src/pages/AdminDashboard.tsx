@@ -29,6 +29,7 @@ const AdminDashboard = () => {
             <TabsList className="mb-8">
               <TabsTrigger value="tournaments">Tournament Requests</TabsTrigger>
               <TabsTrigger value="athlete">Add Athlete</TabsTrigger>
+              <TabsTrigger value="blogs">Blogs</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
             </TabsList>
