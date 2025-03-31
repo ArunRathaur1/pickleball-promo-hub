@@ -35,7 +35,7 @@ const UserDashboard = () => {
             <div>
               <h1 className="text-3xl font-bold">
                 {userData
-                  ? `Welcome, ${userData.name.split(" ")[0]}!`
+                  ? `Welcome, ${userData.name}!`
                   : "My Dashboard"}
               </h1>
               <p className="text-muted-foreground">

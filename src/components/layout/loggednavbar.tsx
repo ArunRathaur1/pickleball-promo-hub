@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   const handleLogout = async () => {
     console.log('deleted the user data');
     localStorage.removeItem("userData");
+    localStorage.removeItem("googleData");
     try {
       const response = await fetch("http://localhost:5000/auth/logout", {
         method: "GET",

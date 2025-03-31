@@ -44,11 +44,11 @@ export function AuthForm({ type, userType }) {
     }
   };
   
-  const handleGoogleAuth = async () => {
-      window.open(`http://localhost:5000/auth/google`, "_self");
-      
-  };
-  
+ const handleGoogleAuth = async () => {
+   // Open Google OAuth in a new tab
+   window.open(`http://localhost:5000/auth/google`, "_self");
+ };
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <AuthFormHeader type={type} userType={userType} />

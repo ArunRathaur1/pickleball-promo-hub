@@ -3,18 +3,24 @@ const passport = require("passport");
 
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:8080"; // Default frontend URL
 
-// ✅ Login Success Route
 router.get("/login/success", (req, res) => {
-  if (req.user) {
-    res.status(200).json({
-      error: false,
-      message: "Successfully Logged In",
-      user: req.user,
-    });
-  } else {
-    res.status(403).json({ error: true, message: "Not Authorized" });
+  console.log("Session Data:", req.session); // Check if session exists
+  console.log("User Data:", req.user); // Check if user exists
+
+  if (!req.user) {
+    return res
+      .status(403)
+      .json({ error: true, message: "User not authenticated" });
   }
+
+  res.status(200).json({
+    error: false,
+    message: "Successfully Logged In",
+    user: req.user,
+  });
 });
+
+
 
 // ❌ Login Failure Route
 router.get("/login/failed", (req, res) => {
