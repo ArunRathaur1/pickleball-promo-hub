@@ -4,9 +4,6 @@ const passport = require("passport");
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:8080"; // Default frontend URL
 
 router.get("/login/success", (req, res) => {
-  console.log("Session Data:", req.session); // Check if session exists
-  console.log("User Data:", req.user); // Check if user exists
-
   if (!req.user) {
     return res
       .status(403)
