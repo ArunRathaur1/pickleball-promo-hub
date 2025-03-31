@@ -7,7 +7,7 @@ import { LoggedNavbar } from "@/components/layout/loggednavbar";
 const TournamentSubmit = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <LoggedNavbar />
+      <Navbar />
       <main className="flex-1 py-12">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
