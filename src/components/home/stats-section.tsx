@@ -1,5 +1,5 @@
-
 import { useState, useEffect, useRef } from "react";
+import backgroundImage from "../../images/bg.jpeg"; // Import the background image
 
 interface StatItemProps {
   value: number;
@@ -64,11 +64,21 @@ const StatItem = ({ value, label, suffix = "", delay = 0 }: StatItemProps) => {
 
 export function StatsSection() {
   return (
-    <section className="bg-muted py-16">
-      <div className="container">
+    <section
+      className="py-16 text-white relative"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/50"></div> {/* Overlay */}
+      
+      <div className="container relative z-10">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold mb-2">Our Impact</h2>
-          <p className="text-muted-foreground">The numbers speak for themselves</p>
+          <p className="text-white/80">The numbers speak for themselves</p>
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
