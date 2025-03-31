@@ -6,7 +6,7 @@ import TournamentRequestsPage from "../components/admin/Tournament";
 import AnalyticsPage from "../components/admin/Analytics";
 import UsersPage from "../components/admin/userpage";
 import AddAthlete from "../components/athletes/AddAthlete"
-
+import AdminClub from "@/components/admin/admin-club";
 const AdminDashboard = () => {
   return (
     <div className="min-h-screen flex flex-col">
@@ -29,6 +29,7 @@ const AdminDashboard = () => {
             <TabsList className="mb-8">
               <TabsTrigger value="tournaments">Tournament Requests</TabsTrigger>
               <TabsTrigger value="athlete">Add Athlete</TabsTrigger>
+              <TabsTrigger value="clubs">Clubs</TabsTrigger>
               <TabsTrigger value="blogs">Blogs</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
@@ -48,6 +49,9 @@ const AdminDashboard = () => {
 
             <TabsContent value="users">
               <UsersPage />
+            </TabsContent>
+            <TabsContent value="clubs">
+              <AdminClub />
             </TabsContent>
           </Tabs>
         </div>
