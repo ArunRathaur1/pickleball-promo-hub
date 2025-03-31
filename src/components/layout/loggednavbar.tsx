@@ -11,6 +11,8 @@ const NAV_ITEMS = [
   { label: "Services", href: "/services" },
   { label: "Athletes", href: "/athletes" },
   { label: "Tournaments", href: "/tournaments" },
+  { label: "Courts", href: "/courts" },
+  { label: "Clubs", href: "/clubs" },
   { label: "Contact", href: "/contact" },
 ];
   const handleLogout = async () => {
