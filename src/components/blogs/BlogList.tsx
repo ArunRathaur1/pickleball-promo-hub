@@ -1,130 +1,154 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import BlogForm from "./BlogForm";
+import axios from "axios";
+import { PlusCircle, Edit2, Trash2 } from "lucide-react";
 
-// Define the Blog type
 interface Blog {
   _id: string;
   name: string;
   heading: string;
   description: string;
+  createdAt: string;
 }
 
 const BlogList: React.FC = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [editBlog, setEditBlog] = useState<Blog | null>(null);
-  const [isCreating, setIsCreating] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [editData, setEditData] = useState<Blog | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch Blogs
   useEffect(() => {
     fetchBlogs();
   }, []);
 
   const fetchBlogs = async () => {
+    setIsLoading(true);
+    setError(null);
     try {
-      const response = await axios.get<Blog[]>("/api/blogs/");
+      const response = await axios.get("http://localhost:5000/blogs");
       setBlogs(response.data);
     } catch (error) {
-      console.error("Error fetching blogs:", error);
+      console.error("Error fetching blogs", error);
+      setError("Failed to load blogs. Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Delete Blog
+  const handleAddOrUpdate = async (blog: { name: string; heading: string; description: string }) => {
+    try {
+      if (editData) {
+        await axios.put(`http://localhost:5000/blogs/update/${editData._id}`, blog);
+      } else {
+        await axios.post("http://localhost:5000/blogs/add", blog);
+      }
+      fetchBlogs();
+      setShowForm(false);
+      setEditData(null);
+    } catch (error) {
+      console.error("Error saving blog", error);
+      alert("Failed to save blog. Please try again.");
+    }
+  };
+
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
-        await axios.delete(`/api/blogs/delete/${id}`);
-        setBlogs(blogs.filter(blog => blog._id !== id));
+        await axios.delete(`http://localhost:5000/api/blogs/delete/${id}`);
+        fetchBlogs();
       } catch (error) {
-        console.error("Error deleting blog:", error);
+        console.error("Error deleting blog", error);
+        alert("Failed to delete blog. Please try again.");
       }
     }
   };
 
-  // Create Blog
-  const handleCreate = async (formData: { name: string; heading: string; description: string }) => {
-    try {
-      await axios.post("/api/blogs/create", formData);
-      fetchBlogs();
-      setIsCreating(false);
-    } catch (error) {
-      console.error("Error creating blog:", error);
-    }
+  const openEditForm = (blog: Blog) => {
+    setEditData(blog);
+    setShowForm(true);
   };
 
-  // Update Blog
-  const handleUpdate = async (formData: { name: string; heading: string; description: string }) => {
-    if (!editBlog) return;
-    try {
-      await axios.put(`/api/blogs/update/${editBlog._id}`, formData);
-      fetchBlogs();
-      setEditBlog(null);
-    } catch (error) {
-      console.error("Error updating blog:", error);
-    }
+  const openCreateForm = () => {
+    setEditData(null);
+    setShowForm(true);
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold text-center mb-6">Blog List</h1>
-
-      {/* Create Blog Button */}
-      <div className="flex justify-end mb-4">
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">Blog Management</h1>
         <button
-          onClick={() => setIsCreating(true)}
-          className="bg-green-500 text-white px-4 py-2 rounded"
+          onClick={openCreateForm}
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
         >
-          + Create Blog
+          <PlusCircle size={20} />
+          <span>Create New Blog</span>
         </button>
       </div>
 
-      {/* Blog Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Author</th>
-              <th className="border p-2">Heading</th>
-              <th className="border p-2">Description</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {blogs.map((blog) => (
-              <tr key={blog._id} className="text-center border-t">
-                <td className="border p-2">{blog.name}</td>
-                <td className="border p-2">{blog.heading}</td>
-                <td className="border p-2">{blog.description.substring(0, 50)}...</td>
-                <td className="border p-2">
-                  <button
-                    onClick={() => setEditBlog(blog)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(blog._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+            <BlogForm 
+              onClose={() => setShowForm(false)} 
+              onSubmit={handleAddOrUpdate} 
+              initialData={editData} 
+            />
+          </div>
+        </div>
+      )}
 
-      {/* Create Blog Modal */}
-      {isCreating && <BlogForm onSubmit={handleCreate} onCancel={() => setIsCreating(false)} />}
-
-      {/* Edit Blog Modal */}
-      {editBlog && (
-        <BlogForm
-          initialData={editBlog}
-          onSubmit={handleUpdate}
-          onCancel={() => setEditBlog(null)}
-        />
+      {isLoading ? (
+        <div className="flex justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      ) : error ? (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
+          {error}
+          <button onClick={fetchBlogs} className="ml-4 underline">Retry</button>
+        </div>
+      ) : blogs.length === 0 ? (
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-gray-500 mb-4">No blogs found</p>
+          <button 
+            onClick={openCreateForm}
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
+          >
+            Create Your First Blog
+          </button>
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {blogs.map(blog => (
+            <div key={blog._id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">{blog.heading}</h3>
+                <p className="text-gray-600 mb-4 line-clamp-3">{blog.description}</p>
+                <div className="flex justify-between items-center text-sm text-gray-500">
+                  <p>By: {blog.name}</p>
+                  <p>{new Date(blog.createdAt).toLocaleDateString()}</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-6 py-3 flex justify-end gap-2">
+                <button 
+                  onClick={() => openEditForm(blog)}
+                  className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
+                >
+                  <Edit2 size={16} />
+                  <span>Edit</span>
+                </button>
+                <button 
+                  onClick={() => handleDelete(blog._id)}
+                  className="flex items-center gap-1 text-red-600 hover:text-red-800"
+                >
+                  <Trash2 size={16} />
+                  <span>Delete</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

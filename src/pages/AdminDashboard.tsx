@@ -6,6 +6,7 @@ import TournamentRequestsPage from "../components/admin/Tournament";
 import AnalyticsPage from "../components/admin/Analytics";
 import UsersPage from "../components/admin/userpage";
 import AddAthlete from "../components/athletes/AddAthlete"
+import BlogList from "@/components/blogs/BlogList";
 
 const AdminDashboard = () => {
   return (
@@ -40,6 +41,10 @@ const AdminDashboard = () => {
 
             <TabsContent value="athlete">
               <AddAthlete />
+            </TabsContent>
+
+            <TabsContent value="blogs">
+              <BlogList />
             </TabsContent>
 
             <TabsContent value="analytics">
