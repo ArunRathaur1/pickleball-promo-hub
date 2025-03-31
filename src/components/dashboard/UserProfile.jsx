@@ -41,6 +41,14 @@ const UserDashboard = () => {
           localStorage.setItem("googleData", JSON.stringify(googleUserData));
           setUserData(googleUserData);
           setIsGoogleUser(true);
+          
+          // Refresh the page once after storing the data to localStorage
+          if (!hasRefreshed) {
+            console.log("Data found from API, refreshing page for navbar update...");
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('refreshed', 'true');
+            window.location.href = newUrl.toString();
+          }
           return;
         }
       }
