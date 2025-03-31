@@ -15,65 +15,79 @@ const UserDashboard = () => {
   const [isGoogleUser, setIsGoogleUser] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      // Priority 1: Try to fetch from Google API
-      try {
-        const response = await fetch("http://localhost:5000/auth/login/success", {
-          method: "GET",
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.user) {
-            const name = data.user.displayName;
-            const email = data.user._json.email;
-            const photo = data.user.photos[0].value;
-            
-            console.log("Google data:", name, email, photo);
-            
-            // Save to localStorage and set state
-            const googleUserData = { name, email, picture: photo };
-            localStorage.setItem("googleData", JSON.stringify(googleUserData));
-            setUserData(googleUserData);
-            setIsGoogleUser(true);
-            return;
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching Google user data:", error);
-      }
-
-      // Priority 2: Check for googleData in localStorage
-      try {
-        const googleData = localStorage.getItem("googleData");
-        if (googleData) {
-          const parsedData = JSON.parse(googleData);
-          console.log("Found Google data in localStorage:", parsedData);
-          setUserData(parsedData);
+  const fetchUserData = async () => {
+    // Check URL parameters for a "refresh" flag to prevent infinite refresh loops
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasRefreshed = urlParams.get('refreshed');
+    
+    // Priority 1: Try to fetch from Google API
+    try {
+      const response = await fetch("http://localhost:5000/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.user) {
+          const name = data.user.displayName;
+          const email = data.user._json.email;
+          const photo = data.user.photos[0].value;
+          
+          console.log("Google data:", name, email, photo);
+          
+          // Save to localStorage and set state
+          const googleUserData = { name, email, picture: photo };
+          localStorage.setItem("googleData", JSON.stringify(googleUserData));
+          setUserData(googleUserData);
           setIsGoogleUser(true);
           return;
         }
-      } catch (error) {
-        console.error("Error parsing Google data from localStorage:", error);
       }
-
-      // Priority 3: Fall back to userData in localStorage
-      try {
-        const storedUser = localStorage.getItem("userData");
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          console.log("Found user data in localStorage:", parsedUser);
-          setUserData(parsedUser);
-          setIsGoogleUser(false);
-        }
-      } catch (error) {
-        console.error("Error parsing user data from localStorage:", error);
+    } catch (error) {
+      console.error("Error fetching Google user data:", error);
+    }
+    
+    // Priority 2: Check for googleData in localStorage
+    try {
+      const googleData = localStorage.getItem("googleData");
+      if (googleData) {
+        const parsedData = JSON.parse(googleData);
+        console.log("Found Google data in localStorage:", parsedData);
+        setUserData(parsedData);
+        setIsGoogleUser(true);
+        return;
       }
-    };
-
-    fetchUserData();
-  }, []);
+    } catch (error) {
+      console.error("Error parsing Google data from localStorage:", error);
+    }
+    
+    // Priority 3: Fall back to userData in localStorage
+    try {
+      const storedUser = localStorage.getItem("userData");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        console.log("Found user data in localStorage:", parsedUser);
+        setUserData(parsedUser);
+        setIsGoogleUser(false);
+        return;
+      }
+    } catch (error) {
+      console.error("Error parsing user data from localStorage:", error);
+    }
+    
+    // If we reach here, no data was found in any source
+    // Only refresh if we haven't already refreshed to prevent infinite loops
+    if (!hasRefreshed) {
+      console.log("No user data found in any source, refreshing page...");
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.set('refreshed', 'true');
+      window.location.href = newUrl.toString();
+    }
+  };
+  
+  fetchUserData();
+}, []);
 
   // Format date for display
   const formatDate = (dateString) => {

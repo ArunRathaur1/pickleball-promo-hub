@@ -1,7 +1,6 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, User } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 
@@ -15,72 +14,197 @@ const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
 ];
 
-export function Navbar() {
+export  function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    // Check if user is logged in by looking for userData or googleData in localStorage
+    const checkLoginStatus = () => {
+      const googleData = localStorage.getItem("googleData");
+      const userData = localStorage.getItem("userData");
+
+      if (googleData || userData) {
+        setIsLoggedIn(true);
+
+        // Get user name for display
+        try {
+          if (googleData) {
+            const parsedData = JSON.parse(googleData);
+            setUserName(parsedData.name || "User");
+          } else if (userData) {
+            const parsedData = JSON.parse(userData);
+            setUserName(parsedData.name || "User");
+          }
+        } catch (error) {
+          console.error("Error parsing user data:", error);
+          setUserName("User");
+        }
+      } else {
+        setIsLoggedIn(false);
+        setUserName("");
+      }
+    };
+
+    checkLoginStatus();
+    // Add event listener to detect localStorage changes
+    window.addEventListener("storage", checkLoginStatus);
+
+    return () => {
+      window.removeEventListener("storage", checkLoginStatus);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    console.log("deleted the user data");
+    localStorage.removeItem("userData");
+    localStorage.removeItem("googleData");
+    try {
+      const response = await fetch("http://localhost:5000/auth/logout", {
+        method: "GET",
+        credentials: "include", // ✅ Allow sending cookies
+      });
+
+      if (response.ok) {
+        window.location.href = "http://localhost:8080"; // Redirect after logout
+      } else {
+        console.error("Logout failed:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6 md:gap-10">
-          <Link to="/" className="flex items-center space-x-2">
-            <Logo />
-          </Link>
-          
-          <nav className="hidden md:flex gap-6">
+    <header className="border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <Link to="/" className="flex-shrink-0">
+              <Logo className="h-8 w-auto" />
+            </Link>
+          </div>
+
+          {/* Desktop navigation */}
+          <nav className="hidden md:flex space-x-8">
             {NAV_ITEMS.map((item) => (
               <Link
-                key={item.href}
+                key={item.label}
                 to={item.href}
-                className="nav-link text-sm font-medium"
+                className="text-gray-600 hover:text-pickle px-3 py-2 text-sm font-medium"
               >
                 {item.label}
               </Link>
             ))}
           </nav>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex gap-2">
-            <Link to="/login">
-              <Button variant="outline" size="sm">Login</Button>
-            </Link>
-            <Link to="/register">
-              <Button size="sm" className="bg-pickle hover:bg-pickle-dark">Get Started</Button>
-            </Link>
+
+          {/* Desktop buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            {isLoggedIn ? (
+              <div className="flex items-center space-x-4">
+                <Link
+                  to="/dashboard"
+                  className="flex items-center text-sm font-medium text-gray-600 hover:text-pickle"
+                >
+                  <User className="h-4 w-4 mr-1" />
+                  {userName}
+                </Link>
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="flex items-center"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="ghost">Login</Button>
+                </Link>
+                <Link to="/signup">
+                  <Button>Get Started</Button>
+                </Link>
+              </>
+            )}
           </div>
-          
-          <button 
-            className="flex items-center justify-center rounded-md p-2 text-foreground md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <button
+              className="text-gray-600 hover:text-pickle"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="container md:hidden py-4 animate-fade-in">
-          <nav className="flex flex-col space-y-4">
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {NAV_ITEMS.map((item) => (
               <Link
-                key={item.href}
+                key={item.label}
                 to={item.href}
-                className="nav-link text-sm font-medium py-2"
+                className="text-gray-600 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>
             ))}
-            <div className="flex flex-col gap-2 pt-2">
-              <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="outline" className="w-full">Login</Button>
-              </Link>
-              <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                <Button className="w-full bg-pickle hover:bg-pickle-dark">Get Started</Button>
-              </Link>
+          </div>
+          <div className="pt-4 pb-3 border-t border-gray-200">
+            <div className="px-2 space-y-1">
+              {isLoggedIn ? (
+                <>
+                  <Link
+                    to="/profile"
+                    className="flex items-center text-gray-600 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <User className="h-5 w-5 mr-2" />
+                    Profile
+                  </Link>
+                  <button
+                    className="flex items-center text-gray-600 hover:text-pickle w-full text-left px-3 py-2 rounded-md text-base font-medium"
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    <LogOut className="h-5 w-5 mr-2" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="text-gray-600 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="text-pickle hover:bg-pickle hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
             </div>
-          </nav>
+          </div>
         </div>
       )}
     </header>

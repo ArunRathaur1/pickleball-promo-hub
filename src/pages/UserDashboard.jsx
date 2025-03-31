@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LoggedNavbar } from "@/components/layout/loggednavbar";
 import { Footer } from "@/components/layout/footer";
 import UserTournaments from "@/components/dashboard/UserTournaments";
 import UserServices from "@/components/dashboard/UserServices";
 import UserProfile from "@/components/dashboard/UserProfile";
+import {Navbar} from  '../components/layout/navbar';
 
 const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -27,7 +27,7 @@ const UserDashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <LoggedNavbar />
+      <Navbar />
       <main className="flex-1 py-12">
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">

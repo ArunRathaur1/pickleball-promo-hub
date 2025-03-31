@@ -4,7 +4,7 @@ import { ServicesPreview } from "@/components/home/services-preview";
 import { StatsSection } from "@/components/home/stats-section";
 import { Testimonials } from "@/components/home/testimonials";
 import { CTASection } from "@/components/home/cta-section";
-import { Navbar } from "@/components/layout/navbar";
+import {Navbar}  from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 const Home = () => {
