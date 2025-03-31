@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
@@ -41,6 +40,14 @@ const UserDashboard = () => {
               <p className="text-muted-foreground">
                 Manage your tournaments and services
               </p>
+            </div>
+            <div className="mt-4 md:mt-0">
+              <Link to="/courts/submit">
+                <Button className="bg-pickle hover:bg-pickle-dark">
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add Court
+                </Button>
+              </Link>
             </div>
             <div className="mt-4 md:mt-0">
               <Link to="/tournaments/submit">
