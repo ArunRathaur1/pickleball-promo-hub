@@ -12,22 +12,22 @@ const SERVICES = [
     link: "/services#social",
   },
   {
-    title: "Tournament Promotion",
-    description: "Pre and post-event marketing to maximize attendance, engagement and sponsorships.",
+    title: "Athlete Performance Overview",
+    description: "Track detailed performance of Your Favorite Athelete.",
     icon: <Users className="h-10 w-10 text-pickle" />,
-    link: "/services#tournament",
+    link: "/athletes",
   },
   {
-    title: "Content Creation",
-    description: "Professional photography, videography and graphic design for pickleball athletes and events.",
+    title: "Discover Nearby Courts",
+    description: "Trace down the nearby Pickleball Courts to enjoy and enhance your pickleball skills .",
     icon: <Video className="h-10 w-10 text-pickle" />,
-    link: "/services#content",
+    link: "/courts",
   },
   {
-    title: "Performance Analytics",
-    description: "Data-driven insights to optimize your social media strategy and maximize ROI.",
+    title: "Join Club",
+    description: "Join The Pickleball clubs and become elite member of the pickleball community and enjoy the facilities",
     icon: <BarChart className="h-10 w-10 text-pickle" />,
-    link: "/services#analytics",
+    link: "/clubs",
   },
 ];
 
