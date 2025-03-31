@@ -20,6 +20,7 @@ import AdminSingup from './components/admin/admin-signup.js';
 import { useState } from "react";
 import CourtSubmit from "./pages/CourtSubmit.js";
 import ContactPage from "./pages/ContactPage.js";
+import Blogpage from "./pages/Blogpage.js";
 import Clubs from "./pages/Clubs.js";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/courts/submit" element={<CourtSubmit />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/adminblog" element={<Blogpage />} />
             <Route path='/clubs' element={<Clubs></Clubs>}></Route>
             <Route
               path="/athletes"
