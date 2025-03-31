@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { Menu, X, LogOut, User } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
-
+import image from './pickelballlogo.png';
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Dashboard", href: "/dashboard" },
+  // { label: "Dashboard", href: "/dashboard" },
   { label: "Services", href: "/services" },
   { label: "Athletes", href: "/athletes" },
   { label: "Tournaments", href: "/tournaments" },
@@ -81,7 +81,8 @@ export  function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0">
+            <Link to="/" className="flex-shrink-0" style={{display:'flex',justifyContent:'center'}}>
+              <img src={image} alt="User Profile" style={{background:'black' ,height:'50px'}}/>
               <Logo className="h-8 w-auto" />
             </Link>
           </div>
