@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 const CourtForm = () => {
   const [courtData, setCourtData] = useState({
     name: "",
     location: "",
     country: "",
-    locationCoordinates: "",
+    locationCoordinates: null, // Initially null
     numberOfCourts: "",
     contact: "",
     description: "",
@@ -15,19 +18,32 @@ const CourtForm = () => {
     setCourtData({ ...courtData, [e.target.name]: e.target.value });
   };
 
+  // Custom Leaflet component to handle map clicks
+  const LocationPicker = () => {
+    useMapEvents({
+      click(e) {
+        const { lat, lng } = e.latlng;
+        setCourtData((prev) => ({ ...prev, locationCoordinates: [lat, lng] }));
+      },
+    });
+    return courtData.locationCoordinates ? (
+      <Marker position={courtData.locationCoordinates} />
+    ) : null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const coordinates = courtData.locationCoordinates
-      .split(",")
-      .map((coord) => parseFloat(coord.trim()));
-
-    if (coordinates.length !== 2 || isNaN(coordinates[0]) || isNaN(coordinates[1])) {
-      alert("Please enter valid latitude and longitude (e.g., 37.7749, -122.4194)");
+    if (!courtData.locationCoordinates) {
+      alert("Please select a valid location on the map.");
       return;
     }
 
-    const newCourt = { ...courtData, locationCoordinates: coordinates };
+    const newCourt = {
+      ...courtData,
+      locationCoordinates: courtData.locationCoordinates, // Ensure correct format
+      numberOfCourts: Number(courtData.numberOfCourts), // Convert to number
+    };
 
     try {
       const res = await fetch("http://localhost:5000/court/add", {
@@ -36,20 +52,23 @@ const CourtForm = () => {
         body: JSON.stringify(newCourt),
       });
 
-      if (res.ok) {
-        alert("Court added successfully!");
-        setCourtData({
-          name: "",
-          location: "",
-          country: "",
-          locationCoordinates: "",
-          numberOfCourts: "",
-          contact: "",
-          description: "",
-        });
-      } else {
-        alert("Failed to add court");
+      const result = await res.json();
+      if (!res.ok) {
+        console.error("Error Response:", result);
+        alert(result.message || "Failed to add court.");
+        return;
       }
+
+      alert("Court added successfully!");
+      setCourtData({
+        name: "",
+        location: "",
+        country: "",
+        locationCoordinates: null, // Reset
+        numberOfCourts: "",
+        contact: "",
+        description: "",
+      });
     } catch (err) {
       console.error("Error adding court:", err);
       alert("Error submitting court details.");
@@ -74,8 +93,13 @@ const CourtForm = () => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium">Location Coordinates (Latitude, Longitude)</label>
-        <input type="text" name="locationCoordinates" value={courtData.locationCoordinates} onChange={handleChange} required placeholder="e.g., 37.7749, -122.4194" className="w-full p-2 border rounded" />
+        <label className="block text-sm font-medium">Select Location on Map</label>
+        <MapContainer center={[20, 78]} zoom={4} style={{ height: "300px", width: "100%" }}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <LocationPicker />
+        </MapContainer>
       </div>
 
       <div className="mb-4">
