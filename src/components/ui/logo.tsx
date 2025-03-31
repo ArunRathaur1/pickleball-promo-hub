@@ -11,7 +11,7 @@ export const Logo = ({ size = "md", className = "" }) => {
 
   return (
     <div className={cn("font-bold flex items-center", sizeClasses[size], className)}>
-      <span className="text-pickle">Pickle</span>
+      <span className="text-pickle">Pickleball</span>
       <span className="text-pickle-dark">Official</span>
     </div>
   );
