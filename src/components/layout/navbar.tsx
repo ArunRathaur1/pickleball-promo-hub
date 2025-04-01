@@ -126,9 +126,9 @@ export  function Navbar() {
                 <Link to="/login">
                   <Button variant="ghost">Login</Button>
                 </Link>
-                <Link to="/signup">
+                {/* <Link to="/signup">
                   <Button>Get Started</Button>
-                </Link>
+                </Link> */}
               </>
             )}
           </div>
