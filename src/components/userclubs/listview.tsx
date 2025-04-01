@@ -16,7 +16,9 @@ export default function Listview({ clubs }) {
             <div className="w-full h-40 bg-gray-300 rounded-lg mb-4 flex items-center justify-center">
               <span className="text-gray-500">Club Image</span>
             </div>
-
+            <div >
+              <span className="text-gray-500">{club.name}</span>
+            </div>
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600"
               onClick={() => setSelectedClub(club)}

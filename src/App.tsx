@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -16,23 +17,59 @@ import Athletes from "./pages/Athletes";
 import CourtPage from "./pages/CourtPage";
 import PlayerProfile from "./pages/Playerprofile.js";
 import AdminLogin from "./components/admin/admin-login.js";
-import AdminSingup from './components/admin/admin-signup.js';
-import { useState } from "react";
+import AdminSingup from "./components/admin/admin-signup.js";
 import CourtSubmit from "./pages/CourtSubmit.js";
 import ContactPage from "./pages/ContactPage.js";
 import Blogpage from "./pages/Blogpage.js";
 import Clubs from "./pages/Clubs.js";
+import Chatbot from "./components/Chatbot";
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  const [playerData, setPlayerData] = useState();
+// Create a ChatbotWrapper to manage global chatbot state
+const ChatbotWrapper = () => {
+  const [chatOpen, setChatOpen] = useState(false);
 
+  return (
+    <div style={{ position: "relative", zIndex: 10000 }}>
+      {/* Chatbot Button */}
+      <button
+        onClick={() => setChatOpen(!chatOpen)}
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          backgroundColor: "#2e7d32",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          width: "50px",
+          height: "50px",
+          cursor: "pointer",
+          fontSize: "24px",
+          zIndex: 10000,
+          boxShadow: "0px 2px 5px rgba(0,0,0,0.2)",
+        }}
+      >
+        💬
+      </button>
+
+      {/* Chatbot Component */}
+      {chatOpen && <Chatbot onClose={() => setChatOpen(false)} />}
+    </div>
+  );
+};
+
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
+
+        {/* ChatbotWrapper comes before the BrowserRouter to ensure it's on top layer */}
+        <ChatbotWrapper />
+
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -44,21 +81,16 @@ const App = () => {
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/adminblog" element={<Blogpage />} />
-            <Route path='/clubs' element={<Clubs></Clubs>}></Route>
-            <Route
-              path="/athletes"
-              element={<Athletes/>}
-            />
+            <Route path="/clubs" element={<Clubs />} />
+            <Route path="/athletes" element={<Athletes />} />
             <Route path="/courts" element={<CourtPage />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/dashboard" element={<UserDashboard />} />
-            <Route
-              path="/playerprofile"
-              element={<PlayerProfile />}
-            />
+            <Route path="/playerprofile" element={<PlayerProfile />} />
+            <Route path ='/signup' element={<Register></Register>}></Route>
             <Route path="*" element={<NotFound />} />
-            <Route path='adminlogin12345'element={<AdminLogin></AdminLogin>}></Route>
-            <Route path="adminsignup12345"element={<AdminSingup></AdminSingup>}></Route>
+            <Route path="adminlogin12345" element={<AdminLogin />} />
+            <Route path="adminsignup12345" element={<AdminSingup />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
