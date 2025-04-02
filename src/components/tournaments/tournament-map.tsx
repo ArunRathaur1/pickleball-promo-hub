@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
 // Fix marker icon issue in Leaflet
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 
@@ -18,21 +16,17 @@ interface Tournament {
   locationCoords: [number, number]; // [latitude, longitude]
 }
 
-const TournamentMap = () => {
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+interface TournamentMapProps {
+  tournaments: Tournament[];
+}
 
-  useEffect(() => {
-    fetch("http://localhost:5000/tournaments/all")
-      .then((res) => res.json())
-      .then((data) => setTournaments(data))
-      .catch((err) => console.error("Error fetching tournaments:", err));
-  }, []);
-
+const TournamentMap = ({ tournaments }: TournamentMapProps) => {
   return (
     <MapContainer
       center={[37.7749, -122.4194]} // Default center: San Francisco
       zoom={4}
-      className="h-96 w-full rounded-lg border"
+      className="h-full w-full" // Set height to 100% to fill container
+      style={{ height: "100%", minHeight: "500px" }} // Ensure minimum height and fill parent
     >
       {/* Tile Layer */}
       <TileLayer
@@ -56,7 +50,8 @@ const TournamentMap = () => {
             <div className="text-sm">
               <h3 className="font-bold text-lg">{tournament.name}</h3>
               <p>
-                📍 <strong>Location:</strong> {tournament.location}, {tournament.country}
+                📍 <strong>Location:</strong> {tournament.location},{" "}
+                {tournament.country}
               </p>
               <p>
                 📅 <strong>Dates:</strong>{" "}

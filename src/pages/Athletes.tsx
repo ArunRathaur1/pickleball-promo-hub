@@ -115,6 +115,7 @@ const Athletes = () => {
                     />
                     <Link
                       to="/playerprofile"
+                      target="_blank"
                       className="text-blue-600 dark:text-blue-400 hover:underline"
                       onClick={() => handlePlayerClick(athlete)}
                     >

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React from "react";
 
 interface Tournament {
   id: string;
@@ -8,37 +8,11 @@ interface Tournament {
   startDate: string;
 }
 
-const TournamentList = () => {
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [filteredTournaments, setFilteredTournaments] = useState<Tournament[]>(
-    []
-  );
-  const [search, setSearch] = useState("");
-  const [locationFilter, setLocationFilter] = useState("");
+interface TournamentListProps {
+  tournaments: Tournament[];
+}
 
-  useEffect(() => {
-    fetch("http://localhost:5000/tournaments/approved")
-      .then((res) => res.json())
-      .then((data) => {
-        setTournaments(data);
-        setFilteredTournaments(data);
-      })
-      .catch((err) => console.error("Error fetching tournaments:", err));
-  }, []);
-
-  // Apply filters when search or location input changes
-  useEffect(() => {
-    setFilteredTournaments(
-      tournaments.filter(
-        (tournament) =>
-          tournament.name.toLowerCase().includes(search.toLowerCase()) &&
-          tournament.location
-            .toLowerCase()
-            .includes(locationFilter.toLowerCase())
-      )
-    );
-  }, [search, locationFilter, tournaments]);
-
+const TournamentList = ({ tournaments }: TournamentListProps) => {
   // Format date nicely
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString(undefined, {
@@ -50,28 +24,9 @@ const TournamentList = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        {/* Name Search Input */}
-        <input
-          type="text"
-          placeholder="Search by name..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full md:w-1/2 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
-        />
-        {/* Location Filter Input */}
-        <input
-          type="text"
-          placeholder="Filter by location..."
-          value={locationFilter}
-          onChange={(e) => setLocationFilter(e.target.value)}
-          className="w-full md:w-1/2 p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
-        />
-      </div>
-
       {/* Tournament Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredTournaments.map((tournament) => (
+        {tournaments.map((tournament) => (
           <div
             key={tournament.id}
             className="border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
@@ -144,9 +99,9 @@ const TournamentList = () => {
         ))}
       </div>
 
-      {filteredTournaments.length === 0 && (
+      {tournaments.length === 0 && (
         <div className="text-center py-12 text-gray-500">
-          No tournaments found matching your search criteria.
+          No tournaments available.
         </div>
       )}
     </div>
