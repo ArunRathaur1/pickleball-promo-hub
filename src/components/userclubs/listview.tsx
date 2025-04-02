@@ -33,11 +33,6 @@ export default function Listview({ clubs }) {
                 </span>
               </div>
 
-              {/* Followers Badge */}
-              <div className="flex items-center mb-4 text-foreground">
-                <Users className="h-4 w-4 text-pickle mr-2" />
-                <span className="text-sm">{club.followers} Followers</span>
-              </div>
 
               {/* Status Badge */}
               <div className="mb-4">
