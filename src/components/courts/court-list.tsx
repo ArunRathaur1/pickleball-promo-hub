@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 interface Court {
@@ -41,13 +42,13 @@ const CourtList = () => {
   return (
     <div className="container mx-auto p-4">
       {/* Search Section with Elevated Design */}
-      <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Find Courts</h2>
+      <div className="bg-card border border-border rounded-xl shadow-lg p-6 mb-8">
+        <h2 className="text-xl font-bold text-card-foreground mb-4">Find Courts</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg
-                className="h-5 w-5 text-gray-400"
+                className="h-5 w-5 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -65,13 +66,13 @@ const CourtList = () => {
               placeholder="Search by name..."
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
-              className="pl-10 p-3 w-full border-0 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:bg-white transition-all duration-200"
+              className="pl-10 p-3 w-full bg-muted rounded-lg focus:ring-2 focus:ring-green-500 focus:bg-background transition-all duration-200 text-foreground"
             />
           </div>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg
-                className="h-5 w-5 text-gray-400"
+                className="h-5 w-5 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -95,13 +96,13 @@ const CourtList = () => {
               placeholder="Search by location..."
               value={searchLocation}
               onChange={(e) => setSearchLocation(e.target.value)}
-              className="pl-10 p-3 w-full border-0 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:bg-white transition-all duration-200"
+              className="pl-10 p-3 w-full bg-muted rounded-lg focus:ring-2 focus:ring-green-500 focus:bg-background transition-all duration-200 text-foreground"
             />
           </div>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg
-                className="h-5 w-5 text-gray-400"
+                className="h-5 w-5 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -119,7 +120,7 @@ const CourtList = () => {
               placeholder="Search by country..."
               value={searchCountry}
               onChange={(e) => setSearchCountry(e.target.value)}
-              className="pl-10 p-3 w-full border-0 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:bg-white transition-all duration-200"
+              className="pl-10 p-3 w-full bg-muted rounded-lg focus:ring-2 focus:ring-green-500 focus:bg-background transition-all duration-200 text-foreground"
             />
           </div>
         </div>
@@ -130,17 +131,17 @@ const CourtList = () => {
         {filteredCourts.map((court) => (
           <div
             key={court._id}
-            className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border-l-4 border-green-500"
+            className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border-l-4 border-green-500"
           >
-            <div className="relative h-32 bg-gray-100 rounded-lg overflow-hidden mt-3">
+            <div className="relative h-32 bg-muted rounded-lg overflow-hidden mt-3">
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-gray-400 text-sm">
-                  Images Comming Soon
+                <span className="text-muted-foreground text-sm">
+                  Images Coming Soon
                 </span>
               </div>
             </div>
-            <div className="bg-green-50 p-4">
-              <h3 className="text-lg font-bold text-green-800">
+            <div className="bg-green-500/10 dark:bg-green-900/20 p-4">
+              <h3 className="text-lg font-bold text-foreground">
                 {court.name}
               </h3>
             </div>
@@ -148,9 +149,9 @@ const CourtList = () => {
             <div className="p-4">
               <div className="mb-4">
                 <div className="flex items-center mb-2">
-                  <div className="bg-green-100 p-2 rounded-full mr-3">
+                  <div className="bg-green-500/10 dark:bg-green-900/20 p-2 rounded-full mr-3">
                     <svg
-                      className="h-5 w-5 text-green-600"
+                      className="h-5 w-5 text-green-600 dark:text-green-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -170,19 +171,19 @@ const CourtList = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 uppercase tracking-wide">
+                    <div className="text-xs text-muted-foreground uppercase tracking-wide">
                       Location
                     </div>
-                    <div className="text-gray-800">
+                    <div className="text-foreground">
                       {court.location}, {court.country}
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-center">
-                  <div className="bg-green-100 p-2 rounded-full mr-3">
+                  <div className="bg-green-500/10 dark:bg-green-900/20 p-2 rounded-full mr-3">
                     <svg
-                      className="h-5 w-5 text-green-600"
+                      className="h-5 w-5 text-green-600 dark:text-green-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -196,23 +197,21 @@ const CourtList = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 uppercase tracking-wide">
+                    <div className="text-xs text-muted-foreground uppercase tracking-wide">
                       Contact
                     </div>
-                    <div className="text-gray-800">
+                    <div className="text-foreground">
                       {court.contact || "No contact information"}
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Map Placeholder */}
-
               <div className="mt-4 flex justify-between items-center">
-                <button className="bg-white text-green-600 border border-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200 text-sm font-medium">
+                <button className="bg-background text-green-600 dark:text-green-400 border border-green-600 dark:border-green-400 px-4 py-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-200 text-sm font-medium">
                   View Details
                 </button>
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm font-medium">
+                <button className="bg-green-600 dark:bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors duration-200 text-sm font-medium">
                   Get Directions
                 </button>
               </div>
@@ -222,9 +221,9 @@ const CourtList = () => {
       </div>
 
       {filteredCourts.length === 0 && (
-        <div className="bg-white rounded-lg shadow-md p-8 text-center">
+        <div className="bg-card rounded-lg shadow-md p-8 text-center border border-border">
           <svg
-            className="mx-auto h-12 w-12 text-gray-400"
+            className="mx-auto h-12 w-12 text-muted-foreground"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -236,10 +235,10 @@ const CourtList = () => {
               d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <h3 className="mt-4 text-lg font-medium text-gray-900">
+          <h3 className="mt-4 text-lg font-medium text-foreground">
             No courts found
           </h3>
-          <p className="mt-1 text-gray-500">
+          <p className="mt-1 text-muted-foreground">
             Try adjusting your search filters to find what you're looking for.
           </p>
         </div>

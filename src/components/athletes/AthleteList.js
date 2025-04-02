@@ -1,3 +1,4 @@
+
 import React from "react";
 
 export const AthleteList = ({ athletes }) => {
@@ -7,14 +8,13 @@ export const AthleteList = ({ athletes }) => {
         <p className="text-center text-muted-foreground">No players found.</p>
       ) : (
         athletes.map((athlete) => (
-          <div key={athlete._id} className="border rounded-lg p-4 shadow-md">
+          <div key={athlete._id} className="border border-border bg-card rounded-lg p-4 shadow-md">
             <img 
               src={athlete.imageUrl} 
               alt={athlete.name} 
               className="w-full h-40 object-cover rounded-lg mb-4"
             />
-            <h2 className="text-xl font-bold">{athlete.name}</h2>
-            {/* <p className="text-muted-foreground">🏆 Titles Won: {athlete.titlesWon.join(", ")}</p> */}
+            <h2 className="text-xl font-bold text-foreground">{athlete.name}</h2>
             <p className="text-muted-foreground">🌍 Country: {athlete.country}</p>
             <p className="text-muted-foreground">🔥 Points: {athlete.points}</p>
             <p className="text-muted-foreground">🧑‍🤝‍🧑 Gender: {athlete.gender}</p>

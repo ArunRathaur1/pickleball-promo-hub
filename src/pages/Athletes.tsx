@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Navbar } from "@/components/layout/navbar";
@@ -58,77 +59,78 @@ const Athletes = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
-      <h1 className="text-3xl font-bold text-center mb-6">Athlete Rankings</h1>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-center mb-6">Athlete Rankings</h1>
 
-      {/* Filters */}
-      <div className="flex gap-4 mb-6 justify-center">
-        <select
-          className="border p-2 rounded"
-          value={genderFilter}
-          onChange={(e) => setGenderFilter(e.target.value)}
-        >
-          <option value="">All Genders</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
+        {/* Filters */}
+        <div className="flex gap-4 mb-6 justify-center">
+          <select
+            className="border border-border bg-background text-foreground p-2 rounded"
+            value={genderFilter}
+            onChange={(e) => setGenderFilter(e.target.value)}
+          >
+            <option value="">All Genders</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
 
-        <select
-          className="border p-2 rounded"
-          value={countryFilter}
-          onChange={(e) => setCountryFilter(e.target.value)}
-        >
-          <option value="">All Countries</option>
-          {[...new Set(athletes.map((a) => a.country))].map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="p-3 border">Rank</th>
-              <th className="p-3 border">Player</th>
-              <th className="p-3 border">Country</th>
-              <th className="p-3 border">Age</th>
-              <th className="p-3 border">Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAthletes.map((athlete, index) => (
-              <tr key={athlete._id} className="text-center border">
-                <td className="p-3 border">{index + 1}</td>
-                <td className="p-3 border flex items-center gap-3">
-                  <img
-                    src={athlete.imageUrl}
-                    alt={athlete.name}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <Link
-                    to="/playerprofile"
-                    target="_blank" // Open in a new tab
-                    className="text-blue-600"
-                    onClick={() => handlePlayerClick(athlete)}
-                  >
-                    {athlete.name}
-                  </Link>
-                </td>
-                <td className="p-3 border">{athlete.country}</td>
-                <td className="p-3 border">{athlete.age}</td>
-                <td className="p-3 border font-bold text-purple-600">
-                  {athlete.points}
-                </td>
-              </tr>
+          <select
+            className="border border-border bg-background text-foreground p-2 rounded"
+            value={countryFilter}
+            onChange={(e) => setCountryFilter(e.target.value)}
+          >
+            <option value="">All Countries</option>
+            {[...new Set(athletes.map((a) => a.country))].map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
             ))}
-          </tbody>
-        </table>
+          </select>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-muted">
+                <th className="p-3 border-b border-border text-foreground">Rank</th>
+                <th className="p-3 border-b border-border text-foreground">Player</th>
+                <th className="p-3 border-b border-border text-foreground">Country</th>
+                <th className="p-3 border-b border-border text-foreground">Age</th>
+                <th className="p-3 border-b border-border text-foreground">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredAthletes.map((athlete, index) => (
+                <tr key={athlete._id} className="text-center hover:bg-muted/50">
+                  <td className="p-3 border-b border-border">{index + 1}</td>
+                  <td className="p-3 border-b border-border flex items-center gap-3 justify-center">
+                    <img
+                      src={athlete.imageUrl}
+                      alt={athlete.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <Link
+                      to="/playerprofile"
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                      onClick={() => handlePlayerClick(athlete)}
+                    >
+                      {athlete.name}
+                    </Link>
+                  </td>
+                  <td className="p-3 border-b border-border">{athlete.country}</td>
+                  <td className="p-3 border-b border-border">{athlete.age}</td>
+                  <td className="p-3 border-b border-border font-bold text-purple-600 dark:text-purple-400">
+                    {athlete.points}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <Footer />
     </div>

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -31,7 +32,7 @@ const CourtMap = () => {
     <MapContainer
       center={[37.7749, -122.4194]} // Default center (San Francisco)
       zoom={4}
-      className="h-96 w-full rounded-lg border"
+      className="h-96 w-full rounded-lg border border-border"
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

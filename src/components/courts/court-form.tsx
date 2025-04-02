@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -8,7 +9,7 @@ const CourtForm = () => {
     name: "",
     location: "",
     country: "",
-    locationCoordinates: null, // Initially null
+    locationCoordinates: null as [number, number] | null, // Fixed type
     numberOfCourts: "",
     contact: "",
     description: "",
@@ -41,8 +42,8 @@ const CourtForm = () => {
 
     const newCourt = {
       ...courtData,
-      locationCoordinates: courtData.locationCoordinates, // Ensure correct format
-      numberOfCourts: Number(courtData.numberOfCourts), // Convert to number
+      locationCoordinates: courtData.locationCoordinates,
+      numberOfCourts: Number(courtData.numberOfCourts),
     };
 
     try {
@@ -64,7 +65,7 @@ const CourtForm = () => {
         name: "",
         location: "",
         country: "",
-        locationCoordinates: null, // Reset
+        locationCoordinates: null,
         numberOfCourts: "",
         contact: "",
         description: "",
@@ -76,24 +77,45 @@ const CourtForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <form onSubmit={handleSubmit} className="max-w-xl mx-auto bg-card text-card-foreground p-6 rounded-lg shadow-md border border-border">
       <div className="mb-4">
-        <label className="block text-sm font-medium">Court Name</label>
-        <input type="text" name="name" value={courtData.name} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <label className="block text-sm font-medium text-foreground">Court Name</label>
+        <input 
+          type="text" 
+          name="name" 
+          value={courtData.name} 
+          onChange={handleChange} 
+          required 
+          className="w-full p-2 mt-1 bg-background border border-border rounded text-foreground" 
+        />
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium">Location (City)</label>
-        <input type="text" name="location" value={courtData.location} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <label className="block text-sm font-medium text-foreground">Location (City)</label>
+        <input 
+          type="text" 
+          name="location" 
+          value={courtData.location} 
+          onChange={handleChange} 
+          required 
+          className="w-full p-2 mt-1 bg-background border border-border rounded text-foreground" 
+        />
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium">Country</label>
-        <input type="text" name="country" value={courtData.country} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <label className="block text-sm font-medium text-foreground">Country</label>
+        <input 
+          type="text" 
+          name="country" 
+          value={courtData.country} 
+          onChange={handleChange} 
+          required 
+          className="w-full p-2 mt-1 bg-background border border-border rounded text-foreground" 
+        />
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium">Select Location on Map</label>
+        <label className="block text-sm font-medium text-foreground">Select Location on Map</label>
         <MapContainer center={[20, 78]} zoom={4} style={{ height: "300px", width: "100%" }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -103,21 +125,42 @@ const CourtForm = () => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium">Number of Courts</label>
-        <input type="number" name="numberOfCourts" value={courtData.numberOfCourts} onChange={handleChange} required min="1" className="w-full p-2 border rounded" />
+        <label className="block text-sm font-medium text-foreground">Number of Courts</label>
+        <input 
+          type="number" 
+          name="numberOfCourts" 
+          value={courtData.numberOfCourts} 
+          onChange={handleChange} 
+          required 
+          min="1" 
+          className="w-full p-2 mt-1 bg-background border border-border rounded text-foreground" 
+        />
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium">Contact</label>
-        <input type="text" name="contact" value={courtData.contact} onChange={handleChange} required className="w-full p-2 border rounded" />
+        <label className="block text-sm font-medium text-foreground">Contact</label>
+        <input 
+          type="text" 
+          name="contact" 
+          value={courtData.contact} 
+          onChange={handleChange} 
+          required 
+          className="w-full p-2 mt-1 bg-background border border-border rounded text-foreground" 
+        />
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium">Description</label>
-        <textarea name="description" value={courtData.description} onChange={handleChange} required className="w-full p-2 border rounded"></textarea>
+        <label className="block text-sm font-medium text-foreground">Description</label>
+        <textarea 
+          name="description" 
+          value={courtData.description} 
+          onChange={handleChange} 
+          required 
+          className="w-full p-2 mt-1 bg-background border border-border rounded text-foreground"
+        ></textarea>
       </div>
 
-      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">Submit Court</button>
+      <button type="submit" className="w-full bg-green-600 dark:bg-green-500 text-white p-2 rounded hover:bg-green-700 dark:hover:bg-green-600 transition-colors">Submit Court</button>
     </form>
   );
 };

@@ -11,7 +11,7 @@ import {
 
 const UserServices = () => {
   return (
-    <Card>
+    <Card className="bg-card text-card-foreground border border-border">
       <CardHeader>
         <CardTitle>My Services</CardTitle>
         <CardDescription>
@@ -23,7 +23,7 @@ const UserServices = () => {
           You haven't booked any services yet
         </p>
         <Link to="/services">
-          <Button className="bg-pickle hover:bg-pickle-dark">
+          <Button className="bg-pickle hover:bg-pickle-dark text-white">
             Explore Services
           </Button>
         </Link>

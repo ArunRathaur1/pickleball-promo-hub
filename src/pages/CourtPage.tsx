@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -9,7 +10,7 @@ const CourtPage = () => {
   const [activeTab, setActiveTab] = useState("list"); // Default to List View
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
       <main className="flex-1 py-12">
         <div className="container">
@@ -38,7 +39,7 @@ const CourtPage = () => {
           </div>
 
           {/* Conditional Rendering Based on Active Tab */}
-          <div className="border p-4 rounded-lg shadow">
+          <div className="border border-border bg-card text-card-foreground p-4 rounded-lg shadow">
             {activeTab === "list" ? <CourtList /> : <CourtMap />}
           </div>
         </div>
