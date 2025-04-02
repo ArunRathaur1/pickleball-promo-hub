@@ -46,14 +46,14 @@
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
 
     --primary: 122 39% 49%;
     --primary-foreground: 355.7 100% 97.3%;
@@ -61,10 +61,10 @@
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 15%;
+    --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 12 6.5% 15.1%;
+    --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -115,5 +115,9 @@
   
   .card-hover {
     @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .glass-card {
+    @apply backdrop-blur-md bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10;
   }
 }

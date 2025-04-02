@@ -1,12 +1,14 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, LogOut, User } from "lucide-react";
+import { Menu, X, LogOut, User, Moon, Sun } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/hooks/use-theme";
 import image from './pickelballlogo.png';
+
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  // { label: "Dashboard", href: "/dashboard" },
   { label: "Services", href: "/services" },
   { label: "Athletes", href: "/athletes" },
   { label: "Tournaments", href: "/tournaments" },
@@ -15,10 +17,11 @@ const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
 ];
 
-export  function Navbar() {
+export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     // Check if user is logged in by looking for userData or googleData in localStorage
@@ -77,14 +80,18 @@ export  function Navbar() {
     }
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
-    <header className="border-b">
+    <header className="border-b bg-background shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0" style={{display:'flex',justifyContent:'center'}}>
-              <img src={image} alt="User Profile" style={{background:'black' ,height:'50px'}}/>
-              <Logo className="h-8 w-auto" />
+            <Link to="/" className="flex-shrink-0 flex items-center space-x-2">
+              <img src={image} alt="Pickleball Logo" className="h-10 w-auto dark:bg-white bg-black rounded-full p-1" />
+              <span className="text-foreground font-semibold text-lg hidden sm:block">PickleballHub</span>
             </Link>
           </div>
 
@@ -94,7 +101,7 @@ export  function Navbar() {
               <Link
                 key={item.label}
                 to={item.href}
-                className="text-gray-600 hover:text-pickle px-3 py-2 text-sm font-medium"
+                className="text-foreground/80 hover:text-pickle transition-colors text-sm font-medium"
               >
                 {item.label}
               </Link>
@@ -103,11 +110,25 @@ export  function Navbar() {
 
           {/* Desktop buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <Button
+              onClick={toggleTheme}
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+            >
+              {theme === 'dark' ? (
+                <Sun className="h-5 w-5 text-yellow-400" />
+              ) : (
+                <Moon className="h-5 w-5 text-slate-700" />
+              )}
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+            
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
                 <Link
                   to="/dashboard"
-                  className="flex items-center text-sm font-medium text-gray-600 hover:text-pickle"
+                  className="flex items-center text-sm font-medium text-foreground/80 hover:text-pickle"
                 >
                   <User className="h-4 w-4 mr-1" />
                   {userName}
@@ -126,17 +147,26 @@ export  function Navbar() {
                 <Link to="/login">
                   <Button variant="ghost">Login</Button>
                 </Link>
-                {/* <Link to="/signup">
-                  <Button>Get Started</Button>
-                </Link> */}
               </>
             )}
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-2">
+            <Button
+              onClick={toggleTheme}
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+            >
+              {theme === 'dark' ? (
+                <Sun className="h-5 w-5 text-yellow-400" />
+              ) : (
+                <Moon className="h-5 w-5 text-slate-700" />
+              )}
+            </Button>
             <button
-              className="text-gray-600 hover:text-pickle"
+              className="text-foreground/80 hover:text-pickle"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
@@ -151,33 +181,33 @@ export  function Navbar() {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden">
+        <div className="md:hidden bg-background/95 backdrop-blur-sm">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.label}
                 to={item.href}
-                className="text-gray-600 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
+                className="text-foreground/80 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>
             ))}
           </div>
-          <div className="pt-4 pb-3 border-t border-gray-200">
+          <div className="pt-4 pb-3 border-t border-border">
             <div className="px-2 space-y-1">
               {isLoggedIn ? (
                 <>
                   <Link
                     to="/profile"
-                    className="flex items-center text-gray-600 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
+                    className="flex items-center text-foreground/80 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <User className="h-5 w-5 mr-2" />
                     Profile
                   </Link>
                   <button
-                    className="flex items-center text-gray-600 hover:text-pickle w-full text-left px-3 py-2 rounded-md text-base font-medium"
+                    className="flex items-center text-foreground/80 hover:text-pickle w-full text-left px-3 py-2 rounded-md text-base font-medium"
                     onClick={() => {
                       handleLogout();
                       setIsMenuOpen(false);
@@ -191,14 +221,14 @@ export  function Navbar() {
                 <>
                   <Link
                     to="/login"
-                    className="text-gray-600 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
+                    className="text-foreground/80 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
-                    className="text-pickle hover:bg-pickle hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                    className="text-pickle hover:bg-pickle/10 hover:text-pickle-dark block px-3 py-2 rounded-md text-base font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Get Started

@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -38,5 +39,9 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: var(--muted-foreground);
+}
+
+.dark .read-the-docs {
+  color: rgba(255, 255, 255, 0.6);
 }
