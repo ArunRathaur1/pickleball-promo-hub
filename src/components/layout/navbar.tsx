@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, LogOut, User, Moon, Sun } from "lucide-react";
+import { Menu, X, LogOut, User, Moon, Sun, SunMoon } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
@@ -112,14 +111,21 @@ export function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             <Button
               onClick={toggleTheme}
-              variant="ghost"
+              variant="outline"
               size="icon"
-              className="rounded-full"
+              className="rounded-full relative overflow-hidden transition-all duration-300 transform hover:scale-105"
+              aria-label="Toggle theme"
             >
               {theme === 'dark' ? (
-                <Sun className="h-5 w-5 text-yellow-400" />
+                <>
+                  <Sun className="h-5 w-5 text-yellow-400 absolute inset-0 m-auto transition-all duration-500 rotate-0 opacity-100" />
+                  <Moon className="h-5 w-5 text-slate-700 absolute inset-0 m-auto transition-all duration-500 rotate-90 opacity-0" />
+                </>
               ) : (
-                <Moon className="h-5 w-5 text-slate-700" />
+                <>
+                  <Sun className="h-5 w-5 text-yellow-400 absolute inset-0 m-auto transition-all duration-500 rotate-90 opacity-0" />
+                  <Moon className="h-5 w-5 text-slate-700 absolute inset-0 m-auto transition-all duration-500 rotate-0 opacity-100" />
+                </>
               )}
               <span className="sr-only">Toggle theme</span>
             </Button>
@@ -155,15 +161,18 @@ export function Navbar() {
           <div className="md:hidden flex items-center space-x-2">
             <Button
               onClick={toggleTheme}
-              variant="ghost"
+              variant="outline"
               size="icon"
-              className="rounded-full"
+              className="rounded-full relative overflow-hidden"
+              aria-label="Toggle theme"
             >
-              {theme === 'dark' ? (
-                <Sun className="h-5 w-5 text-yellow-400" />
-              ) : (
-                <Moon className="h-5 w-5 text-slate-700" />
-              )}
+              <div className="relative h-5 w-5">
+                {theme === 'dark' ? (
+                  <Sun className="h-5 w-5 text-yellow-400" />
+                ) : (
+                  <Moon className="h-5 w-5 text-slate-700" />
+                )}
+              </div>
             </Button>
             <button
               className="text-foreground/80 hover:text-pickle"

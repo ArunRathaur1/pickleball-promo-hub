@@ -14,4 +14,12 @@ declare module 'leaflet' {
   export interface MarkerOptions {
     icon?: any;
   }
+  
+  // Add Icon class to fix the type errors
+  export class Icon {
+    constructor(options: any);
+  }
+  
+  // Add icon factory function
+  export function icon(options: any): Icon;
 }
