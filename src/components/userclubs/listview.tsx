@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import ViewClubInfo from "./ViewClubInfo";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { X, MapPin, Users, Info } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function Listview({ clubs }) {
   const [selectedClub, setSelectedClub] = useState(null);
@@ -14,22 +15,46 @@ export default function Listview({ clubs }) {
         {clubs.map((club) => (
           <Card
             key={club._id}
-            className="bg-card transition-all hover:shadow-lg hover:-translate-y-1 p-4 border border-border flex flex-col items-center"
+            className="overflow-hidden transition-all duration-300 hover:shadow-xl dark:hover:shadow-emerald-900/20 hover:-translate-y-1 group bg-card border-border"
           >
-            {/* Placeholder for Image */}
-            <div className="w-full h-40 bg-muted rounded-lg mb-4 flex items-center justify-center">
-              <span className="text-muted-foreground">Club Image</span>
+            {/* Card Header with Gradient Background */}
+            <div className="h-24 bg-gradient-to-r from-pickle/80 to-pickle-dark/80 p-4 flex items-center justify-center">
+              <h3 className="text-xl font-bold text-white text-center">
+                {club.name}
+              </h3>
             </div>
-            <div className="mb-4">
-              <span className="text-foreground font-medium">{club.name}</span>
+
+            <div className="p-5">
+              {/* Location Badge */}
+              <div className="flex items-center mb-3 text-foreground">
+                <MapPin className="h-4 w-4 text-pickle mr-2" />
+                <span className="text-sm">
+                  {club.location}, {club.country}
+                </span>
+              </div>
+
+              {/* Followers Badge */}
+              <div className="flex items-center mb-4 text-foreground">
+                <Users className="h-4 w-4 text-pickle mr-2" />
+                <span className="text-sm">{club.followers} Followers</span>
+              </div>
+
+              {/* Status Badge */}
+              <div className="mb-4">
+                <Badge className="bg-pickle hover:bg-pickle-dark text-white">
+                  Active Club
+                </Badge>
+              </div>
+
+              <Button
+                variant="default"
+                className="w-full mt-2 bg-pickle hover:bg-pickle-dark text-white group-hover:shadow-md transition-all"
+                onClick={() => setSelectedClub(club)}
+              >
+                <Info className="mr-2 h-4 w-4" />
+                View Club Details
+              </Button>
             </div>
-            <Button
-              variant="default"
-              className="bg-pickle hover:bg-pickle-dark text-white"
-              onClick={() => setSelectedClub(club)}
-            >
-              View Club
-            </Button>
           </Card>
         ))}
       </div>
