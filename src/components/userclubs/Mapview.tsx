@@ -8,9 +8,13 @@ import L from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 
 export default function MapView({ clubs }) {
+  // Set default center to India (20.5937, 78.9629) with zoom level 5
+  const indiaCenter: [number, number] = [20.5937, 78.9629];
+  const defaultZoom = 5;
+
   return (
     <div className="w-full h-[500px] border border-border rounded-lg shadow-md overflow-hidden">
-      <MapContainer center={[20, 0]} zoom={2} className="h-full w-full">
+      <MapContainer center={indiaCenter} zoom={defaultZoom} className="h-full w-full">
         {/* OpenStreetMap Tiles */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
