@@ -38,7 +38,9 @@ const Athletes = () => {
       filtered = filtered.filter((athlete) => athlete.gender === genderFilter);
     }
     if (countryFilter) {
-      filtered = filtered.filter((athlete) => athlete.country === countryFilter);
+      filtered = filtered.filter(
+        (athlete) => athlete.country === countryFilter
+      );
     }
     filtered = filtered.sort((a, b) => b.points - a.points);
     setFilteredAthletes(filtered);
@@ -48,17 +50,27 @@ const Athletes = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-center mb-6">Athlete Rankings</h1>
+        <h1 className="text-3xl font-bold text-center mb-6">
+          Athlete Rankings
+        </h1>
 
         <div className="flex gap-4 mb-6 justify-center">
-          <select className="border p-2 rounded" value={genderFilter} onChange={(e) => setGenderFilter(e.target.value)}>
+          <select
+            className="border p-2 rounded"
+            value={genderFilter}
+            onChange={(e) => setGenderFilter(e.target.value)}
+          >
             <option value="">All Genders</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
           </select>
 
-          <select className="border p-2 rounded" value={countryFilter} onChange={(e) => setCountryFilter(e.target.value)}>
+          <select
+            className="border p-2 rounded"
+            value={countryFilter}
+            onChange={(e) => setCountryFilter(e.target.value)}
+          >
             <option value="">All Countries</option>
             {[...new Set(athletes.map((a) => a.country))].map((country) => (
               <option key={country} value={country}>
@@ -84,18 +96,23 @@ const Athletes = () => {
                 <tr key={athlete._id} className="text-center hover:bg-gray-100">
                   <td className="p-3 border-b">{index + 1}</td>
                   <td className="p-3 border-b flex items-center gap-3 justify-center">
-                    <img src={athlete.imageUrl} alt={athlete.name} className="w-10 h-10 rounded-full object-cover" />
+                    <img
+                      src={athlete.imageUrl}
+                      alt={athlete.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
                     <Link
-  to={`/playerprofile/${athlete._id}`}
-  className="text-blue-600 dark:text-blue-400 hover:underline"
->
-  {athlete.name}
-</Link>
-
+                      to={`/playerprofile/${athlete._id}`}
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      {athlete.name}
+                    </Link>
                   </td>
                   <td className="p-3 border-b">{athlete.country}</td>
                   <td className="p-3 border-b">{athlete.age}</td>
-                  <td className="p-3 border-b font-bold text-purple-600">{athlete.points}</td>
+                  <td className="p-3 border-b font-bold text-purple-600">
+                    {athlete.points}
+                  </td>
                 </tr>
               ))}
             </tbody>
