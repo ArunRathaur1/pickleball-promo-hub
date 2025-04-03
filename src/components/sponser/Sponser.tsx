@@ -1,6 +1,7 @@
 import React from 'react'
 import './sponer.css'
 import logo from './pickelballlogo.png'
+import Newsletter from './newsletter';
 export default function Sponser() {
   return (
     <div>
@@ -444,21 +445,8 @@ export default function Sponser() {
                           }}
                         >
                           <span
-                            className="frame deferred"
-                            style={{
-                              backgroundImage:
-                                "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjAiIHk9IjAiIHZpZXdCb3g9IjAgMCAxMTM5IDE1NzUiIHdpZHRoPSIxMTM5IiBoZWlnaHQ9IjE1NzUiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxyZWN0IGZpbGw9InRyYW5zcGFyZW50IiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')",
-                              backgroundSize: "100% 100%",
-                              backgroundPosition: "left top",
-                              backgroundRepeat: "no-repeat",
-                            }}
                           >
-                            <img
-                              src="./Partner with The Dink_files/image04.png"
-                              data-src="done"
-                              alt="The Dink Newsletter"
-                              style={{ opacity: 1, backgroundImage: "none" }}
-                            />
+                            <Newsletter></Newsletter>
                           </span>
                         </div>
                       </div>

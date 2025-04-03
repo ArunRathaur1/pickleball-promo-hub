@@ -92,7 +92,7 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
             <Route path="adminlogin12345" element={<AdminLogin />} />
             <Route path="adminsignup12345" element={<AdminSingup />} />
-            <Route path='/sponer' element={<Sponser></Sponser>}></Route>
+            <Route path='/sponcer' element={<Sponser></Sponser>}></Route>
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
