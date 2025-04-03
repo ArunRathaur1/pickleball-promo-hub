@@ -32,13 +32,8 @@ const Home = () => {
         {/* Newsletter Section - Integrated before Footer */}
         {showNewsletter && (
           <div
-            className="relative max-w-4xl mx-auto px-6 py-12 border border-red-500"
-            style={{
-              border: "solid",
-              background: "black",
-              height: "500px",
-              width: "500px",
-            }}
+            className=""
+            
           >
             <Newsletter onClose={handleCloseNewsletter} />
           </div>
