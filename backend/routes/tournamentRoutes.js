@@ -6,7 +6,7 @@ const router = express.Router();
 // Add a new tournament with location (lat, lng)
 router.post('/add', async (req, res) => {
     try {
-        const { name, location, country, startDate, endDate, description, organizerContact, locationCoords } = req.body;
+        const { name, Organizer, location, country, Continent, Tier, startDate, endDate, description, locationCoords } = req.body;
 
         if (!Array.isArray(locationCoords) || locationCoords.length !== 2) {
             return res.status(400).json({ message: "Invalid location coordinates. Provide [latitude, longitude]." });
@@ -14,12 +14,14 @@ router.post('/add', async (req, res) => {
 
         const newTournament = new Tournament({
             name,
+            Organizer,
             location,
             country,
+            Continent,
+            Tier,
             startDate,
             endDate,
             description,
-            organizerContact,
             locationCoords
         });
 
@@ -90,31 +92,6 @@ router.delete('/delete/:id', async (req, res) => {
         }
 
         res.status(200).json({ message: "Tournament deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Get tournaments near a specific location
-router.get('/nearby', async (req, res) => {
-    try {
-        const { lat, lng, maxDistance } = req.query;
-
-        if (!lat || !lng) {
-            return res.status(400).json({ message: "Please provide latitude and longitude." });
-        }
-
-        const distance = maxDistance ? parseFloat(maxDistance) : 50; // Default: 50km
-
-        const nearbyTournaments = await Tournament.find({
-            locationCoords: {
-                $geoWithin: {
-                    $centerSphere: [[parseFloat(lng), parseFloat(lat)], distance / 6378.1] // Convert km to radians
-                }
-            }
-        });
-
-        res.status(200).json(nearbyTournaments);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

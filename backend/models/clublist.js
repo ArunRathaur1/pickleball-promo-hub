@@ -27,11 +27,6 @@ const courtSchema = new mongoose.Schema({
         "LocationCoordinates must be an array with exactly 2 elements [latitude, longitude]",
     },
   },
-  followers: {
-    type: Number,
-    required: true,
-    min: 1, 
-  },
   description: {
     type: String,
     required: true,
