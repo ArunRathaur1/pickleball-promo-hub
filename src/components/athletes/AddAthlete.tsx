@@ -263,6 +263,7 @@ export default function AddAthlete() {
                     onChange={handleChange} 
                     placeholder="Height in cm" 
                     min="0"
+                    step="any"
                     className="w-full p-2 border border-gray-300 rounded-md"
                   />
                 </div>
