@@ -23,7 +23,7 @@ interface TournamentMapProps {
 const TournamentMap = ({ tournaments }: TournamentMapProps) => {
   return (
     <MapContainer
-      center={[37.7749, -122.4194]} // Default center: San Francisco
+      center={[28.679079, 77.06971]} // Default center: San Francisco
       zoom={4}
       className="h-full w-full" // Set height to 100% to fill container
       style={{ height: "100%", minHeight: "500px" }} // Ensure minimum height and fill parent
