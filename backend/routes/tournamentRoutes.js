@@ -96,5 +96,19 @@ router.delete('/delete/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+router.get("/:id", async (req, res) => {
+  try {
+    const tournament = await Tournament.findById(req.params.id);
+
+    if (!tournament) {
+      return res.status(404).json({ message: "Tournament not found" });
+    }
+
+    res.status(200).json(tournament);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 module.exports = router;

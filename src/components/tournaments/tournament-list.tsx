@@ -1,7 +1,7 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 interface Tournament {
-  id: string;
+  _id: string;
   name: string;
   location: string;
   country: string;
@@ -36,7 +36,7 @@ const TournamentList = ({ tournaments }: TournamentListProps) => {
         {tournaments.length > 0 ? (
           tournaments.map((tournament) => (
             <div
-              key={tournament.id}
+              key={tournament._id}
               className="border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
             >
               {/* Image Placeholder */}
@@ -63,8 +63,8 @@ const TournamentList = ({ tournaments }: TournamentListProps) => {
                   📅 {formatDate(tournament.startDate)}
                 </div>
 
-                <button className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg w-full transition-colors duration-300">
-                  View Details
+                <button className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300">
+                  <Link to={`/tournament/${tournament._id}`}>View Details</Link>
                 </button>
               </div>
             </div>

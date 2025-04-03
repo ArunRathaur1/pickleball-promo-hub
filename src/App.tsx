@@ -24,7 +24,7 @@ import Blogpage from "./pages/Blogpage.js";
 import Clubs from "./pages/Clubs.js";
 import Chatbot from "./components/Chatbot";
 import Sponser from './components/sponser/Sponser.js'
-import InstagramNavbar from "./components/admin/instagram.js";
+import TournamentDetails from "./components/tournaments/tournamentDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -89,11 +89,12 @@ const App = () => {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/playerprofile/:id" element={<PlayerProfile />} />
-            <Route path ='/signup' element={<Register></Register>}></Route>
+            <Route path="/signup" element={<Register></Register>}></Route>
+            <Route path="/tournament/:id" element={<TournamentDetails />} />
             <Route path="*" element={<NotFound />} />
             <Route path="adminlogin12345" element={<AdminLogin />} />
             <Route path="adminsignup12345" element={<AdminSingup />} />
-            <Route path='/sponsor' element={<Sponser></Sponser>}></Route>
+            <Route path="/sponsor" element={<Sponser></Sponser>}></Route>
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

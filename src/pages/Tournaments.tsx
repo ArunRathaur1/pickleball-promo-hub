@@ -31,7 +31,7 @@ const Tournaments = () => {
   const [tiers, setTiers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/tournaments/all")
+    fetch("http://localhost:5000/tournaments/approved")
       .then((res) => res.json())
       .then((data) => {
         setTournaments(data);
