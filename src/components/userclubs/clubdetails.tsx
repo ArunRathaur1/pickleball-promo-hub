@@ -77,8 +77,8 @@ export default function ClubDetails() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-        <span className="text-lg font-semibold mt-4 text-blue-600">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
+        <span className="text-lg font-semibold mt-4 text-green-600">
           Loading academy details...
         </span>
       </div>
@@ -95,7 +95,7 @@ export default function ClubDetails() {
         <p className="text-gray-700 mb-4">{error}</p>
         <Link
           to="/clubs"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all flex items-center"
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-all flex items-center"
         >
           <ArrowLeft size={16} className="mr-2" /> Back to Academies
         </Link>
@@ -116,7 +116,7 @@ export default function ClubDetails() {
         </p>
         <Link
           to="/clubs"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all flex items-center"
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-all flex items-center"
         >
           <ArrowLeft size={16} className="mr-2" /> Back to Academies
         </Link>
@@ -144,11 +144,11 @@ export default function ClubDetails() {
         <div className="container mx-auto p-4 md:p-6 max-w-4xl">
           {/* Academy Header */}
           <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
-            <div className="bg-blue-600 text-white p-6">
+            <div className="bg-green-600 text-white p-6">
               <h1 className="text-3xl font-bold mb-2 text-center">
                 {club.name}
               </h1>
-              <div className="flex items-center justify-center text-blue-100">
+              <div className="flex items-center justify-center text-green-100">
                 <MapPin size={16} className="mr-2" />
                 <span>
                   {club.location}, {club.country}
@@ -212,8 +212,8 @@ export default function ClubDetails() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="flex items-start">
-                  <div className="bg-blue-100 p-2 rounded-full mr-4">
-                    <Clock size={24} className="text-blue-600" />
+                  <div className="bg-green-100 p-2 rounded-full mr-4">
+                    <Clock size={24} className="text-green-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">
@@ -224,8 +224,8 @@ export default function ClubDetails() {
                 </div>
 
                 <div className="flex items-start">
-                  <div className="bg-blue-100 p-2 rounded-full mr-4">
-                    <DollarSign size={24} className="text-blue-600" />
+                  <div className="bg-green-100 p-2 rounded-full mr-4">
+                    <DollarSign size={24} className="text-green-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">
@@ -237,8 +237,8 @@ export default function ClubDetails() {
               </div>
 
               <div className="flex items-start">
-                <div className="bg-blue-100 p-2 rounded-full mr-4">
-                  <Calendar size={24} className="text-blue-600" />
+                <div className="bg-green-100 p-2 rounded-full mr-4">
+                  <Calendar size={24} className="text-green-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800">
@@ -260,7 +260,7 @@ export default function ClubDetails() {
               and learn from experienced coaches in a welcoming environment.
             </p>
 
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all">
+            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-all">
               Inquire About Membership
             </button>
           </div>
@@ -274,7 +274,7 @@ export default function ClubDetails() {
               <ArrowLeft size={16} className="mr-2" /> Back to Academies
             </Link>
 
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg transition-all flex items-center">
+            <button className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg transition-all flex items-center">
               <Users size={16} className="mr-2" /> Contact Academy
             </button>
           </div>
