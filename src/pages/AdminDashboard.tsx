@@ -7,6 +7,7 @@ import AnalyticsPage from "../components/admin/Analytics";
 import UsersPage from "../components/admin/userpage";
 import AddAthlete from "../components/athletes/AddAthlete"
 import BlogList from "@/components/blogs/BlogList";
+import InstagramNavbar from "@/components/admin/instagram";
 
 import AdminClub from "@/components/admin/admin-club";
 const AdminDashboard = () => {
@@ -35,7 +36,8 @@ const AdminDashboard = () => {
               <TabsTrigger value="blogs">Blogs</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
-            </TabsList>
+              <TabsTrigger value='instagram'>Instagram</TabsTrigger>
+            </TabsList> 
 
             <TabsContent value="tournaments">
               <TournamentRequestsPage />
@@ -58,6 +60,9 @@ const AdminDashboard = () => {
             </TabsContent>
             <TabsContent value="clubs">
               <AdminClub />
+            </TabsContent>
+            <TabsContent value='instagram'>
+              <InstagramNavbar></InstagramNavbar>
             </TabsContent>
           </Tabs>
         </div>

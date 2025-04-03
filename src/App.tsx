@@ -24,6 +24,7 @@ import Blogpage from "./pages/Blogpage.js";
 import Clubs from "./pages/Clubs.js";
 import Chatbot from "./components/Chatbot";
 import Sponser from './components/sponser/Sponser.js'
+import InstagramNavbar from "./components/admin/instagram.js";
 
 const queryClient = new QueryClient();
 

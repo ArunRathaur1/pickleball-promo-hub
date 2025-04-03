@@ -6,6 +6,7 @@ import { Testimonials } from "@/components/home/testimonials";
 import { CTASection } from "@/components/home/cta-section";
 import {Navbar}  from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import Instagram from "@/components/home/Instagram";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Navbar />
       <main className="flex-1">
         <HeroSection />
+        <Instagram></Instagram>
         <ServicesPreview />
         <StatsSection />
         <Testimonials />
