@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import axios from "axios";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Club Name is required"),
@@ -15,9 +14,6 @@ const validationSchema = Yup.object().shape({
     .min(2, "Both latitude and longitude are required")
     .max(2, "Only latitude and longitude are required")
     .required("Location Coordinates are required"),
-  followers: Yup.number()
-    .required("Number of Followers is required")
-    .positive("Followers must be positive"),
   description: Yup.string().required("Description is required"),
 });
 
@@ -25,17 +21,20 @@ const initialValues = {
   name: "",
   location: "",
   country: "",
-  locationCoordinates: [0, 0],
-  followers: 0,
+  locationCoordinates: [0, 0], // Default to [0, 0]
   description: "",
 };
 
-function MapMarker() {
-  const [position, setPosition] = useState<[number, number]>([0, 0]);
+// MapMarker Component
+function MapMarker({ setFieldValue }) {
+  const [position, setPosition] = useState([0, 0]);
+
   const map = useMapEvents({
     click: (e) => {
-      setPosition([e.latlng.lat, e.latlng.lng]);
-      map.flyTo(e.latlng, map.getZoom());
+      const newCoords = [e.latlng.lat, e.latlng.lng];
+      setPosition(newCoords);
+      setFieldValue("locationCoordinates", newCoords); // Update Formik field
+      map.flyTo(newCoords, map.getZoom());
     },
   });
 
@@ -46,9 +45,7 @@ function MapMarker() {
   }, [position, map]);
 
   return position[0] === 0 && position[1] === 0 ? null : (
-    <Marker position={position}>
-      {/* You can add a Popup here if needed */}
-    </Marker>
+    <Marker position={position} />
   );
 }
 
@@ -58,20 +55,7 @@ export default function ClubForm() {
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
-      // Ensure locationCoordinates is always [number, number]
-      const locationCoordinates = values.locationCoordinates.length === 2
-        ? [values.locationCoordinates[0], values.locationCoordinates[1]] as [number, number]
-        : [0, 0] as [number, number];
-
-      await axios.post("http://localhost:5000/clublist/create", {
-        name: values.name,
-        location: values.location,
-        country: values.country,
-        locationCoordinates: locationCoordinates,
-        followers: values.followers,
-        description: values.description,
-      });
-
+      await axios.post("http://localhost:5000/clublist/add", values);
       setSuccessMessage("Club added successfully!");
       setErrorMessage("");
       resetForm();
@@ -101,13 +85,10 @@ export default function ClubForm() {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, setFieldValue }) => (
+          {({ setFieldValue }) => (
             <Form className="space-y-4">
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Club Name
                 </label>
                 <Field
@@ -116,17 +97,11 @@ export default function ClubForm() {
                   name="name"
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
-                <ErrorMessage
-                  name="name"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
+                <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
               </div>
+
               <div>
-                <label
-                  htmlFor="location"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700">
                   Location
                 </label>
                 <Field
@@ -135,17 +110,11 @@ export default function ClubForm() {
                   name="location"
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
-                <ErrorMessage
-                  name="location"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
+                <ErrorMessage name="location" component="div" className="text-red-500 text-sm" />
               </div>
+
               <div>
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                   Country
                 </label>
                 <Field
@@ -154,36 +123,11 @@ export default function ClubForm() {
                   name="country"
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
-                <ErrorMessage
-                  name="country"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
+                <ErrorMessage name="country" component="div" className="text-red-500 text-sm" />
               </div>
+
               <div>
-                <label
-                  htmlFor="followers"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Number of Followers
-                </label>
-                <Field
-                  type="number"
-                  id="followers"
-                  name="followers"
-                  className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-                <ErrorMessage
-                  name="followers"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                   Description
                 </label>
                 <Field
@@ -193,14 +137,10 @@ export default function ClubForm() {
                   name="description"
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
-                <ErrorMessage
-                  name="description"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
+                <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
               </div>
 
-              {/* Location Coordinates - Hidden, to be set by the map */}
+              {/* Location Coordinates (Hidden) */}
               <Field type="hidden" name="locationCoordinates" />
 
               <button
@@ -221,13 +161,11 @@ export default function ClubForm() {
           Click on the map to set the club's location.
         </p>
         <div className="h-96 w-full">
-          <MapContainer
-            center={[0, 0]}
-            zoom={2}
-            style={{ height: "100%", width: "100%" }}
-          >
+          <MapContainer center={[0, 0]} zoom={2} style={{ height: "100%", width: "100%" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <MapMarker />
+            <Formik>
+              {({ setFieldValue }) => <MapMarker setFieldValue={setFieldValue} />}
+            </Formik>
           </MapContainer>
         </div>
       </div>
