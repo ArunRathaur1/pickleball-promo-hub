@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import Listview from "@/components/userclubs/listview";
@@ -9,7 +8,6 @@ export default function Clubs() {
   const [filteredClubs, setFilteredClubs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
-  const [followerFilter, setFollowerFilter] = useState("");
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
@@ -30,7 +28,7 @@ export default function Clubs() {
   useEffect(() => {
     // Apply filters whenever search inputs change
     filterClubs();
-  }, [searchTerm, countryFilter, followerFilter, clubs]);
+  }, [searchTerm, countryFilter, clubs]);
 
   const filterClubs = () => {
     let results = [...clubs];
@@ -47,14 +45,6 @@ export default function Clubs() {
       results = results.filter((club) => club.country === countryFilter);
     }
 
-    // Filter by followers
-    if (followerFilter) {
-      const minFollowers = parseInt(followerFilter);
-      if (!isNaN(minFollowers)) {
-        results = results.filter((club) => club.followers >= minFollowers);
-      }
-    }
-
     setFilteredClubs(results);
   };
 
@@ -66,14 +56,9 @@ export default function Clubs() {
     setCountryFilter(e.target.value);
   };
 
-  const handleFollowerChange = (e) => {
-    setFollowerFilter(e.target.value);
-  };
-
   const resetFilters = () => {
     setSearchTerm("");
     setCountryFilter("");
-    setFollowerFilter("");
     setFilteredClubs(clubs);
   };
 
@@ -85,7 +70,7 @@ export default function Clubs() {
       <div className="container mx-auto px-4 py-8">
         {/* Search and Filters */}
         <div className="p-4 bg-card border border-border rounded-lg shadow-md mt-4 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Name Search */}
             <div>
               <label
@@ -127,24 +112,6 @@ export default function Clubs() {
               </select>
             </div>
 
-            {/* Followers Filter */}
-            <div>
-              <label
-                htmlFor="followers"
-                className="block text-sm font-medium text-foreground mb-1"
-              >
-                Min Followers
-              </label>
-              <input
-                type="number"
-                id="followers"
-                className="w-full p-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-foreground"
-                placeholder="Min followers..."
-                value={followerFilter}
-                onChange={handleFollowerChange}
-              />
-            </div>
-
             {/* Reset Button */}
             <div className="flex items-end">
               <button
@@ -184,4 +151,4 @@ export default function Clubs() {
       </div>
     </div>
   );
-};
+}
