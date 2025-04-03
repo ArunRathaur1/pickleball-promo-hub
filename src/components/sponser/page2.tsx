@@ -1,15 +1,25 @@
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+
 export default function PickleballCommunity() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   return (
-    <div
+    <motion.div
+      ref={ref}
       id="container04"
-      data-scroll-id="start"
-      data-scroll-behavior="center"
-      data-scroll-offset="0"
-      data-scroll-speed="3"
-      data-scroll-invisible="1"
-      className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-900 py-16 px-6"
+      className="flex flex-col items-center justify-center h-[40vh] bg-white text-gray-900 py-16 px-6"
+      initial={{ opacity: 0, x: -50 }}
+      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="max-w-3xl text-center">
+      <motion.div
+        className="max-w-3xl text-center"
+        initial={{ x: -50, opacity: 0 }}
+        animate={isInView ? { x: 0, opacity: 1 } : { x: -50, opacity: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <p id="text07" className="text-lg font-semibold text-gray-600">
           THE LEADING VOICE IN PICKLEBALL
         </p>
@@ -24,7 +34,7 @@ export default function PickleballCommunity() {
           leaders? We have them too. Connect with the most vibrant community in
           the fastest-growing sport worldwide.
         </p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

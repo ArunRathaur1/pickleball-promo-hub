@@ -1,4 +1,11 @@
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+
 export default function TrustedBrands() {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+
   const brands = [
     { src: "/images/6fe524de.jpg", alt: "Lifeaid" },
     { src: "/images/05fd3661.jpg", alt: "Organifi" },
@@ -21,24 +28,53 @@ export default function TrustedBrands() {
   ];
 
   return (
-    <div className="bg-gray-900 text-white py-16 px-6 min-h-screen flex flex-col items-center">
-      <h2 className="text-4xl font-bold mb-10 text-center">
+    <div
+      className="bg-black text-white py-20 px-4 min-h-screen flex flex-col items-center"
+      ref={containerRef}
+    >
+      <motion.h2
+        className="text-5xl font-extrabold mb-12 text-center"
+        initial={{ opacity: 0, y: -30 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
+        transition={{ duration: 0.8 }}
+      >
         Trusted by Top Brands
-      </h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl">
+      </motion.h2>
+
+      <motion.div
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-7xl mx-2"
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1, delayChildren: 0.3 },
+          },
+        }}
+      >
         {brands.map((brand, index) => (
-          <div
+          <motion.div
             key={index}
-            className="bg-gray-800 p-6 rounded-2xl shadow-lg flex items-center justify-center"
+            className="bg-black border border-green-400 p-8 rounded-2xl shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-300 ease-in-out hover:bg-green-100 hover:text-black"
+            variants={{
+              hidden: { opacity: 0, scale: 0.9, y: 20 },
+              visible: {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                transition: { duration: 0.5 },
+              },
+            }}
           >
             <img
               src={brand.src}
               alt={brand.alt}
-              className="max-w-[120px] max-h-[80px] object-contain"
+              className="w-full max-h-24 object-contain grayscale hover:grayscale-0 transition-all duration-300"
             />
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
