@@ -1,24 +1,48 @@
-
+import { useState } from "react";
 import { HeroSection } from "@/components/home/hero-section";
 import { ServicesPreview } from "@/components/home/services-preview";
 import { StatsSection } from "@/components/home/stats-section";
 import { Testimonials } from "@/components/home/testimonials";
 import { CTASection } from "@/components/home/cta-section";
-import {Navbar}  from "@/components/layout/navbar";
+import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import Instagram from "@/components/home/Instagram";
+import Newsletter from "@/components/sponser/newsletterhome";
 
 const Home = () => {
+  const [showNewsletter, setShowNewsletter] = useState(true);
+
+  const handleCloseNewsletter = () => {
+    setShowNewsletter(false);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
       <Navbar />
       <main className="flex-1">
-        <HeroSection />
-        <Instagram></Instagram>
+        <div style={{ zIndex: "100" }}>
+          <HeroSection />
+        </div>
+        <Instagram />
         <ServicesPreview />
         <StatsSection />
         <Testimonials />
         <CTASection />
+
+        {/* Newsletter Section - Integrated before Footer */}
+        {showNewsletter && (
+          <div
+            className="relative max-w-4xl mx-auto px-6 py-12 border border-red-500"
+            style={{
+              border: "solid",
+              background: "black",
+              height: "500px",
+              width: "500px",
+            }}
+          >
+            <Newsletter onClose={handleCloseNewsletter} />
+          </div>
+        )}
       </main>
       <Footer />
     </div>
