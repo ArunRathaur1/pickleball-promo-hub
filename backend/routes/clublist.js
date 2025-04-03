@@ -5,38 +5,16 @@ const Clublist = require("../models/clublist");
 // ✅ Create a new club
 router.post("/add", async (req, res) => {
   try {
-    // console.log("Received data:", req.body); // Log incoming data
+    const { name, location, country, locationCoordinates, description } = req.body;
 
-    const {
-      name,
-      location,
-      country,
-      locationCoordinates,
-      description,
-    } = req.body;
-
-    if (
-      !name ||
-      !location ||
-      !country ||
-      !locationCoordinates ||
-      !description
-    ) {
-      return res
-        .status(400)
-        .json({ message: "All fields are required.", receivedData: req.body });
+    if (!name || !location || !country || !locationCoordinates || !description) {
+      return res.status(400).json({ message: "All fields are required." });
     }
 
-    if (
-      !Array.isArray(locationCoordinates) ||
-      locationCoordinates.length !== 2
-    ) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
-        });
+    if (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2) {
+      return res.status(400).json({
+        message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
+      });
     }
 
     const newClub = new Clublist({
@@ -46,9 +24,10 @@ router.post("/add", async (req, res) => {
       locationCoordinates,
       description,
     });
-    await newClub.save();
 
+    await newClub.save();
     res.status(201).json({ message: "Club added successfully", club: newClub });
+
   } catch (error) {
     console.error("Error in /add route:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -58,7 +37,7 @@ router.post("/add", async (req, res) => {
 // ✅ Get all clubs
 router.get("/all", async (req, res) => {
   try {
-    const clubs = await Clublist.find().sort({ createdAt: -1 }); // Sort by latest
+    const clubs = await Clublist.find().sort({ createdAt: -1 }); // Latest first
     res.status(200).json(clubs);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -83,29 +62,19 @@ router.put("/update/:id", async (req, res) => {
   try {
     const { locationCoordinates } = req.body;
 
-    if (
-      locationCoordinates &&
-      (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2)
-    ) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
-        });
+    if (locationCoordinates && (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2)) {
+      return res.status(400).json({
+        message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
+      });
     }
 
-    const updatedClub = await Clublist.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const updatedClub = await Clublist.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedClub) {
       return res.status(404).json({ message: "Club not found" });
     }
-    res
-      .status(200)
-      .json({ message: "Club updated successfully", club: updatedClub });
+
+    res.status(200).json({ message: "Club updated successfully", club: updatedClub });
+
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -124,15 +93,12 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
-// ✅ Filter clubs by minimum number of followers and/or country
+// ✅ Filter clubs by country
 router.get("/filter", async (req, res) => {
   try {
-    const { minFollowers, country } = req.query;
+    const { country } = req.query;
     let query = {};
 
-    if (minFollowers) {
-      query.followers = { $gte: parseInt(minFollowers) };
-    }
     if (country) {
       query.country = country;
     }
