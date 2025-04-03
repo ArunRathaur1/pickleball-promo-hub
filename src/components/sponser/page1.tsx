@@ -14,7 +14,7 @@ export default function Page1() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <a
-          href="https://thedinkpickleball.com/?ref=partnerpage"
+          href="/"
           className="p-4 bg-gray-800 shadow-lg rounded-lg hover:scale-105 transition-transform"
         >
           <img src={logo} alt="The Pickleball Logo" className="w-40 h-auto" />

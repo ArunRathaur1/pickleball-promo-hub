@@ -16,7 +16,7 @@ export function CTASection() {
             or a company wanting to connect with the pickleball community, we're here to help.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/sponcer">
+            <Link to="/sponsor" target="_blank">
               <Button size="lg" variant="secondary" className="bg-white text-pickle hover:bg-white/90 group">
                 Get Started Today
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />

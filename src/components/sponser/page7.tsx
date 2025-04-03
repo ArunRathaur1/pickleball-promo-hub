@@ -17,7 +17,7 @@ const SocialSection = () => {
           className="border border-gray-300 p-4 rounded-lg shadow-lg bg-white"
         >
           <img
-            src="/Partner with The Dink_files/img05.png"
+            src="/"
             alt="Pickleball Social Media"
             width={400}
             height={300}
@@ -49,6 +49,7 @@ const SocialSection = () => {
             {socialLinks.map((link, index) => (
               <li key={index}>
                 <a
+                target="_blank"
                   href={link.href}
                   className="flex items-center gap-3 bg-blue-600 text-white px-5 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105"
                 >
@@ -66,7 +67,7 @@ const SocialSection = () => {
 
 const socialLinks = [
   {
-    href: "https://www.instagram.com/thedinkpickleball",
+    href: "https://www.instagram.com/pickleballofficial/",
     label: "215k+ Followers",
     icon: Instagram,
   },
