@@ -13,7 +13,7 @@ const athleteSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ["Male", "Female", "Other"], // Restricting values
+    enum: ["Male", "Female", "Other"],
     required: true,
   },
   country: {
@@ -29,17 +29,47 @@ const athleteSchema = new mongoose.Schema({
     required: true,
     default: 0, // Default points if not provided
   },
-  titlesWon: {
-    type: [String], // Array of tournament names
-    default: [], // Default to an empty array
+  DUPRID: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    match: [/^[A-Z0-9]{6,12}$/, "DUPRID must be a combination of letters and numbers (6-12 characters)."],
   },
+  sponsors: [
+    {
+      name: { type: String, required: true },
+      imageUrl: { type: String, required: true },
+    },
+  ],
+  instagramPage: {
+    type: String,
+    match: [/^https:\/\/www\.instagram\.com\/[A-Za-z0-9_.]+\/?$/, "Invalid Instagram URL format"],
+  },
+  titlesWon: [
+    {
+      title: { type: String, required: true },
+      year: { type: Number, required: true },
+    },
+  ],
+  relatedContent: [
+    {
+      imageUrl: { type: String, required: true },
+      title: { type: String, required: true },
+      youtubeLink: { 
+        type: String,
+        required: true,
+        match: [/^https:\/\/www\.youtube\.com\/watch\?v=[A-Za-z0-9_-]+$/, "Invalid YouTube URL format"],
+      },
+    },
+  ],
   imageUrl: {
-    type: String, // URL to athlete's profile image
+    type: String,
     required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now, // Automatically sets creation date
+    default: Date.now,
   },
 });
 

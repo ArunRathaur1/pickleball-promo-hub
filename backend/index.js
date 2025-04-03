@@ -17,6 +17,7 @@ const adminRoutes = require("./routes/adminroute");
 const blogRoutes = require("./routes/blogRoutes");
 const airoutes=require('./routes/airoutes');
 const clublist=require('./routes/clublist');
+const newsletter=require('./routes/newsletterRoutes');
 
 require("./passport"); // Passport Config
 
@@ -65,6 +66,7 @@ app.use("/admin", adminRoutes);
 app.use("/blogs", blogRoutes);
 app.use("/airoutes",airoutes);
 app.use('/clublist',clublist);
+app.use('/newsletter',newsletter);
 
 mongoose
   .connect(process.env.MONGO_URI, {
