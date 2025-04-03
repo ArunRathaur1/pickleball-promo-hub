@@ -34,7 +34,7 @@ const athleteSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
-    match: [/^[A-Z0-9]{6,12}$/, "DUPRID must be a combination of letters and numbers (6-12 characters)."],
+    // match: [/^[A-Z0-9]{6,12}$/, "DUPRID must be a combination of letters and numbers (6-12 characters)."],
   },
   sponsors: [
     {
@@ -44,7 +44,7 @@ const athleteSchema = new mongoose.Schema({
   ],
   instagramPage: {
     type: String,
-    match: [/^https:\/\/www\.instagram\.com\/[A-Za-z0-9_.]+\/?$/, "Invalid Instagram URL format"],
+    // match: [/^https:\/\/www\.instagram\.com\/[A-Za-z0-9_.]+\/?$/, "Invalid Instagram URL format"],
   },
   titlesWon: [
     {
@@ -59,7 +59,7 @@ const athleteSchema = new mongoose.Schema({
       youtubeLink: { 
         type: String,
         required: true,
-        match: [/^https:\/\/www\.youtube\.com\/watch\?v=[A-Za-z0-9_-]+$/, "Invalid YouTube URL format"],
+        // match: [/^https:\/\/www\.youtube\.com\/watch\?v=[A-Za-z0-9_-]+$/, "Invalid YouTube URL format"],
       },
     },
   ],

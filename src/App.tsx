@@ -15,7 +15,7 @@ import UserDashboard from "./pages/UserDashboard.jsx";
 import NotFound from "./pages/NotFound";
 import Athletes from "./pages/Athletes";
 import CourtPage from "./pages/CourtPage";
-import PlayerProfile from "./pages/Playerprofile.js";
+import PlayerProfile from "./pages/Playerprofile.tsx";
 import AdminLogin from "./components/admin/admin-login.js";
 import AdminSingup from "./components/admin/admin-signup.js";
 import CourtSubmit from "./pages/CourtSubmit.js";
@@ -88,7 +88,7 @@ const App = () => {
             <Route path="/courts" element={<CourtPage />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/dashboard" element={<UserDashboard />} />
-            <Route path="/playerprofile" element={<PlayerProfile />} />
+            <Route path="/playerprofile/:id" element={<PlayerProfile />} />
             <Route path ='/signup' element={<Register></Register>}></Route>
             <Route path="*" element={<NotFound />} />
             <Route path="adminlogin12345" element={<AdminLogin />} />
