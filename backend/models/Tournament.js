@@ -6,6 +6,10 @@ const tournamentSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  Organizer: {
+    type: String,
+    required: true,
+  },
   location: {
     type: String,
     required: true,
@@ -13,6 +17,14 @@ const tournamentSchema = new mongoose.Schema({
   country: {
     type: String,
     required: true,
+  },
+  Continent: {
+    type: String,
+    required: true,
+  },
+  Tier:{
+    type:Number,
+    required:true,
   },
   startDate: {
     type: Date,
@@ -23,10 +35,6 @@ const tournamentSchema = new mongoose.Schema({
     required: true,
   },
   description: {
-    type: String,
-    required: true,
-  },
-  organizerContact: {
     type: String,
     required: true,
   },

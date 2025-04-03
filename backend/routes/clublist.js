@@ -12,7 +12,6 @@ router.post("/add", async (req, res) => {
       location,
       country,
       locationCoordinates,
-      followers,
       description,
     } = req.body;
 
@@ -21,7 +20,6 @@ router.post("/add", async (req, res) => {
       !location ||
       !country ||
       !locationCoordinates ||
-      !followers ||
       !description
     ) {
       return res
@@ -46,7 +44,6 @@ router.post("/add", async (req, res) => {
       location,
       country,
       locationCoordinates,
-      followers,
       description,
     });
     await newClub.save();
