@@ -25,6 +25,7 @@ import Clubs from "./pages/Clubs.js";
 import Chatbot from "./components/Chatbot";
 import Sponser from './components/sponser/Sponser.js'
 import TournamentDetails from "./components/tournaments/tournamentDetails.tsx";
+import Clubdetails from "./components/userclubs/clubdetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,7 @@ const App = () => {
             <Route path="adminlogin12345" element={<AdminLogin />} />
             <Route path="adminsignup12345" element={<AdminSingup />} />
             <Route path="/sponsor" element={<Sponser></Sponser>}></Route>
+            <Route path='/clubdetails/:id' element={<Clubdetails></Clubdetails>}></Route>
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, MapPin, Users, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 export default function Listview({ clubs }) {
   const [selectedClub, setSelectedClub] = useState(null);
@@ -33,22 +34,21 @@ export default function Listview({ clubs }) {
                 </span>
               </div>
 
-
               {/* Status Badge */}
               <div className="mb-4">
                 <Badge className="bg-pickle hover:bg-pickle-dark text-white">
                   Active Club
                 </Badge>
               </div>
-
-              <Button
-                variant="default"
-                className="w-full mt-2 bg-pickle hover:bg-pickle-dark text-white group-hover:shadow-md transition-all"
-                onClick={() => setSelectedClub(club)}
-              >
-                <Info className="mr-2 h-4 w-4" />
-                View Club Details
-              </Button>
+              <Link to={`/clubdetails/${club._id}`}>
+                <Button
+                  variant="default"
+                  className="w-full mt-2 bg-pickle hover:bg-pickle-dark text-white group-hover:shadow-md transition-all"
+                >
+                  <Info className="mr-2 h-4 w-4" />
+                  View Club Details
+                </Button>
+              </Link>
             </div>
           </Card>
         ))}
