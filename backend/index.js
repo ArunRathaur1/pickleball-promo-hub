@@ -18,6 +18,8 @@ const blogRoutes = require("./routes/blogRoutes");
 const airoutes=require('./routes/airoutes');
 const clublist=require('./routes/clublist');
 const newsletter=require('./routes/newsletterRoutes');
+const Instagram=require('./routes/Instagramroutes');
+const Inquary=require('./routes/inquary');
 
 require("./passport"); // Passport Config
 
@@ -67,6 +69,8 @@ app.use("/blogs", blogRoutes);
 app.use("/airoutes",airoutes);
 app.use('/clublist',clublist);
 app.use('/newsletter',newsletter);
+app.use('/instagram',Instagram);
+app.use("/inquary", Inquary);
 
 mongoose
   .connect(process.env.MONGO_URI, {

@@ -17,7 +17,7 @@ const ThankYouSection: React.FC = () => {
         <ul id="buttons02" className="mt-6 flex justify-center">
           <li>
             <a
-              href="https://thedinkpickleball.com/"
+              href="/"
               className="bg-blue-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-all"
               role="button"
             >
