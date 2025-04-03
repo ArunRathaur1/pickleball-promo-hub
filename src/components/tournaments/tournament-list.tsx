@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 interface Tournament {
   _id: string;
   name: string;
@@ -39,11 +40,11 @@ const TournamentList = ({ tournaments }: TournamentListProps) => {
               key={tournament._id}
               className="border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
             >
-              {/* Image Placeholder */}
-              <div className="bg-gray-200 h-48 flex items-center justify-center">
-                <span className="text-gray-500">
-                  Tournament Image Coming Soon
-                </span>
+              {/* Tournament Name Instead of Image */}
+              <div className="bg-green-700 h-48 flex items-center justify-center p-4">
+                <h3 className="text-2xl font-bold text-white text-center break-words">
+                  {tournament.name}
+                </h3>
               </div>
 
               <div className="p-4">
@@ -63,8 +64,10 @@ const TournamentList = ({ tournaments }: TournamentListProps) => {
                   📅 {formatDate(tournament.startDate)}
                 </div>
 
-                <button className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300">
-                  <Link to={`/tournament/${tournament._id}`}>View Details</Link>
+                <button className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 w-full">
+                  <Link to={`/tournament/${tournament._id}`} className="block w-full">
+                    View Details
+                  </Link>
                 </button>
               </div>
             </div>
