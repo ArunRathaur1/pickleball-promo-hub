@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface Tournament {
   id: string;
   name: string;
   location: string;
   country: string;
+  continent: string;
+  tier: number;
   startDate: string;
 }
 
@@ -13,7 +15,10 @@ interface TournamentListProps {
 }
 
 const TournamentList = ({ tournaments }: TournamentListProps) => {
-  // Format date nicely
+  const [selectedTier, setSelectedTier] = useState<number | "all">("all");
+  const [selectedContinent, setSelectedContinent] = useState<string>("all");
+
+  // Format Date
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString(undefined, {
       year: "numeric",
@@ -22,88 +27,102 @@ const TournamentList = ({ tournaments }: TournamentListProps) => {
     });
   };
 
+  // Filtered tournaments based on selection
+  const filteredTournaments = tournaments.filter((tournament) => {
+    return (
+      (selectedTier === "all" || tournament.tier === selectedTier) &&
+      (selectedContinent === "all" || tournament.continent === selectedContinent)
+    );
+  });
+
+  // Get unique values for filters
+  const uniqueTiers = Array.from(new Set(tournaments.map((t) => t.tier))).sort(
+    (a, b) => a - b
+  );
+  const uniqueContinents = Array.from(
+    new Set(tournaments.map((t) => t.continent))
+  );
+
   return (
     <div className="container mx-auto p-4">
+      {/* Header */}
+      <h2 className="text-2xl font-bold text-center mb-6 text-green-700">
+        Tournament List
+      </h2>
+
+      {/* Filters */}
+      <div className="flex flex-wrap justify-center gap-4 mb-6">
+        {/* Tier Filter */}
+        <select
+          className="border p-2 rounded-md"
+          value={selectedTier}
+          onChange={(e) =>
+            setSelectedTier(e.target.value === "all" ? "all" : Number(e.target.value))
+          }
+        >
+          <option value="all">All Tiers</option>
+          {uniqueTiers.map((tier) => (
+            <option key={tier} value={tier}>
+              Tier {tier}
+            </option>
+          ))}
+        </select>
+
+        {/* Continent Filter */}
+        <select
+          className="border p-2 rounded-md"
+          value={selectedContinent}
+          onChange={(e) => setSelectedContinent(e.target.value)}
+        >
+          <option value="all">All Continents</option>
+          {uniqueContinents.map((continent) => (
+            <option key={continent} value={continent}>
+              {continent}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* Tournament Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tournaments.map((tournament) => (
-          <div
-            key={tournament.id}
-            className="border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-          >
-            {/* Image Placeholder */}
-            <div className="bg-gray-200 h-48 flex items-center justify-center">
-              <span className="text-gray-500">
-                Tournament Image Coming Soon
-              </span>
-            </div>
-
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-green-700 mb-2">
-                {tournament.name}
-              </h3>
-
-              <div className="flex items-center mb-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-500 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                <span className="text-gray-700">
-                  {formatDate(tournament.startDate)}
-                </span>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredTournaments.length > 0 ? (
+          filteredTournaments.map((tournament) => (
+            <div
+              key={tournament.id}
+              className="border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            >
+              {/* Image Placeholder */}
+              <div className="bg-gray-200 h-48 flex items-center justify-center">
+                <span className="text-gray-500">Tournament Image Coming Soon</span>
               </div>
 
-              <div className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-500 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <span className="text-gray-700">
-                  {tournament.location}, {tournament.country}
-                </span>
-              </div>
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-green-700 mb-2">
+                  {tournament.name}
+                </h3>
 
-              <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="text-gray-700 mb-2">
+                  📍 {tournament.location}, {tournament.country}
+                </div>
+
+                <div className="text-gray-700 mb-2">
+                  🌍 {tournament.continent} | 🎖 Tier {tournament.tier}
+                </div>
+
+                <div className="text-gray-700 mb-4">📅 {formatDate(tournament.startDate)}</div>
+
                 <button className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg w-full transition-colors duration-300">
                   View Details
                 </button>
               </div>
             </div>
+          ))
+        ) : (
+          <div className="col-span-full text-center py-12 text-gray-500">
+            No tournaments available.
           </div>
-        ))}
+        )}
       </div>
-
-      {tournaments.length === 0 && (
-        <div className="text-center py-12 text-gray-500">
-          No tournaments available.
-        </div>
-      )}
     </div>
   );
 };

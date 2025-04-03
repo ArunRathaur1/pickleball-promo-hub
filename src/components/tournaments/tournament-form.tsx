@@ -13,26 +13,22 @@ import { Textarea } from "@/components/ui/textarea";
 
 // Initialize Leaflet default icon
 L.Marker.prototype.options.icon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 });
 
 const TournamentForm = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
-  const [initialLocation, setInitialLocation] = useState<[number, number]>([
-    37.7749, -122.4194,
-  ]); // Default to San Francisco
-  const [markerPosition, setMarkerPosition] = useState<[number, number]>(
-    initialLocation
-  );
-  const mapRef = useRef<any>(null);
+  const [initialLocation, setInitialLocation] = useState([37.7749, -122.4194]); // Default: San Francisco
+  const [markerPosition, setMarkerPosition] = useState(initialLocation);
+  const mapRef = useRef(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -57,7 +53,13 @@ const TournamentForm = () => {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Tournament name is required"),
-    description: Yup.string().required("Description is required"),
+    Organizer: Yup.string().required("Organizer is required"),
+    location: Yup.string().required("Location is required"),
+    country: Yup.string().required("Country is required"),
+    Continent: Yup.string().required("Continent is required"),
+    Tier: Yup.number()
+      .integer("Tier must be an integer")
+      .required("Tier is required"),
     startDate: Yup.date().required("Start date is required"),
     endDate: Yup.date()
       .required("End date is required")
@@ -65,31 +67,22 @@ const TournamentForm = () => {
         "is-greater-than-start",
         "End date must be later than start date",
         function (value) {
-          const { startDate } = this.parent;
-          return value >= startDate;
+          return value >= this.parent.startDate;
         }
       ),
-    location: Yup.string().required("Location is required"),
-    country: Yup.string().required("Country is required"),
-    locationCoordinates: Yup.array()
+    description: Yup.string().required("Description is required"),
+    locationCoords: Yup.array()
       .of(Yup.number())
-      .length(2)
+      .length(2, "Location coordinates must have exactly 2 values")
       .required("Location coordinates are required"),
-    contact: Yup.string().required("Contact information is required"),
-    time: Yup.string().required("Time is required"),
+    status: Yup.string()
+      .oneOf(["pending", "approved", "rejected"], "Invalid status")
+      .default("pending"),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/tournaments/create",
-        {
-          ...values,
-          locationCoordinates: values.locationCoordinates.length === 2
-            ? [values.locationCoordinates[0], values.locationCoordinates[1]] as [number, number]
-            : [0, 0] as [number, number],
-        }
-      );
+      const response = await axios.post("http://localhost:5000/tournaments/create", values);
 
       setMessage(response.data.message);
       setSuccess(true);
@@ -102,11 +95,10 @@ const TournamentForm = () => {
     }
   };
 
-  const handleMapClick = (e) => {
+  const handleMapClick = (e, setFieldValue) => {
     const { lat, lng } = e.latlng;
     setMarkerPosition([lat, lng]);
-    // Update Formik values directly using mapRef
-    mapRef.current.props.formik.setFieldValue("locationCoordinates", [lat, lng]);
+    setFieldValue("locationCoords", [lat, lng]);
   };
 
   return (
@@ -124,14 +116,16 @@ const TournamentForm = () => {
       <Formik
         initialValues={{
           name: "",
-          description: "",
-          startDate: "",
-          endDate: "",
+          Organizer: "",
           location: "",
           country: "",
-          locationCoordinates: initialLocation,
-          contact: "",
-          time: "",
+          Continent: "",
+          Tier: "",
+          startDate: "",
+          endDate: "",
+          description: "",
+          locationCoords: initialLocation,
+          status: "pending",
         }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
@@ -139,224 +133,52 @@ const TournamentForm = () => {
         {({ isSubmitting, setFieldValue, values }) => (
           <Form>
             <div className="mb-4">
-              <Label htmlFor="name" className="block text-sm font-medium">
-                Tournament Name
-              </Label>
-              <Field
-                as={Input}
-                type="text"
-                id="name"
-                name="name"
-                className="mt-1 p-2 w-full border rounded-md"
-              />
-              <ErrorMessage
-                name="name"
-                component="div"
-                className="text-red-500 text-sm"
-              />
+              <Label htmlFor="name">Tournament Name</Label>
+              <Field as={Input} type="text" id="name" name="name" />
+              <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
             </div>
 
             <div className="mb-4">
-              <Label htmlFor="description" className="block text-sm font-medium">
-                Description
-              </Label>
-              <Field
-                as={Textarea}
-                id="description"
-                name="description"
-                rows="3"
-                className="mt-1 p-2 w-full border rounded-md"
-              />
-              <ErrorMessage
-                name="description"
-                component="div"
-                className="text-red-500 text-sm"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <Label htmlFor="startDate" className="block text-sm font-medium">
-                  Start Date
-                </Label>
-                <Field
-                  as={Input}
-                  type="date"
-                  id="startDate"
-                  name="startDate"
-                  className="mt-1 p-2 w-full border rounded-md"
-                />
-                <ErrorMessage
-                  name="startDate"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="endDate" className="block text-sm font-medium">
-                  End Date
-                </Label>
-                <Field
-                  as={Input}
-                  type="date"
-                  id="endDate"
-                  name="endDate"
-                  className="mt-1 p-2 w-full border rounded-md"
-                />
-                <ErrorMessage
-                  name="endDate"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <Label htmlFor="location" className="block text-sm font-medium">
-                  Location
-                </Label>
-                <Field
-                  as={Input}
-                  type="text"
-                  id="location"
-                  name="location"
-                  className="mt-1 p-2 w-full border rounded-md"
-                />
-                <ErrorMessage
-                  name="location"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="country" className="block text-sm font-medium">
-                  Country
-                </Label>
-                <Field
-                  as={Input}
-                  type="text"
-                  id="country"
-                  name="country"
-                  className="mt-1 p-2 w-full border rounded-md"
-                />
-                <ErrorMessage
-                  name="country"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <Label htmlFor="contact" className="block text-sm font-medium">
-                  Contact Information
-                </Label>
-                <Field
-                  as={Input}
-                  type="text"
-                  id="contact"
-                  name="contact"
-                  className="mt-1 p-2 w-full border rounded-md"
-                />
-                <ErrorMessage
-                  name="contact"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="time" className="block text-sm font-medium">
-                  Time
-                </Label>
-                <Field
-                  as={Input}
-                  type="text"
-                  id="time"
-                  name="time"
-                  className="mt-1 p-2 w-full border rounded-md"
-                />
-                <ErrorMessage
-                  name="time"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
+              <Label htmlFor="Organizer">Organizer</Label>
+              <Field as={Input} type="text" id="Organizer" name="Organizer" />
+              <ErrorMessage name="Organizer" component="div" className="text-red-500 text-sm" />
             </div>
 
             <div className="mb-4">
-              <Label className="block text-sm font-medium">
-                Set Location on Map
-              </Label>
+              <Label htmlFor="description">Description</Label>
+              <Field as={Textarea} id="description" name="description" rows="3" />
+              <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
+            </div>
+
+            <div className="mb-4">
+              <Label>Set Location on Map</Label>
               <div className="h-64 w-full rounded-lg overflow-hidden">
                 <MapContainer
                   center={initialLocation}
                   zoom={13}
                   style={{ height: "100%", width: "100%" }}
-                  ref={(map) => {
-                    if (!map) return;
-                    mapRef.current = map;
-                    mapRef.current.props.formik = { setFieldValue };
-                  }}
-                  onClick={handleMapClick}
+                  ref={mapRef}
+                  onClick={(e) => handleMapClick(e, setFieldValue)}
                 >
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy; OpenStreetMap contributors'
                   />
                   <Marker position={markerPosition}>
-                    <Popup>
-                      Tournament location:{" "}
-                      {values.locationCoordinates
-                        ? `[${values.locationCoordinates[0].toFixed(
-                            4
-                          )}, ${values.locationCoordinates[1].toFixed(4)}]`
-                        : "Click to set"}
-                    </Popup>
+                    <Popup>Selected Location: {markerPosition.join(", ")}</Popup>
                   </Marker>
                 </MapContainer>
               </div>
             </div>
 
             <div className="mb-4">
-              <Label
-                htmlFor="locationCoordinates"
-                className="block text-sm font-medium"
-              >
-                Location Coordinates
-              </Label>
-              <Field
-                as={Input}
-                type="text"
-                id="locationCoordinates"
-                name="locationCoordinates"
-                value={
-                  values.locationCoordinates
-                    ? `[${values.locationCoordinates[0].toFixed(
-                        4
-                      )}, ${values.locationCoordinates[1].toFixed(4)}]`
-                    : ""
-                }
-                readOnly
-                className="mt-1 p-2 w-full border rounded-md bg-gray-100 cursor-not-allowed"
-              />
-              <ErrorMessage
-                name="locationCoordinates"
-                component="div"
-                className="text-red-500 text-sm"
-              />
+              <Label htmlFor="locationCoords">Location Coordinates</Label>
+              <Field as={Input} type="text" id="locationCoords" name="locationCoords" readOnly />
+              <ErrorMessage name="locationCoords" component="div" className="text-red-500 text-sm" />
             </div>
 
             <div>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
+              <Button type="submit" disabled={isSubmitting} className="bg-blue-500 text-white py-2 px-4 rounded">
                 {isSubmitting ? "Submitting..." : "Submit"}
               </Button>
             </div>
