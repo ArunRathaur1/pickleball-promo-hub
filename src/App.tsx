@@ -23,6 +23,7 @@ import ContactPage from "./pages/ContactPage.js";
 import Blogpage from "./pages/Blogpage.js";
 import Clubs from "./pages/Clubs.js";
 import Chatbot from "./components/Chatbot";
+import Sponser from './components/sponser/Sponser.js'
 
 const queryClient = new QueryClient();
 
@@ -91,6 +92,7 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
             <Route path="adminlogin12345" element={<AdminLogin />} />
             <Route path="adminsignup12345" element={<AdminSingup />} />
+            <Route path='/sponer' element={<Sponser></Sponser>}></Route>
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
