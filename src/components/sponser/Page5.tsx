@@ -9,14 +9,7 @@ export default function PickleballInsights() {
     <div ref={sectionRef} className="bg-white text-black py-20 px-4">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
         {/* Left: Image Section */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-          transition={{ duration: 0.8 }}
-          className="w-full md:w-1/2 flex justify-center"
-        >
-          <Newsletter></Newsletter>
-        </motion.div>
+        
 
         {/* Right: Text Content */}
         <motion.div
