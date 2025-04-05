@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { LoggedNavbar } from "@/components/layout/loggednavbar";
@@ -5,12 +7,32 @@ import { Footer } from "@/components/layout/footer";
 import TournamentRequestsPage from "../components/admin/Tournament";
 import AnalyticsPage from "../components/admin/Analytics";
 import UsersPage from "../components/admin/userpage";
-import AddAthlete from "../components/athletes/AddAthlete"
+import AddAthlete from "../components/athletes/AddAthlete";
 import BlogList from "@/components/blogs/BlogList";
 import InstagramNavbar from "@/components/admin/instagram";
-
 import AdminClub from "@/components/admin/admin-club";
+
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const adminData = localStorage.getItem('adminData');
+    console.log('adminData:', adminData);
+    
+    // Try parsing the adminData to ensure it's valid
+    let isValidAdmin = false;
+    try {
+      const parsedAdminData = JSON.parse(adminData);
+      isValidAdmin = parsedAdminData && parsedAdminData.id && parsedAdminData.email;
+    } catch (e) {
+      isValidAdmin = false;
+    }
+    
+    if (!adminData || !isValidAdmin) {
+      navigate('/'); // Redirect to admin login instead of home
+    }
+  }, [navigate]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <LoggedNavbar />

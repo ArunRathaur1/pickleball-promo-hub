@@ -32,6 +32,10 @@ export default function AdminLogin() {
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
+      localStorage.setItem('adminData', JSON.stringify({
+        email: data.admin.email,
+        id: data.admin._id
+      }));
       navigate("/admin/dashboard");
     } catch (error) {
       console.error("Login Error:", error.message);

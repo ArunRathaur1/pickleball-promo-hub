@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, LogOut, User, Moon, Sun, SunMoon } from "lucide-react";
+import { Menu, X, LogOut, User, Moon, Sun } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
@@ -11,7 +11,6 @@ const NAV_ITEMS = [
   { label: "Services", href: "/services" },
   { label: "Athletes", href: "/athletes" },
   { label: "Tournaments", href: "/tournaments" },
-  // { label: "Courts", href: "/courts" },
   { label: "Clubs", href: "/clubs" },
   { label: "Contact", href: "/contact" },
 ];
@@ -23,15 +22,12 @@ export function Navbar() {
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    // Check if user is logged in by looking for userData or googleData in localStorage
     const checkLoginStatus = () => {
       const googleData = localStorage.getItem("googleData");
       const userData = localStorage.getItem("userData");
 
       if (googleData || userData) {
         setIsLoggedIn(true);
-
-        // Get user name for display
         try {
           if (googleData) {
             const parsedData = JSON.parse(googleData);
@@ -51,7 +47,6 @@ export function Navbar() {
     };
 
     checkLoginStatus();
-    // Add event listener to detect localStorage changes
     window.addEventListener("storage", checkLoginStatus);
 
     return () => {
@@ -59,26 +54,26 @@ export function Navbar() {
     };
   }, []);
 
-  const handleLogout = async () => {
-    console.log("deleted the user data");
+  async function handleLogout() {
+    // Remove all authentication data
     localStorage.removeItem("userData");
     localStorage.removeItem("googleData");
+    localStorage.removeItem("adminData");
+    
     try {
       const response = await fetch("http://localhost:5000/auth/logout", {
         method: "GET",
-        credentials: "include", // ✅ Allow sending cookies
+        credentials: "include",
       });
-
-      if (response.ok) {
-        window.location.href = "http://localhost:8080"; // Redirect after logout
-      } else {
-        console.error("Logout failed:", response.statusText);
-      }
+  
+      // Regardless of response, redirect to home
+      window.location.href = "http://localhost:8080";
     } catch (error) {
       console.error("Logout failed:", error);
+      // Still redirect to home on error
+      window.location.href = "http://localhost:8080";
     }
-  };
-
+  }
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
@@ -94,7 +89,6 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop navigation */}
           <nav className="hidden md:flex space-x-8">
             {NAV_ITEMS.map((item) => (
               <Link
@@ -107,7 +101,6 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Desktop buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Button
               onClick={toggleTheme}
@@ -157,7 +150,6 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
             <Button
               onClick={toggleTheme}
@@ -188,7 +180,6 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-sm">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">

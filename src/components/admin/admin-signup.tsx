@@ -34,6 +34,11 @@ export default function RegisterForm() {
       });
       const data = await response.json();
       if (response.ok) {
+        // Store admin data in local storage
+        localStorage.setItem('adminData', JSON.stringify({
+          email: data.admin.email,
+          id: data.admin._id
+        }));
         navigate("/admin/dashboard");
       } else {
         setError(data.message || "Registration failed");

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HeroSection } from "@/components/home/hero-section";
 import { ServicesPreview } from "@/components/home/services-preview";
 import { StatsSection } from "@/components/home/stats-section";
@@ -11,6 +11,11 @@ import Newsletter from "@/components/sponser/newsletterhome";
 
 const Home = () => {
   const [showNewsletter, setShowNewsletter] = useState(true);
+
+  useEffect(() => {
+    // Remove adminData from local storage when Home component mounts
+    localStorage.removeItem('adminData');
+  }, []);
 
   const handleCloseNewsletter = () => {
     setShowNewsletter(false);
@@ -31,10 +36,7 @@ const Home = () => {
 
         {/* Newsletter Section - Integrated before Footer */}
         {showNewsletter && (
-          <div
-            className=""
-            
-          >
+          <div className="">
             <Newsletter onClose={handleCloseNewsletter} />
           </div>
         )}

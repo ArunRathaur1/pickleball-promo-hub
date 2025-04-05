@@ -82,18 +82,18 @@ export function Testimonials() {
 
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50">
-      <div className="container">
+      <div className="max-w-[95%] mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800">Latest Blogs</h2>
-          <div className="mt-2 h-1 w-24 bg-primary mx-auto rounded-full"></div>
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">Explore our collection of thought-provoking articles, insightful tutorials, and industry updates.</p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Latest Blogs</h2>
+          <p className="mt-2 text-lg text-gray-700 max-w-3xl mx-auto">Explore our collection of thought-provoking articles, insightful tutorials, and industry updates.</p>
         </div>
         
-        <div className="relative max-w-5xl mx-auto overflow-hidden px-10">
+        <div className="relative w-full max-w-screen-2xl mx-auto overflow-visible px-4">
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/5 to-secondary/5" />
           <AnimatePresence mode="wait">
             <motion.div 
               key={startIndex}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full"
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -40 }}
@@ -114,7 +114,7 @@ export function Testimonials() {
                     {/* Use Link instead of just a Card */}
                     <Link to={`/blog/${blog._id}`} className="block h-full no-underline">
                       <Card 
-                        className={`overflow-hidden transition-all duration-300 ${colorClass} shadow-sm hover:shadow-xl transform hover:-translate-y-1 cursor-pointer border-2 h-full flex flex-col`}
+                        className={`overflow-hidden transition-all duration-300 ${colorClass} shadow-lg hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer border-0 h-full flex flex-col rounded-xl`}
                       >
                         <div className="h-3 bg-primary w-full"></div>
                         <CardContent className="p-6 flex flex-col flex-grow">
