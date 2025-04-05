@@ -6,10 +6,11 @@ const router = express.Router();
 // **1. Create a Blog**
 router.post("/add", async (req, res) => {
   try {
-    const { name, heading, description } = req.body;
-    const newBlog = new Blog({ name, heading, description });
+    const { name, heading, description, imageUrl } = req.body;
 
+    const newBlog = new Blog({ name, heading, description, imageUrl });
     await newBlog.save();
+
     res.status(201).json({ message: "Blog created successfully", newBlog });
   } catch (error) {
     res.status(500).json({ message: "Error creating blog", error });
@@ -41,14 +42,16 @@ router.get("/:id", async (req, res) => {
 // **4. Update a Blog**
 router.put("/update/:id", async (req, res) => {
   try {
-    const { name, heading, description } = req.body;
+    const { name, heading, description, imageUrl } = req.body;
+
     const updatedBlog = await Blog.findByIdAndUpdate(
       req.params.id,
-      { name, heading, description },
+      { name, heading, description, imageUrl },
       { new: true }
     );
 
-    if (!updatedBlog) return res.status(404).json({ message: "Blog not found" });
+    if (!updatedBlog)
+      return res.status(404).json({ message: "Blog not found" });
 
     res.json({ message: "Blog updated successfully", updatedBlog });
   } catch (error) {
@@ -60,7 +63,8 @@ router.put("/update/:id", async (req, res) => {
 router.delete("/delete/:id", async (req, res) => {
   try {
     const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
-    if (!deletedBlog) return res.status(404).json({ message: "Blog not found" });
+    if (!deletedBlog)
+      return res.status(404).json({ message: "Blog not found" });
 
     res.json({ message: "Blog deleted successfully" });
   } catch (error) {

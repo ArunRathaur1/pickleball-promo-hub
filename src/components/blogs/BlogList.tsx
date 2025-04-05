@@ -9,6 +9,7 @@ interface Blog {
   heading: string;
   description: string;
   createdAt: string;
+  imageUrl:string;
 }
 
 const BlogList: React.FC = () => {
@@ -90,10 +91,10 @@ const BlogList: React.FC = () => {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
-            <BlogForm 
-              onClose={() => setShowForm(false)} 
-              onSubmit={handleAddOrUpdate} 
-              initialData={editData} 
+            <BlogForm
+              onClose={() => setShowForm(false)}
+              onSubmit={handleAddOrUpdate}
+              initialData={editData}
             />
           </div>
         </div>
@@ -106,12 +107,14 @@ const BlogList: React.FC = () => {
       ) : error ? (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
           {error}
-          <button onClick={fetchBlogs} className="ml-4 underline">Retry</button>
+          <button onClick={fetchBlogs} className="ml-4 underline">
+            Retry
+          </button>
         </div>
       ) : blogs.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
           <p className="text-gray-500 mb-4">No blogs found</p>
-          <button 
+          <button
             onClick={openCreateForm}
             className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
           >
@@ -120,25 +123,40 @@ const BlogList: React.FC = () => {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {blogs.map(blog => (
-            <div key={blog._id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
+          {blogs.map((blog) => (
+            <div
+              key={blog._id}
+              className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
+            >
+              {blog.imageUrl && (
+                <img
+                  src={blog.imageUrl}
+                  alt={blog.heading}
+                  className="w-full h-48 object-cover"
+                  onError={(e) => (e.currentTarget.style.display = "none")}
+                />
+              )}
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">{blog.heading}</h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">{blog.description}</p>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                  {blog.heading}
+                </h3>
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {blog.description}
+                </p>
                 <div className="flex justify-between items-center text-sm text-gray-500">
                   <p>By: {blog.name}</p>
                   <p>{new Date(blog.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>
               <div className="bg-gray-50 px-6 py-3 flex justify-end gap-2">
-                <button 
+                <button
                   onClick={() => openEditForm(blog)}
                   className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
                 >
                   <Edit2 size={16} />
                   <span>Edit</span>
                 </button>
-                <button 
+                <button
                   onClick={() => handleDelete(blog._id)}
                   className="flex items-center gap-1 text-red-600 hover:text-red-800"
                 >

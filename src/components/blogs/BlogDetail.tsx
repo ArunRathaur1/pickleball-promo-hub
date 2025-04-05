@@ -124,8 +124,14 @@ export function BlogDetail() {
         </div>
         
         {/* Hero section */}
-       
-        
+        <div className="mb-8 h-96 overflow-hidden">
+          <img
+            src={blog.imageUrl}
+            alt={blog.heading}
+            className="w-full h-full rounded-lg shadow-lg object-cover object-center"
+          />
+        </div>
+
         {/* Blog content */}
         <div className="p-6 md:p-10">
           {/* Category badge */}

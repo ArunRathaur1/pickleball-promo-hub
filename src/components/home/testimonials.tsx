@@ -7,10 +7,11 @@ import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 interface Blog {
   _id: string;
-  name: string;       // Author's name from schema
+  name: string; // Author's name from schema
   heading: string;
   description: string;
-  createdAt: string;  // Timestamp from schema
+  createdAt: string; // Timestamp from schema
+  imageUrl: string;
 }
 
 export function Testimonials() {
@@ -39,6 +40,7 @@ export function Testimonials() {
     try {
       const response = await axios.get("http://localhost:5000/blogs");
       setBlogs(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching blogs", error);
     }
@@ -112,18 +114,36 @@ export function Testimonials() {
                     onMouseLeave={handleMouseLeave}
                   >
                     {/* Use Link instead of just a Card */}
-                    <Link to={`/blog/${blog._id}`} className="block h-full no-underline">
-                      <Card 
+                    <Link
+                      to={`/blog/${blog._id}`}
+                      className="block h-full no-underline"
+                    >
+                      <Card
                         className={`overflow-hidden transition-all duration-300 ${colorClass} shadow-lg hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer border-0 h-full flex flex-col rounded-xl`}
                       >
                         <div className="h-3 bg-primary w-full"></div>
+                        <div className="relative h-40 w-full bg-gray-100 rounded-t-lg overflow-hidden">
+                          <img
+                            src={blog.imageUrl}
+                            alt={blog.heading}
+                            className="w-full h-full object-cover transition-opacity duration-300"
+                            onError={(e) => {
+                              e.currentTarget.src = '/default-blog-image.jpg';
+                              e.currentTarget.classList.remove('opacity-0');
+                            }}
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        </div>
                         <CardContent className="p-6 flex flex-col flex-grow">
                           <div className="flex items-center justify-center mb-4">
                             <div className="p-3 rounded-full bg-primary bg-opacity-10">
                               <BookOpen className="h-6 w-6 text-primary" />
                             </div>
                           </div>
-                          <h3 className="text-lg md:text-xl font-bold text-center mb-2 line-clamp-2 h-14 flex items-center justify-center">{blog.heading}</h3>
+                          <h3 className="text-lg md:text-xl font-bold text-center mb-2 line-clamp-2 h-14 flex items-center justify-center">
+                            {blog.heading}
+                          </h3>
                           <div className="mt-auto pt-4 flex items-center justify-center text-sm text-gray-500 space-x-4">
                             <div className="flex items-center">
                               <Calendar className="h-4 w-4 mr-1" />
@@ -131,7 +151,9 @@ export function Testimonials() {
                             </div>
                             <div className="flex items-center">
                               <User className="h-4 w-4 mr-1" />
-                              <span className="truncate max-w-16">{blog.name}</span>
+                              <span className="truncate max-w-16">
+                                {blog.name}
+                              </span>
                             </div>
                           </div>
                         </CardContent>
