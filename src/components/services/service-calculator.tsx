@@ -269,9 +269,9 @@ export function ServiceCalculator() {
         }}>
           Reset
         </Button>
-        <Button className="bg-pickle hover:bg-pickle-dark" onClick={handleRequest}>
+        {/* <Button className="bg-pickle hover:bg-pickle-dark" onClick={handleRequest}>
           Request Detailed Quote
-        </Button>
+        </Button> */}
       </CardFooter>
     </Card>
   );
