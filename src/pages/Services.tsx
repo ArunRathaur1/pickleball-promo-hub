@@ -121,14 +121,14 @@ const Services = () => {
               We'll create a custom package tailored to your specific goals and budget.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-pickle hover:bg-pickle-dark">
+              {/* <Button size="lg" className="bg-pickle hover:bg-pickle-dark">
                 <Mail className="mr-2 h-4 w-4" />
                 Email Us
               </Button>
               <Button size="lg" variant="outline">
                 <Phone className="mr-2 h-4 w-4" />
                 Call Us
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
