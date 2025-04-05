@@ -26,6 +26,7 @@ import Chatbot from "./components/Chatbot";
 import Sponser from './components/sponser/Sponser.js'
 import TournamentDetails from "./components/tournaments/tournamentDetails.tsx";
 import Clubdetails from "./components/userclubs/clubdetails.tsx";
+import { BlogDetail } from "./components/blogs/BlogDetail.tsx";
 
 const queryClient = new QueryClient();
 
@@ -93,6 +94,7 @@ const App = () => {
             <Route path="/signup" element={<Register></Register>}></Route>
             <Route path="/tournament/:id" element={<TournamentDetails />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/blog/:id" element={<BlogDetail />} />
             <Route path="adminlogin12345" element={<AdminLogin />} />
             <Route path="adminsignup12345" element={<AdminSingup />} />
             <Route path="/sponsor" element={<Sponser></Sponser>}></Route>

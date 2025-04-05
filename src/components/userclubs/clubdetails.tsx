@@ -260,9 +260,9 @@ export default function ClubDetails() {
               and learn from experienced coaches in a welcoming environment.
             </p>
 
-            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-all">
+            {/* <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-all">
               Inquire About Membership
-            </button>
+            </button> */}
           </div>
 
           {/* Navigation */}
@@ -274,9 +274,9 @@ export default function ClubDetails() {
               <ArrowLeft size={16} className="mr-2" /> Back to Academies
             </Link>
 
-            <button className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg transition-all flex items-center">
+            {/* <button className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg transition-all flex items-center">
               <Users size={16} className="mr-2" /> Contact Academy
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

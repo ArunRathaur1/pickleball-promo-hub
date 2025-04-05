@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, BookOpen, X, Calendar, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, BookOpen, Calendar, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 interface Blog {
   _id: string;
@@ -16,7 +17,6 @@ export function Testimonials() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [startIndex, setStartIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
   const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -48,16 +48,6 @@ export function Testimonials() {
     ? [...blogs, ...blogs].slice(startIndex, startIndex + 4) 
     : blogs;
 
-  const openBlogDetails = (blog: Blog) => {
-    setSelectedBlog(blog);
-    setIsPaused(true);
-  };
-
-  const closeBlogDetails = () => {
-    setSelectedBlog(null);
-    setIsPaused(false);
-  };
-
   // Format date to display in a readable format
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -79,6 +69,15 @@ export function Testimonials() {
       'bg-indigo-50 border-indigo-200 hover:bg-indigo-100',
     ];
     return colors[Math.floor(Math.random() * colors.length)];
+  };
+
+  // Pause auto-rotation when hovering over cards
+  const handleMouseEnter = () => {
+    setIsPaused(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsPaused(false);
   };
 
   return (
@@ -109,31 +108,35 @@ export function Testimonials() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: index * 0.1, duration: 0.4 }}
                     className="h-full"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    <Card 
-                      className={`overflow-hidden transition-all duration-300 ${colorClass} shadow-sm hover:shadow-xl transform hover:-translate-y-1 cursor-pointer border-2 h-full flex flex-col`}
-                      onClick={() => openBlogDetails(blog)}
-                    >
-                      <div className="h-3 bg-primary w-full"></div>
-                      <CardContent className="p-6 flex flex-col flex-grow">
-                        <div className="flex items-center justify-center mb-4">
-                          <div className="p-3 rounded-full bg-primary bg-opacity-10">
-                            <BookOpen className="h-6 w-6 text-primary" />
+                    {/* Use Link instead of just a Card */}
+                    <Link to={`/blog/${blog._id}`} className="block h-full no-underline">
+                      <Card 
+                        className={`overflow-hidden transition-all duration-300 ${colorClass} shadow-sm hover:shadow-xl transform hover:-translate-y-1 cursor-pointer border-2 h-full flex flex-col`}
+                      >
+                        <div className="h-3 bg-primary w-full"></div>
+                        <CardContent className="p-6 flex flex-col flex-grow">
+                          <div className="flex items-center justify-center mb-4">
+                            <div className="p-3 rounded-full bg-primary bg-opacity-10">
+                              <BookOpen className="h-6 w-6 text-primary" />
+                            </div>
                           </div>
-                        </div>
-                        <h3 className="text-lg md:text-xl font-bold text-center mb-2 line-clamp-2 h-14 flex items-center justify-center">{blog.heading}</h3>
-                        <div className="mt-auto pt-4 flex items-center justify-center text-sm text-gray-500 space-x-4">
-                          <div className="flex items-center">
-                            <Calendar className="h-4 w-4 mr-1" />
-                            <span>{formatDate(blog.createdAt)}</span>
+                          <h3 className="text-lg md:text-xl font-bold text-center mb-2 line-clamp-2 h-14 flex items-center justify-center">{blog.heading}</h3>
+                          <div className="mt-auto pt-4 flex items-center justify-center text-sm text-gray-500 space-x-4">
+                            <div className="flex items-center">
+                              <Calendar className="h-4 w-4 mr-1" />
+                              <span>{formatDate(blog.createdAt)}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <User className="h-4 w-4 mr-1" />
+                              <span className="truncate max-w-16">{blog.name}</span>
+                            </div>
                           </div>
-                          <div className="flex items-center">
-                            <User className="h-4 w-4 mr-1" />
-                            <span className="truncate max-w-16">{blog.name}</span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   </motion.div>
                 );
               })}
@@ -169,68 +172,6 @@ export function Testimonials() {
           ))}
         </div>
       </div>
-
-      {/* Blog Details Modal */}
-      <AnimatePresence>
-        {selectedBlog && (
-          <motion.div 
-            className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.div
-              className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden"
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              transition={{ type: "spring", bounce: 0.3 }}
-            >
-              <div className="h-2 bg-primary w-full"></div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-6">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">{selectedBlog.heading}</h2>
-                  <button
-                    onClick={closeBlogDetails}
-                    className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-                  >
-                    <X className="h-6 w-6" />
-                  </button>
-                </div>
-                
-                <div className="flex items-center mb-6 text-gray-500 text-sm">
-                  <div className="flex items-center mr-4">
-                    <User className="h-4 w-4 mr-1" />
-                    <span>Author: {selectedBlog.name}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    <span>Published: {formatDate(selectedBlog.createdAt)}</span>
-                  </div>
-                </div>
-
-                <div className="overflow-y-auto max-h-[50vh] pr-2">
-                  <div className="prose prose-lg max-w-none">
-                    {selectedBlog.description.split('\n').map((paragraph, idx) => (
-                      <p key={idx} className="mb-4 text-gray-700">{paragraph}</p>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="mt-8 pt-4 border-t border-gray-100 flex justify-end">
-                  <button 
-                    onClick={closeBlogDetails}
-                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

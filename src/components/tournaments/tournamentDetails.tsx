@@ -195,10 +195,10 @@ export default function TournamentDetails() {
                     <Globe size={16} className="mr-2" />
                     <span>{tournament.Continent}</span>
                   </div>
-                  <div className="flex items-center text-green-100">
+                  {/* <div className="flex items-center text-green-100">
                     <User size={16} className="mr-2" />
                     <span>{tournament.Organizer}</span>
-                  </div>
+                  </div> */}
                 </div>
                 <div>
                   <span
@@ -330,11 +330,11 @@ export default function TournamentDetails() {
                 " Please contact the organizer for more information about how to register."}
             </p>
 
-            {tournament.status === "approved" && (
+            {/* {tournament.status === "approved" && (
               <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-all">
                 Contact Organizer
               </button>
-            )}
+            )} */}
           </div>
 
           {/* Navigation Buttons */}
@@ -346,11 +346,11 @@ export default function TournamentDetails() {
               <ArrowLeft size={16} className="mr-2" /> Back to Tournaments
             </Link>
 
-            {tournament.status === "approved" && (
+            {/* {tournament.status === "approved" && (
               <button className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg font-medium transition-all ml-auto">
                 Share Tournament
               </button>
-            )}
+            )} */}
           </div>
         </div>
       </div>
