@@ -35,7 +35,7 @@ export function BlogDetail() {
             ...blogData,
             readTime: blogData.readTime || "5 min read",
             category: blogData.category || "Technology",
-            tags: blogData.tags || ["React", "Web Development", "JavaScript"],
+            tags: blogData.tags || ["Pickleball", "Stay Updated", "Enjoy"],
             imageUrl: blogData.imageUrl || "https://placehold.co/800x400"
           });
         }
@@ -181,7 +181,7 @@ export function BlogDetail() {
             {/* Tags */}
             <div className="mt-10 mb-6">
               <div className="flex flex-wrap gap-2">
-                {(blog.tags || ["React", "JavaScript", "Web Development"]).map((tag, index) => (
+                {(blog.tags || ["Pickelball","Updates"]).map((tag, index) => (
                   <span key={index} className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
                     #{tag}
                   </span>
