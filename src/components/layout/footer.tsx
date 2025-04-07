@@ -35,7 +35,7 @@ export function Footer() {
             <h3 className="font-semibold">Quick Links</h3>
             <ul className="space-y-2">
               <li><Link to="/" className="text-sm text-muted-foreground hover:text-pickle">Home</Link></li>
-              <li><Link to="/about" className="text-sm text-muted-foreground hover:text-pickle">About Us</Link></li>
+              <li><Link to="/sponsor" className="text-sm text-muted-foreground hover:text-pickle">Our Sponsers</Link></li>
               <li><Link to="/services" className="text-sm text-muted-foreground hover:text-pickle">Services</Link></li>
               <li><Link to="/tournaments" className="text-sm text-muted-foreground hover:text-pickle">Tournaments</Link></li>
               <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-pickle">Contact</Link></li>
@@ -46,10 +46,10 @@ export function Footer() {
             <h3 className="font-semibold">Services</h3>
             <ul className="space-y-2">
               <li><Link to="/services" className="text-sm text-muted-foreground hover:text-pickle">Social Media Marketing</Link></li>
-              <li><Link to="/services" className="text-sm text-muted-foreground hover:text-pickle">Tournament Promotion</Link></li>
-              <li><Link to="/services" className="text-sm text-muted-foreground hover:text-pickle">Athlete Branding</Link></li>
-              <li><Link to="/services" className="text-sm text-muted-foreground hover:text-pickle">Content Creation</Link></li>
-              <li><Link to="/services" className="text-sm text-muted-foreground hover:text-pickle">Brand Collaborations</Link></li>
+              <li><Link to="/tournaments" className="text-sm text-muted-foreground hover:text-pickle">Tournament Promotion</Link></li>
+              <li><Link to="/athletes" className="text-sm text-muted-foreground hover:text-pickle">Athlete Branding</Link></li>
+              <li><Link to="/clubs" className="text-sm text-muted-foreground hover:text-pickle">Club Promotion</Link></li>
+              <li><Link to="/sponsor" className="text-sm text-muted-foreground hover:text-pickle">Brand Collaborations</Link></li>
             </ul>
           </div>
           

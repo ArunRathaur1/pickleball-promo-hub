@@ -28,10 +28,12 @@ const Home = () => {
         <div style={{ zIndex: "100" }}>
           <HeroSection />
         </div>
-        <Instagram />
+        
         <ServicesPreview />
         <StatsSection />
+        <Instagram />
         <Testimonials />
+        
         <CTASection />
 
         {/* Newsletter Section - Integrated before Footer */}

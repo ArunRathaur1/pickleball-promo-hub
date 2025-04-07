@@ -13,22 +13,22 @@ export function AuthFormFooter({ type, userType }) {
           {type === "login" ? "Sign up" : "Sign in"}
         </a>
       </p>
-      {userType === "user" && type === "login" && (
+      {/* {userType === "user" && type === "login" && (
         <a
           href="/admin/login"
           className="mt-2 text-xs text-muted-foreground hover:text-pickle hover:underline"
         >
           Admin Login
         </a>
-      )}
-      {userType === "admin" && type === "login" && (
+      )} */}
+      {/* {userType === "admin" && type === "login" && (
         <a
           href="/login"
           className="mt-2 text-xs text-muted-foreground hover:text-pickle hover:underline"
         >
           User Login
         </a>
-      )}
+      )} */}
     </CardFooter>
   );
 }
