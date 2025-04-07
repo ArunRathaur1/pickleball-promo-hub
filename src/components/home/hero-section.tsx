@@ -4,17 +4,21 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 // Import images correctly
-import hero1 from "../../images/7.jpg";
-import hero2 from "../../images/8.jpg";
-import hero3 from "../../images/9.jpg";
-import hero4 from "../../images/10.jpg";
-import hero5 from "../../images/11.jpg";
-import hero6 from "../../images/6.jpg";
-import hero7 from "../../images/12.jpg";
+import hero1 from "../../images/1.jpeg";
+import hero2 from "../../images/1.png";
+import hero3 from "../../images/2.jpeg";
+import hero4 from "../../images/3.jpeg";
+import hero5 from "../../images/4.jpeg";
+import hero6 from "../../images/5.jpeg";
+import hero7 from "../../images/6.jpeg";
+import hero8 from "../../images/7.jpeg";
+import hero9 from "../../images/7.jpg";
+import hero10 from "../../images/8.jpeg";
+import hero11 from "../../images/13.jpg";
 
 // Sample images for carousel
 // const HERO_IMAGES = [hero1, hero2, hero3,hero4,hero5];
-const HERO_IMAGES=[hero1,hero2,hero3,hero4,hero5,hero6,hero7];
+const HERO_IMAGES=[hero1,hero2,hero3,hero4,hero5,hero6,hero7,hero8,hero9,hero10,hero11];
 
 export function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import backgroundImage from "../../images/bg.jpeg"; // Import the background image
+import backgroundImage from "../../images/14.jpg"; // Import the background image
 
 interface StatItemProps {
   value: number;

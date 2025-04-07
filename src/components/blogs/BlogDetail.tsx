@@ -28,20 +28,21 @@ export function BlogDetail() {
         setLoading(true);
         const response = await axios.get(`http://localhost:5000/blogs/${id}`);
         const blogData = response.data;
-        
-        // Add some default values if data is missing
-        if (blogData) {
-          setBlog({
-            ...blogData,
-            readTime: blogData.readTime || "5 min read",
-            category: blogData.category || "Technology",
-            tags: blogData.tags || ["Pickleball", "Stay Updated", "Enjoy"],
-            imageUrl: blogData.imageUrl || "https://placehold.co/800x400"
-          });
-        }
-        
+    
+        // Estimate read time
+        const wordCount = blogData.description ? blogData.description.split(/\s+/).length : 0;
+        const estimatedTime = Math.ceil(wordCount / 200); // 200 words per minute
+    
+        setBlog({
+          ...blogData,
+          readTime: `${estimatedTime || 1} min read`,
+          category: blogData.category || "Sports",
+          tags: blogData.tags || ["Pickleball", "Stay Updated", "Enjoy"],
+          imageUrl: blogData.imageUrl || "https://placehold.co/800x400"
+        });
+    
         setError(null);
-        
+    
         // Fetch and set real related posts
         const allBlogsResponse = await axios.get('http://localhost:5000/blogs');
         const filteredBlogs = allBlogsResponse.data.filter((b: Blog) => b._id !== blogData._id);
@@ -55,6 +56,7 @@ export function BlogDetail() {
         setLoading(false);
       }
     };
+    
 
     if (id) {
       fetchBlog();
@@ -170,13 +172,13 @@ export function BlogDetail() {
             
             {/* Example blockquote */}
             <blockquote className="border-l-4 border-green-500 pl-4 my-8 italic text-gray-600">
-              "Good design is obvious. Great design is transparent. Focus on creating experiences that solve user problems efficiently while delighting them along the way."
+              "Pickleball isn’t just a game anymore — it’s a movement. As courts multiply and players of all ages join in, the sport is fast becoming a lifestyle, a community, and one of the most exciting growth markets in recreational sports"
             </blockquote>
             
             {/* More paragraphs */}
-            <p className="mb-6 text-gray-700 leading-relaxed">
+            {/* <p className="mb-6 text-gray-700 leading-relaxed">
               Nulla facilisi. Mauris efficitur metus sit amet massa pretium maximus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean et felis erat. Nunc sit amet arcu a quam vehicula rutrum.
-            </p>
+            </p> */}
             
             {/* Tags */}
             <div className="mt-10 mb-6">
