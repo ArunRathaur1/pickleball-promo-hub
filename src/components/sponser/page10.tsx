@@ -3,18 +3,48 @@ import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 
 const CampaignForm: React.FC = () => {
-  // Ref for triggering animations on scroll
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  // State for form validation animation
   const [shake, setShake] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
 
-  // Form submit handler
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setShake(true);
     setTimeout(() => setShake(false), 500);
+
+    const form = e.currentTarget;
+    const formData = {
+      name: form.name.value,
+      company: form.company.value,
+      email: form.email.value,
+      message: form.message.value,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/inquary/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        console.log("Form submitted successfully!");
+        setStatus("Form submitted successfully!");
+        form.reset();
+      } else {
+        console.error("Failed to submit form");
+        setStatus("Failed to submit form.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setStatus("Error submitting form.");
+    }
+
+    setTimeout(() => setStatus(null), 3000); // Auto-clear after 3s
   };
 
   return (
@@ -100,6 +130,11 @@ const CampaignForm: React.FC = () => {
             className="w-full mt-4 p-3 border border-gray-300 rounded-lg h-32 resize-none focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all"
             whileFocus={{ scale: 1.02 }}
           ></motion.textarea>
+
+          {/* Status Message */}
+          {status && (
+            <p className="text-center text-sm text-gray-600 mt-4">{status}</p>
+          )}
 
           {/* Submit Button */}
           <div className="mt-6 flex justify-center">

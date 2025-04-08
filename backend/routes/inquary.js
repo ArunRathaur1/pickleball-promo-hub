@@ -2,10 +2,7 @@ const express=require('express')
 const Sponsor=require('../models/Inquary')
 const router = express.Router();
 
-/**
- * ✅ Create a new inquiry (POST)
- * Route: `/api/sponsors`
- */
+
 router.post("/", async (req, res) => {
   try {
     const { name, company, email, message } = req.body;
