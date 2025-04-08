@@ -226,32 +226,7 @@ const UserDashboard = () => {
                 </div>
 
                 {/* Account ID section */}
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-lg font-medium mb-4">
-                    Account Information
-                  </h3>
-                  <div className="space-y-3">
-                    <div>
-                      <p className="text-sm text-muted-foreground">
-                        Account ID
-                      </p>
-                      <p className="font-mono text-sm">
-                        {userData._id ? userData._id : 'Not available'}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">
-                        Account Status
-                      </p>
-                      <Badge className="bg-pickle mt-1">Active</Badge>
-                    </div>
-                  </div>
-                  <div className="mt-6">
-                    <Button variant="outline" className="w-full">
-                      Edit Profile
-                    </Button>
-                  </div>
-                </div>
+                
               </div>
 
               <div className="pt-4 border-t">
