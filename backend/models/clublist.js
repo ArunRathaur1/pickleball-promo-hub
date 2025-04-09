@@ -6,6 +6,19 @@ const courtSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  email:{
+    type:String,
+    required:true,
+  },
+  contact:{
+    type:String,
+    required:true,
+  },
+  status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
   location: {
     type: String, // User-entered location name
     required: true,
@@ -26,6 +39,14 @@ const courtSchema = new mongoose.Schema({
       message:
         "LocationCoordinates must be an array with exactly 2 elements [latitude, longitude]",
     },
+  },
+  clubimageUrl: {
+    type: String,
+    required: true,
+  },
+  logoimageUrl: {
+    type: String,
+    required: true,
   },
   description: {
     type: String,
