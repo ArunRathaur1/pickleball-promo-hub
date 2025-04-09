@@ -101,8 +101,6 @@ const App = () => {
             <Route path="adminsignup12345" element={<AdminSingup />} />
             <Route path="/sponsor" element={<Sponser></Sponser>}></Route>
             <Route path='/clubdetails/:id' element={<Clubdetails></Clubdetails>}></Route>
-            <Route path='/add-club' element={<UsersClubForm></UsersClubForm>}></Route>
-            <Route path='/update-club/:id' element={<UpdateClub></UpdateClub>}></Route>
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
