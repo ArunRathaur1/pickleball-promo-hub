@@ -83,7 +83,7 @@ export default function ClubData() {
       }
 
       const response = await fetch(`http://localhost:5000/clublist/update/${editingClub}`, {
-        method: "PUT",
+        method: "PATCH",
         body: formData,
       });
 

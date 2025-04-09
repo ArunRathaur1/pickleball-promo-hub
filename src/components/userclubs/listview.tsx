@@ -37,15 +37,15 @@ export default function Listview({ clubs }: ListviewProps) {
         >
           {/* Club Image */}
           <div className="relative h-48 overflow-hidden">
-            {club.clubimageUrl ? (
+            {club.logoimageUrl ? (
               <img
-                src={club.clubimageUrl}
+                src={club.logoimageUrl}
                 alt={`${club.name}`}
                 className="w-full h-full object-cover"
               />
-            ) : club.logoimageUrl ? (
+            ) : club.clubimageUrl ? (
               <img
-                src={club.logoimageUrl}
+                src={club.clubimageUrl}
                 alt={`${club.name} logo`}
                 className="w-full h-full object-cover"
               />
@@ -56,7 +56,7 @@ export default function Listview({ clubs }: ListviewProps) {
             )}
 
             {/* Status badge */}
-            {club.status && (
+            {/* {club.status && (
               <div className="absolute top-2 right-2">
                 <span
                   className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -70,7 +70,7 @@ export default function Listview({ clubs }: ListviewProps) {
                   {club.status.charAt(0).toUpperCase() + club.status.slice(1)}
                 </span>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Club Info */}

@@ -73,27 +73,34 @@ router.get("/:id", async (req, res) => {
 });
 
 // ✅ Update a club by ID
-router.put("/update/:id", async (req, res) => {
+router.patch("/update/:id", async (req, res) => {
   try {
     const { locationCoordinates } = req.body;
 
-    if (locationCoordinates && (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2)) {
+    if (
+      locationCoordinates &&
+      (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2)
+    ) {
       return res.status(400).json({
         message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
       });
     }
 
-    const updatedClub = await Clublist.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedClub = await Clublist.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true, // ensures Mongoose validation is applied
+    });
+
     if (!updatedClub) {
       return res.status(404).json({ message: "Club not found" });
     }
 
     res.status(200).json({ message: "Club updated successfully", club: updatedClub });
-
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
 
 // ✅ Delete a club by ID
 router.delete("/delete/:id", async (req, res) => {
