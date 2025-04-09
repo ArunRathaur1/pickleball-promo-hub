@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import CloudinaryImageUploader from './imageupload';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Club Name is required"),
@@ -113,6 +114,7 @@ export default function ClubForm() {
                   />
                   <ErrorMessage name="location" component="div" className="text-red-500 text-sm" />
                 </div>
+                <CloudinaryImageUploader></CloudinaryImageUploader>
 
                 <div>
                   <label htmlFor="country" className="block text-sm font-medium text-gray-700">
