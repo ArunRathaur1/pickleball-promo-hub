@@ -51,7 +51,6 @@ const CloudinaryImageUploader = ({ onUploadSuccess }) => {
 
       {isUploading && <p className="text-blue-600 mt-2">Uploading image...</p>}
       {error && <p className="text-red-600 mt-2">{error}</p>}
-      {imageUrl && <img src={imageUrl} alt="Preview" className="mt-2 w-32 rounded-md" />}
     </div>
   );
 };
