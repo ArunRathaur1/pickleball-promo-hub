@@ -53,7 +53,7 @@ app.use(bodyParser.json());
 app.use(
   cors({
     origin: "http://localhost:8080",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
     credentials: true, // 🔑 Allow cookies
   })
 );
