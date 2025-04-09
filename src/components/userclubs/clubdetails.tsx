@@ -11,6 +11,8 @@ import {
   ArrowLeft,
   Clock,
   DollarSign,
+  Phone,
+  Mail,
 } from "lucide-react";
 
 // Fix for Leaflet marker icons
@@ -27,15 +29,19 @@ L.Icon.Default.mergeOptions({
 interface Club {
   _id: string;
   name: string;
+  email: string;
+  contact: string;
+  status: string;
   location: string;
   country: string;
   locationCoordinates: number[];
   description: string;
   createdAt: string;
-  clubimageUrl?: string; // Add this to your backend response
+  clubimageUrl?: string;
+  logoimageUrl?: string;
 }
 
-export default function clubdetails() {
+export default function ClubDetails() {
   const { id } = useParams<{ id: string }>();
   const [club, setClub] = useState<Club | null>(null);
   const [loading, setLoading] = useState(true);
@@ -43,9 +49,11 @@ export default function clubdetails() {
   const mapRef = useRef<L.Map | null>(null);
 
   useEffect(() => {
-    const fetchclubdetails = async () => {
+    const fetchClubDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/clublist/${id}`);
+        const response = await axios.get(
+          `http://localhost:5000/clublist/${id}`
+        );
         setClub(response.data);
       } catch (error) {
         console.error("Error fetching club details:", error);
@@ -55,18 +63,8 @@ export default function clubdetails() {
       }
     };
 
-    if (id) fetchclubdetails();
+    if (id) fetchClubDetails();
   }, [id]);
-
-  const extractSchedule = (description: string) => {
-    const match = description.match(/open(?:ed)? from ([^\.]+)/i);
-    return match ? match[1].trim() : "Contact for schedule";
-  };
-
-  const extractPrice = (description: string) => {
-    const match = description.match(/(?:charges|fees|price) are ([^\.]+)/i);
-    return match ? match[1].trim() : "Contact for pricing";
-  };
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString(undefined, {
@@ -81,7 +79,7 @@ export default function clubdetails() {
       <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
         <span className="text-lg font-semibold mt-4 text-green-600">
-          Loading academy details...
+          Loading club details...
         </span>
       </div>
     );
@@ -92,64 +90,149 @@ export default function clubdetails() {
       <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
         <div className="text-red-500 text-5xl mb-4">⚠️</div>
         <h2 className="text-2xl font-bold text-red-600 mb-2">
-          Error Loading Academy
+          Error Loading Club
         </h2>
         <p className="text-gray-700 mb-4">{error || "No club found."}</p>
         <Link
           to="/clubs"
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-all flex items-center"
         >
-          <ArrowLeft size={16} className="mr-2" /> Back to Academies
+          <ArrowLeft size={16} className="mr-2" /> Back to Clubs
         </Link>
       </div>
     );
   }
 
-  const schedule = extractSchedule(club.description);
-  const price = extractPrice(club.description);
-
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 py-10">
-        <div className="container mx-auto p-4 md:p-6 max-w-4xl">
-          {/* Club Image */}
-          {club.clubimageUrl && (
-            <div className="mb-6">
-              <img
-                src={club.clubimageUrl}
-                alt={club.name}
-                className="w-full h-72 object-cover rounded-lg shadow-md"
-              />
-            </div>
-          )}
 
-          {/* Club Name & Location */}
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
-            <div className="bg-green-600 text-white p-6 text-center">
-              <h1 className="text-3xl font-bold mb-2">{club.name}</h1>
-              <div className="flex justify-center items-center text-green-100">
-                <MapPin size={16} className="mr-2" />
-                <span>
-                  {club.location}, {club.country}
-                </span>
+      {/* Full screen hero image */}
+      <div className="relative">
+        {club.clubimageUrl ? (
+          <img
+            src={club.clubimageUrl}
+            alt={club.name}
+            className="w-full object-cover"
+            style={{ height: "50vh" }} // 50% of the viewport height
+          />
+        ) : (
+          <div className="w-full h-full bg-green-100 flex items-center justify-center">
+            <span className="text-green-600 text-xl">No image available</span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div className="text-center text-white p-6">
+            <h1 className="text-5xl font-bold mb-4">{club.name}</h1>
+            <div className="flex justify-center items-center text-xl">
+              <MapPin size={20} className="mr-2" />
+              <span>
+                {club.location}, {club.country}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content section with details on left and map on right */}
+      <div className="container mx-auto p-6 my-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left column - Club details */}
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <div className="flex items-center mb-6">
+              {club.logoimageUrl && (
+                <img
+                  src={club.logoimageUrl}
+                  alt={`${club.name} logo`}
+                  className="w-16 h-16 object-cover rounded-full mr-4"
+                />
+              )}
+              <div>
+                <h2 className="text-3xl font-bold text-gray-800">
+                  {club.name}
+                </h2>
+                <p className="text-gray-600">
+                  {club.status === "pending" ? "Pending Approval" : "Approved"}
+                </p>
               </div>
             </div>
 
-            {/* Map */}
-            <div className="h-64 w-full">
+            <div className="space-y-6">
+              <div className="flex items-start">
+                <div className="bg-green-100 p-2 rounded-full mr-4">
+                  <MapPin size={20} className="text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    Location
+                  </h3>
+                  <p className="text-gray-700">
+                    {club.location}, {club.country}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="bg-green-100 p-2 rounded-full mr-4">
+                  <Phone size={20} className="text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    Contact Number
+                  </h3>
+                  <p className="text-gray-700">{club.contact}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="bg-green-100 p-2 rounded-full mr-4">
+                  <Mail size={20} className="text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">Email</h3>
+                  <p className="text-gray-700">{club.email}</p>
+                </div>
+              </div>
+
+              
+
+              {club.description && (
+                <div className="mt-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    About
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    {club.description}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-8">
+              <Link
+                to="/clubs"
+                className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg transition-all flex items-center w-max"
+              >
+                <ArrowLeft size={16} className="mr-2" /> Back to Clubs
+              </Link>
+            </div>
+          </div>
+
+          {/* Right column - Map */}
+          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div className="h-full min-h-96">
               {club.locationCoordinates?.length === 2 ? (
                 <MapContainer
                   center={[
                     club.locationCoordinates[0],
                     club.locationCoordinates[1],
                   ]}
-                  zoom={14}
-                  style={{ height: "100%", width: "100%" }}
+                  zoom={13}
+                  style={{ height: "100%", width: "100%", minHeight: "500px" }}
                   whenCreated={(map) => (mapRef.current = map)}
                 >
                   <TileLayer
-                    attribution='&copy; OpenStreetMap contributors'
+                    attribution="&copy; OpenStreetMap contributors"
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                   <Marker
@@ -166,80 +249,11 @@ export default function clubdetails() {
                   </Marker>
                 </MapContainer>
               ) : (
-                <div className="h-full flex items-center justify-center text-gray-500">
+                <div className="h-full flex items-center justify-center text-gray-500 min-h-96">
                   Location not available
                 </div>
               )}
             </div>
-
-            {/* Club Info */}
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-4 text-gray-800">
-                About the Academy
-              </h2>
-              <p className="text-gray-700 leading-relaxed mb-6">
-                {club.description}
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex items-start">
-                  <div className="bg-green-100 p-2 rounded-full mr-4">
-                    <Clock size={24} className="text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      Schedule
-                    </h3>
-                    <p className="text-gray-700">{schedule}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-green-100 p-2 rounded-full mr-4">
-                    <DollarSign size={24} className="text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      Membership Fee
-                    </h3>
-                    <p className="text-gray-700">{price}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start mt-6">
-                <div className="bg-green-100 p-2 rounded-full mr-4">
-                  <Calendar size={24} className="text-green-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    Established
-                  </h3>
-                  <p className="text-gray-700">{formatDate(club.createdAt)}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Section */}
-          <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Join Our Academy
-            </h2>
-            <p className="text-gray-700 mb-4">
-              Ready to improve your pickleball skills? Join our academy today
-              and learn from experienced coaches in a welcoming environment.
-            </p>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex justify-between items-center">
-            <Link
-              to="/clubs"
-              className="bg-gray-600 hover:bg-gray-700 text-white px-5 py-3 rounded-lg transition-all flex items-center"
-            >
-              <ArrowLeft size={16} className="mr-2" /> Back to Academies
-            </Link>
           </div>
         </div>
       </div>

@@ -6,13 +6,13 @@ const courtSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  email:{
-    type:String,
-    required:true,
+  email: {
+    type: String,
+    required: true,
   },
-  contact:{
-    type:String,
-    required:true,
+  contact: {
+    type: String,
+    required: true,
   },
   status: {
     type: String,
@@ -28,6 +28,9 @@ const courtSchema = new mongoose.Schema({
     type: String, // Country name
     required: true,
     trim: true,
+  },
+  bookinglink: {
+    type: String, 
   },
   locationCoordinates: {
     type: [Number], // [latitude, longitude]
