@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import Listview from "@/components/userclubs/listview";
 import Mapview from "@/components/userclubs/Mapview";
-
+import { Link } from "react-router-dom";
 export default function Clubs() {
   const [clubs, setClubs] = useState([]);
   const [filteredClubs, setFilteredClubs] = useState([]);
@@ -27,7 +27,7 @@ export default function Clubs() {
     }
 
     // Fetch data from the API
-    fetch("http://localhost:5000/clublist/all")
+    fetch("http://localhost:5000/clublist/approved")
       .then((res) => res.json())
       .then((data) => {
         setClubs(data);
@@ -136,6 +136,13 @@ export default function Clubs() {
               >
                 Reset Filters
               </button>
+            </div>
+            <div className="flex items-end">
+              <Link to='/add-club'>
+                <button className="w-full p-2 bg-muted hover:bg-muted/80 text-foreground rounded-md transition duration-200 ease-in-out">
+                  Add Club
+                </button>
+              </Link>
             </div>
           </div>
         </div>

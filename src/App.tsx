@@ -27,6 +27,8 @@ import Sponser from './components/sponser/Sponser.js'
 import TournamentDetails from "./components/tournaments/tournamentDetails.tsx";
 import Clubdetails from "./components/userclubs/clubdetails.tsx";
 import { BlogDetail } from "./components/blogs/BlogDetail.tsx";
+import UsersClubForm from "./components/userclubs/form.tsx";
+import UpdateClub from "./components/admin/update-club.tsx";
 
 const queryClient = new QueryClient();
 
@@ -99,6 +101,8 @@ const App = () => {
             <Route path="adminsignup12345" element={<AdminSingup />} />
             <Route path="/sponsor" element={<Sponser></Sponser>}></Route>
             <Route path='/clubdetails/:id' element={<Clubdetails></Clubdetails>}></Route>
+            <Route path='/add-club' element={<UsersClubForm></UsersClubForm>}></Route>
+            <Route path='/update-club/:id' element={<UpdateClub></UpdateClub>}></Route>
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

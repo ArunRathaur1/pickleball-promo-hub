@@ -15,15 +15,30 @@ router.post("/add", async (req, res) => {
       clubimageUrl,
       logoimageUrl,
       description,
+      bookinglink, 
     } = req.body;
 
-    if (!name || !email || !contact || !location || !country || !locationCoordinates || !clubimageUrl || !logoimageUrl || !description) {
+    if (
+      !name ||
+      !email ||
+      !contact ||
+      !location ||
+      !country ||
+      !locationCoordinates ||
+      !clubimageUrl ||
+      !logoimageUrl ||
+      !description
+    ) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    if (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2) {
+    if (
+      !Array.isArray(locationCoordinates) ||
+      locationCoordinates.length !== 2
+    ) {
       return res.status(400).json({
-        message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
+        message:
+          "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
       });
     }
 
@@ -37,12 +52,12 @@ router.post("/add", async (req, res) => {
       clubimageUrl,
       logoimageUrl,
       description,
-      status: "pending", // default
+      bookinglink: bookinglink || "", // ⬅️ default empty if not provided
+      status: "pending",
     });
 
     await newClub.save();
     res.status(201).json({ message: "Club added successfully", club: newClub });
-
   } catch (error) {
     console.error("Error in /add route:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -58,6 +73,17 @@ router.get("/all", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+router.get("/approved", async (req, res) => {
+  try {
+    const approvedClubs = await Clublist.find({ status: "approved" }).sort({
+      createdAt: -1,
+    });
+    res.status(200).json(approvedClubs);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
 
 // ✅ Get a single club by ID
 router.get("/:id", async (req, res) => {
@@ -73,23 +99,57 @@ router.get("/:id", async (req, res) => {
 });
 
 // ✅ Update a club by ID
-router.put("/update/:id", async (req, res) => {
+router.put("/status/:id", async (req, res) => {
   try {
-    const { locationCoordinates } = req.body;
+    const { status } = req.body;
 
-    if (locationCoordinates && (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2)) {
-      return res.status(400).json({
-        message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
-      });
+    // Validate status
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
     }
 
-    const updatedClub = await Clublist.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedClub = await Clublist.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
     if (!updatedClub) {
       return res.status(404).json({ message: "Club not found" });
     }
 
-    res.status(200).json({ message: "Club updated successfully", club: updatedClub });
+    res.status(200).json(updatedClub);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
 
+router.put("/update/:id", async (req, res) => {
+  try {
+    const { locationCoordinates } = req.body;
+
+    if (
+      locationCoordinates &&
+      (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2)
+    ) {
+      return res.status(400).json({
+        message:
+          "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
+      });
+    }
+
+    const updatedClub = await Clublist.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updatedClub) {
+      return res.status(404).json({ message: "Club not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Club updated successfully", club: updatedClub });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -144,7 +204,9 @@ router.patch("/status/:id", async (req, res) => {
       return res.status(404).json({ message: "Club not found" });
     }
 
-    res.status(200).json({ message: `Club status updated to ${status}`, club: updated });
+    res
+      .status(200)
+      .json({ message: `Club status updated to ${status}`, club: updated });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
