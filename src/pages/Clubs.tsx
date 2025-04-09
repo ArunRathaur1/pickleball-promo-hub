@@ -11,6 +11,21 @@ export default function Clubs() {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
+    // Get user's geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("Latitude:", position.coords.latitude);
+          console.log("Longitude:", position.coords.longitude);
+        },
+        (error) => {
+          console.error("Error getting location:", error.message);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+
     // Fetch data from the API
     fetch("http://localhost:5000/clublist/all")
       .then((res) => res.json())
@@ -24,6 +39,7 @@ export default function Clubs() {
       })
       .catch((error) => console.error("Error fetching clubs:", error));
   }, []);
+
 
   useEffect(() => {
     // Apply filters whenever search inputs change
