@@ -28,9 +28,12 @@ export default function Listview({ clubs }: ListviewProps) {
     navigate(`/clubdetails/${clubId}`);
   };
 
+  // Filter approved clubs only
+  const approvedClubs = clubs.filter((club) => club.status === "approved");
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-      {clubs.map((club) => (
+      {approvedClubs.map((club) => (
         <Card
           key={club._id}
           className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-gray-200"
@@ -54,31 +57,12 @@ export default function Listview({ clubs }: ListviewProps) {
                 <span className="text-gray-500">No image available</span>
               </div>
             )}
-
-            {/* Status badge */}
-            {/* {club.status && (
-              <div className="absolute top-2 right-2">
-                <span
-                  className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    club.status === "approved"
-                      ? "bg-green-500 text-white"
-                      : club.status === "pending"
-                      ? "bg-yellow-500 text-white"
-                      : "bg-red-500 text-white"
-                  }`}
-                >
-                  {club.status.charAt(0).toUpperCase() + club.status.slice(1)}
-                </span>
-              </div>
-            )} */}
           </div>
 
           {/* Club Info */}
           <div className="p-4">
-            {/* Name */}
             <h3 className="text-xl font-bold mb-3 truncate">{club.name}</h3>
 
-            {/* Location */}
             <div className="flex items-center mb-2 text-gray-600">
               <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
               <span className="truncate">
@@ -86,13 +70,11 @@ export default function Listview({ clubs }: ListviewProps) {
               </span>
             </div>
 
-            {/* Contact */}
             <div className="flex items-center mb-4 text-gray-600">
               <Phone className="h-4 w-4 mr-2 flex-shrink-0" />
               <span>{club.contact}</span>
             </div>
 
-            {/* Buttons */}
             <div className="flex flex-col gap-2 mt-4">
               <Button
                 variant="default"
@@ -116,3 +98,4 @@ export default function Listview({ clubs }: ListviewProps) {
     </div>
   );
 }
+

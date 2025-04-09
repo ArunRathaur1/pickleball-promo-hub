@@ -1,25 +1,24 @@
-
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// Import marker icon to fix missing icon issue
+// Fix missing marker icon issue
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 
 export default function MapView({ clubs }) {
-  // Set default center to India (20.5937, 78.9629) with zoom level 5
   const indiaCenter: [number, number] = [20.5937, 78.9629];
   const defaultZoom = 5;
+
+  // Filter only approved clubs
+  const approvedClubs = clubs.filter((club) => club.status === "approved");
 
   return (
     <div className="w-full h-[500px] border border-border rounded-lg shadow-md overflow-hidden">
       <MapContainer center={indiaCenter} zoom={defaultZoom} className="h-full w-full">
-        {/* OpenStreetMap Tiles */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {/* Plot Club Locations */}
-        {clubs.map((club) => (
+        {approvedClubs.map((club) => (
           <Marker
             key={club._id}
             position={club.locationCoordinates}
