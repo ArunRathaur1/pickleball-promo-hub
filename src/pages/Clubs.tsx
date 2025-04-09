@@ -29,7 +29,7 @@ export default function Clubs() {
     }
 
     // Fetch data from the API
-    fetch("http://localhost:5000/clublist/approved")
+    fetch("http://localhost:5000/clublist/all")
       .then((res) => res.json())
       .then((data) => {
         setClubs(data);
