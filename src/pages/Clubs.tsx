@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import Listview from "@/components/userclubs/listview";
 import Mapview from "@/components/userclubs/Mapview";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 export default function Clubs() {
   const [clubs, setClubs] = useState([]);
   const [filteredClubs, setFilteredClubs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
   const [countries, setCountries] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Get user's geolocation
@@ -39,7 +41,6 @@ export default function Clubs() {
       })
       .catch((error) => console.error("Error fetching clubs:", error));
   }, []);
-
 
   useEffect(() => {
     // Apply filters whenever search inputs change
@@ -86,7 +87,7 @@ export default function Clubs() {
       <div className="container mx-auto px-4 py-8">
         {/* Search and Filters */}
         <div className="p-4 bg-card border border-border rounded-lg shadow-md mt-4 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             {/* Name Search */}
             <div>
               <label
@@ -129,20 +130,19 @@ export default function Clubs() {
             </div>
 
             {/* Reset Button */}
-            <div className="flex items-end">
+            <div className="flex items-end gap-2 col-span-1 md:col-span-1">
               <button
-                className="w-full p-2 bg-muted hover:bg-muted/80 text-foreground rounded-md transition duration-200 ease-in-out"
+                className="w-1/2 p-2 bg-muted hover:bg-muted/80 text-foreground rounded-md transition duration-200 ease-in-out"
                 onClick={resetFilters}
               >
                 Reset Filters
               </button>
-            </div>
-            <div className="flex items-end">
-              <Link to='/add-club'>
-                <button className="w-full p-2 bg-muted hover:bg-muted/80 text-foreground rounded-md transition duration-200 ease-in-out">
-                  Add Club
-                </button>
-              </Link>
+              <button
+                className="w-1/2 p-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition duration-200 ease-in-out"
+                onClick={() => navigate("/addclubs")}
+              >
+                + Add Club
+              </button>
             </div>
           </div>
         </div>

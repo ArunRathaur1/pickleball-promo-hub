@@ -27,8 +27,7 @@ import Sponser from './components/sponser/Sponser.js'
 import TournamentDetails from "./components/tournaments/tournamentDetails.tsx";
 import Clubdetails from "./components/userclubs/clubdetails.tsx";
 import { BlogDetail } from "./components/blogs/BlogDetail.tsx";
-import UsersClubForm from "./components/userclubs/form.tsx";
-import UpdateClub from "./components/admin/update-club.tsx";
+import ClubForm from "./components/admin-club/form.tsx";
 
 const queryClient = new QueryClient();
 
@@ -92,6 +91,7 @@ const App = () => {
             <Route path="/courts" element={<CourtPage />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="/addclubs" element={<ClubForm/>} />
             <Route path="/playerprofile/:id" element={<PlayerProfile />} />
             <Route path="/signup" element={<Register></Register>}></Route>
             <Route path="/tournament/:id" element={<TournamentDetails />} />
