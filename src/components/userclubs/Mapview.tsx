@@ -5,6 +5,8 @@ import L from "leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import "leaflet-geosearch/dist/geosearch.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 // Component to add search control to the map and autofill it
 const SearchControl = ({ userAddress }) => {
@@ -62,6 +64,7 @@ export default function MapView({ clubs }) {
   const defaultCenter = [20.5937, 78.9629]; // Center of India
   const [userCoordinates, setUserCoordinates] = useState(null);
   const [userAddress, setUserAddress] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -80,6 +83,9 @@ export default function MapView({ clubs }) {
     }
   }, []);
 
+  // ✅ Filter approved clubs only
+  const approvedClubs = clubs.filter((club) => club.status === "approved");
+
   return (
     <div className="w-full h-[500px] border border-border rounded-lg shadow-md overflow-hidden">
       <MapContainer
@@ -91,9 +97,7 @@ export default function MapView({ clubs }) {
         <SearchControl userAddress={userAddress} />
         <SetViewToUserLocation userCoordinates={userCoordinates} />
 
-        {/* User marker has been removed as requested */}
-
-        {clubs.map((club) => (
+        {approvedClubs.map((club) => (
           <Marker
             key={club._id}
             position={club.locationCoordinates}
@@ -104,7 +108,7 @@ export default function MapView({ clubs }) {
             })}
           >
             <Popup>
-              <div className="text-sm">
+              <div className="text-sm space-y-1">
                 <h3 className="font-bold">{club.name}</h3>
                 <p>
                   {club.location}, {club.country}
@@ -112,6 +116,12 @@ export default function MapView({ clubs }) {
                 {club.followers !== undefined && (
                   <p>👥 {club.followers} Followers</p>
                 )}
+                <Button
+                  className="mt-2 w-full text-xs bg-green-600 hover:bg-green-700 text-white"
+                  onClick={() => navigate(`/clubdetails/${club._id}`)}
+                >
+                  View Details
+                </Button>
               </div>
             </Popup>
           </Marker>
