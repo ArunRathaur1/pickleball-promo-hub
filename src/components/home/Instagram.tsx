@@ -29,24 +29,83 @@ export default function View() {
 
   useEffect(() => {
     if (posts.length > 0) {
+      // Remove any existing script to avoid duplication
+      const existingScript = document.getElementById("instagram-embed-script");
+      if (existingScript) {
+        existingScript.remove();
+      }
+      
+      // Add the script with an ID for better management
       const script = document.createElement("script");
       script.src = "https://www.instagram.com/embed.js";
+      script.id = "instagram-embed-script";
       script.async = true;
       document.body.appendChild(script);
+      
+      // Process embeds when the script loads
       script.onload = () => {
         if (window.instgrm) {
           window.instgrm.Embeds.process();
+          
+          // After processing, apply our custom style to hide profile buttons
+          setTimeout(() => {
+            hideProfileButtons();
+          }, 1000);
         }
       };
+      
+      // Retry processing after a delay to ensure embeds are fully loaded
+      const timer = setTimeout(() => {
+        if (window.instgrm) {
+          window.instgrm.Embeds.process();
+          hideProfileButtons();
+        }
+      }, 2000);
+      
+      return () => clearTimeout(timer);
     }
   }, [posts]);
+  
+  // Function to hide ONLY profile buttons at the top, keep View more buttons
+  const hideProfileButtons = () => {
+    // Wait for the Instagram embeds to fully load
+    setTimeout(() => {
+      // Find all Instagram embeds
+      const embeds = document.querySelectorAll('.instagram-media');
+      
+      embeds.forEach(embed => {
+        // Target specifically the header section that contains profile info
+        const headers = embed.querySelectorAll('header');
+        headers.forEach(header => {
+          // Find profile links in the header
+          const profileLinks = header.querySelectorAll('a[href*="instagram.com"]');
+          profileLinks.forEach(link => {
+            if (link.textContent.includes('View') && link.textContent.includes('profile')) {
+              link.style.display = 'none';
+            }
+          });
+        });
+        
+        // Alternative approach for different embed structures
+        const viewProfileLinks = embed.querySelectorAll('a[href*="instagram.com"]');
+        viewProfileLinks.forEach(link => {
+          const text = link.textContent.toLowerCase();
+          // Only hide if it's specifically a "view profile" link
+          // but NOT a "view more" link
+          if (text.includes('view') && text.includes('profile') && !text.includes('more')) {
+            link.style.display = 'none';
+          }
+        });
+      });
+    }, 2500);
+  };
 
   // Slider settings
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4, // Increased to show more slides
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -65,7 +124,6 @@ export default function View() {
         settings: { slidesToShow: 1, slidesToScroll: 1 },
       },
     ],
-    // Add spacing between slides
     centerPadding: "10px",
   };
 
@@ -94,51 +152,83 @@ export default function View() {
 
         {/* Instagram Posts Carousel */}
         {!loading && posts.length > 0 && (
-          <div className="mb-6">
-            {/* Add custom styles to the slider container */}
+          <div className="mb-12">
             <div className="instagram-slider-container">
               <Slider {...settings} className="instagram-slider">
                 {posts.map((post) => (
-                  <div key={post._id} className="px-3"> {/* Increased padding for gap */}
-                    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden h-full">
-                      <blockquote
-                        className="instagram-media w-full"
-                        data-instgrm-permalink={post.url}
-                        data-instgrm-version="14"
-                        style={{
-                          minWidth: "100%",
-                          height: "350px", // Fixed height
-                          border: "none",
-                          overflow: "hidden",
-                          margin: 0,
-                        }}
-                      ></blockquote>
+                  <div key={post._id} className="px-2">
+                    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+                      <div className="instagram-embed-container" style={{ position: "relative", paddingBottom: "30px" }}>
+                        <blockquote
+                          className="instagram-media w-full"
+                          data-instgrm-permalink={post.url}
+                          data-instgrm-version="14"
+                          style={{
+                            margin: 0,
+                            width: "100%",
+                            height: "500px", // Increased height to ensure view more shows
+                            border: "none",
+                            overflow: "visible",
+                          }}
+                        ></blockquote>
+                      </div>
                     </div>
                   </div>
                 ))}
               </Slider>
             </div>
             
-            {/* Add custom CSS for improved spacing */}
+            {/* Custom CSS for improved spacing and to hide ONLY View Profile buttons */}
             <style jsx>{`
               /* Custom styles for the slider */
               :global(.instagram-slider .slick-track) {
                 display: flex;
-                gap: 12px; /* Add gap between slides */
+                gap: 12px;
               }
               
               :global(.instagram-slider .slick-slide) {
-                height: inherit;
-                margin: 0 8px; /* Additional margin between slides */
+                height: auto;
+                margin: 0 8px;
               }
               
               :global(.instagram-slider .slick-list) {
-                margin: 0 -8px; /* Compensate for slide margin */
-                padding: 10px 0; /* Add padding to show shadows */
+                margin: 0 -8px;
+                padding: 10px 0;
+                overflow: visible;
               }
               
               :global(.slick-dots) {
-                bottom: -30px; /* Move dots down a bit */
+                bottom: -30px;
+              }
+              
+              /* Fix for Instagram embeds */
+              :global(.instagram-embed-container) {
+                min-height: 500px;
+              }
+              
+              :global(.instagram-embed-container iframe) {
+                min-height: 500px !important;
+              }
+              
+              /* Hide ONLY profile links in header */
+              :global(.instagram-media header a[href*="instagram.com"][role="link"]) {
+                display: none !important;
+              }
+              
+              /* More specific targeting for the View Profile button */
+              :global(.instagram-media header a[href*="instagram.com"]:not([aria-label*="Like"]):not([aria-label*="Comment"])) {
+                display: none !important;
+              }
+              
+              /* Target specifically view profile text links but NOT view more */
+              :global(.instagram-media a[href*="instagram.com"]:not([href*="p%2F"]):not([href*="reel%2F"])) {
+                display: none !important;
+              }
+              
+              /* Ensure the "View more" button remains visible */
+              :global(.instagram-media a[href*="p%2F"]), 
+              :global(.instagram-media a[href*="reel%2F"]) {
+                display: inline-block !important;
               }
             `}</style>
           </div>
