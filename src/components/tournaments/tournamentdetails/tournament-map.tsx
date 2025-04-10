@@ -1,11 +1,9 @@
-
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
-// Fix marker icon issue in Leaflet with React
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
+
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import "leaflet-geosearch/dist/geosearch.css";
 
@@ -79,7 +77,7 @@ const SetViewToUserLocation = ({
   return null;
 };
 
-export function TournamentMap({ tournaments }: TournamentMapProps) {
+export  function TournamentMap({ tournaments }: TournamentMapProps) {
   const defaultCenter: [number, number] = [20.5937, 78.9629]; // Center of India
   const [userCoordinates, setUserCoordinates] = useState<
     [number, number] | null
@@ -107,10 +105,6 @@ export function TournamentMap({ tournaments }: TournamentMapProps) {
         center={userCoordinates || defaultCenter}
         zoom={5}
         className="h-full w-full"
-        whenReady={(map) => map.target.on('click', () => {
-          // Interactive map click effect
-          console.log('Map clicked');
-        })}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
