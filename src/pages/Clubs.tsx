@@ -156,12 +156,21 @@ export default function Clubs() {
         <div className="flex-1 p-6 bg-card border border-border rounded-lg shadow-md">
           {/* Desktop and Laptop View: Side by Side */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="w-full" style={{ zIndex: "1" }}>
-              {/* Render Mapview with filtered clubs */}
+            {/* Sticky Mapview on the left */}
+            <div
+              className="w-full"
+              style={{
+                position: "sticky",
+                top: "1rem",
+                height: "fit-content",
+                zIndex: 1,
+              }}
+            >
               <Mapview clubs={filteredClubs} />
             </div>
-            <div className="w-full" style={{ zIndex: "100" }}>
-              {/* Render Listview with filtered clubs */}
+
+            {/* Scrollable Listview */}
+            <div className="w-full" style={{ zIndex: 100 }}>
               <Listview clubs={filteredClubs} />
             </div>
           </div>
