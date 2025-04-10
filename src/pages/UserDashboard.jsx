@@ -41,14 +41,14 @@ const UserDashboard = () => {
                 Manage your tournaments and services
               </p>
             </div>
-            {/* <div className="mt-4 md:mt-0">
-              <Link to="/courts/submit">
+            <div className="mt-4 md:mt-0">
+              <Link to="/addclubs">
                 <Button className="bg-pickle hover:bg-pickle-dark">
                   <PlusCircle className="mr-2 h-4 w-4" />
-                  Add Court
+                  Add Clubs
                 </Button>
               </Link>
-            </div> */}
+            </div>
             <div className="mt-4 md:mt-0">
               <Link to="/tournaments/submit">
                 <Button className="bg-pickle hover:bg-pickle-dark">
@@ -61,18 +61,18 @@ const UserDashboard = () => {
 
           <Tabs defaultValue="profile">
             <TabsList className="mb-8">
-              <TabsTrigger value="tournaments">My Tournaments</TabsTrigger>
-              <TabsTrigger value="services">My Services</TabsTrigger>
+              {/* <TabsTrigger value="tournaments">My Tournaments</TabsTrigger> */}
+              {/* <TabsTrigger value="services">My Services</TabsTrigger> */}
               <TabsTrigger value="profile">Profile</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="tournaments">
+            {/* <TabsContent value="tournaments">
               <UserTournaments />
             </TabsContent>
 
             <TabsContent value="services">
               <UserServices />
-            </TabsContent>
+            </TabsContent> */}
 
             <TabsContent value="profile">
               <UserProfile />
