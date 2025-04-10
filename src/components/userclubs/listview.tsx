@@ -83,14 +83,15 @@ export default function Listview({ clubs }: ListviewProps) {
               >
                 View Details
               </Button>
-
-              <Button
-                variant="outline"
-                className="w-full border-green-600 text-green-600 hover:bg-green-50"
-              >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Book Now
-              </Button>
+              <a href={`${club.bookinglink}`} target="_blank">
+                <Button
+                  variant="outline"
+                  className="w-full border-green-600 text-green-600 hover:bg-green-50"
+                >
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Book Now
+                </Button>
+              </a>
             </div>
           </div>
         </Card>

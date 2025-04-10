@@ -15,15 +15,31 @@ router.post("/add", async (req, res) => {
       clubimageUrl,
       logoimageUrl,
       description,
+      bookinglink, // <-- added
     } = req.body;
 
-    if (!name || !email || !contact || !location || !country || !locationCoordinates || !clubimageUrl || !logoimageUrl || !description) {
+    if (
+      !name ||
+      !email ||
+      !contact ||
+      !location ||
+      !country ||
+      !locationCoordinates ||
+      !clubimageUrl ||
+      !logoimageUrl ||
+      !description ||
+      !bookinglink // <-- added check
+    ) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    if (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2) {
+    if (
+      !Array.isArray(locationCoordinates) ||
+      locationCoordinates.length !== 2
+    ) {
       return res.status(400).json({
-        message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
+        message:
+          "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
       });
     }
 
@@ -37,12 +53,12 @@ router.post("/add", async (req, res) => {
       clubimageUrl,
       logoimageUrl,
       description,
-      status: "pending", // default
+      bookinglink, // <-- added
+      status: "pending",
     });
 
     await newClub.save();
     res.status(201).json({ message: "Club added successfully", club: newClub });
-
   } catch (error) {
     console.error("Error in /add route:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -82,25 +98,31 @@ router.patch("/update/:id", async (req, res) => {
       (!Array.isArray(locationCoordinates) || locationCoordinates.length !== 2)
     ) {
       return res.status(400).json({
-        message: "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
+        message:
+          "Invalid locationCoordinates format. Must be an array of [latitude, longitude].",
       });
     }
 
-    const updatedClub = await Clublist.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true, // ensures Mongoose validation is applied
-    });
+    const updatedClub = await Clublist.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!updatedClub) {
       return res.status(404).json({ message: "Club not found" });
     }
 
-    res.status(200).json({ message: "Club updated successfully", club: updatedClub });
+    res
+      .status(200)
+      .json({ message: "Club updated successfully", club: updatedClub });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-
 
 // ✅ Delete a club by ID
 router.delete("/delete/:id", async (req, res) => {
@@ -151,7 +173,9 @@ router.patch("/status/:id", async (req, res) => {
       return res.status(404).json({ message: "Club not found" });
     }
 
-    res.status(200).json({ message: `Club status updated to ${status}`, club: updated });
+    res
+      .status(200)
+      .json({ message: `Club status updated to ${status}`, club: updated });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
