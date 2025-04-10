@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, LogOut, User, Moon, Sun } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ export function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const { theme, setTheme } = useTheme();
+  const location = useLocation();
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -74,27 +76,42 @@ export function Navbar() {
       window.location.href = "http://localhost:8080";
     }
   }
+  
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  // Check if a nav item is active
+  const isActiveLink = (href) => {
+    if (href === "/") {
+      return location.pathname === href;
+    }
+    return location.pathname.startsWith(href);
+  };
+
   return (
-    <header className="border-b bg-background shadow-sm">
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center space-x-2">
-              <img src={image} alt="Pickleball Logo" className="h-10 w-auto dark:bg-white bg-black rounded-full p-1" />
-              <span className="text-foreground font-semibold text-lg hidden sm:block">PickleballHub</span>
+            <Link to="/" className="flex-shrink-0 flex items-center space-x-2 group">
+              <img src={image} alt="Pickleball Logo" className="h-10 w-auto dark:bg-white bg-black rounded-full p-1 transition-transform group-hover:scale-110 duration-300" />
+              <span className="text-foreground font-semibold text-lg hidden sm:block">
+                Pickle<span className="text-pickle">ball</span>Hub
+              </span>
             </Link>
           </div>
 
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-1">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.label}
                 to={item.href}
-                className="text-foreground/80 hover:text-pickle transition-colors text-sm font-medium"
+                className={`nav-item px-3 py-2 rounded-md text-sm font-medium ${
+                  isActiveLink(item.href)
+                    ? "active text-pickle"
+                    : "text-foreground/80 hover:text-pickle transition-colors"
+                }`}
               >
                 {item.label}
               </Link>
@@ -127,15 +144,15 @@ export function Navbar() {
               <div className="flex items-center space-x-4">
                 <Link
                   to="/dashboard"
-                  className="flex items-center text-sm font-medium text-foreground/80 hover:text-pickle"
+                  className="flex items-center text-sm font-medium text-foreground/80 hover:text-pickle transition-colors"
                 >
                   <User className="h-4 w-4 mr-1" />
-                  {userName}
+                  <span className="hover:underline">{userName}</span>
                 </Link>
                 <Button
                   onClick={handleLogout}
                   variant="outline"
-                  className="flex items-center"
+                  className="flex items-center btn-animated"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout
@@ -144,7 +161,10 @@ export function Navbar() {
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="ghost">Login</Button>
+                  <Button variant="ghost" className="hover:text-pickle hover:bg-pickle/10">Login</Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="bg-pickle hover:bg-pickle-dark text-white btn-animated">Sign Up</Button>
                 </Link>
               </>
             )}
@@ -181,13 +201,18 @@ export function Navbar() {
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur-sm">
+        <div className="md:hidden bg-background/95 backdrop-blur-sm animate-fade-in">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.map((item, index) => (
               <Link
                 key={item.label}
                 to={item.href}
-                className="text-foreground/80 hover:text-pickle block px-3 py-2 rounded-md text-base font-medium"
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  isActiveLink(item.href)
+                    ? "text-pickle bg-pickle/10"
+                    : "text-foreground/80 hover:text-pickle hover:bg-pickle/5"
+                } stagger-item stagger-appear`}
+                style={{ animationDelay: `${index * 0.05}s` }}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
@@ -228,7 +253,7 @@ export function Navbar() {
                   </Link>
                   <Link
                     to="/signup"
-                    className="text-pickle hover:bg-pickle/10 hover:text-pickle-dark block px-3 py-2 rounded-md text-base font-medium"
+                    className="bg-pickle text-white hover:bg-pickle-dark block px-3 py-2 rounded-md text-base font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Get Started

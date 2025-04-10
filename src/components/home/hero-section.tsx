@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,11 +18,11 @@ import hero10 from "../../images/8.jpeg";
 import hero11 from "../../images/13.jpg";
 
 // Sample images for carousel
-// const HERO_IMAGES = [hero1, hero2, hero3,hero4,hero5];
 const HERO_IMAGES=[hero1,hero2,hero3,hero4,hero5,hero6,hero7,hero8,hero9,hero10,hero11];
 
 export function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
   
   // Image carousel logic
   useEffect(() => {
@@ -30,6 +31,11 @@ export function HeroSection() {
     }, 5000);
     
     return () => clearInterval(interval);
+  }, []);
+  
+  // Animation on mount
+  useEffect(() => {
+    setIsVisible(true);
   }, []);
   
   return (
@@ -57,23 +63,35 @@ export function HeroSection() {
       {/* Content */}
       <div className="container relative z-20 py-20 md:py-32 lg:py-40">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in">
+          <h1 
+            className={`text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 transition-all duration-1000 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
             Pickle <span className="text-pickle">Made</span> Social
           </h1>
           
-          <p className="text-lg md:text-xl text-white/90 mb-8 animate-fade-in" style={{ animationDelay: "200ms" }}>
+          <p 
+            className={`text-lg md:text-xl text-white/90 mb-8 transition-all duration-1000 delay-200 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
             The premier digital marketing agency exclusively for pickleball athletes, tournaments, and brands.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: "400ms" }}>
+          <div 
+            className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-1000 delay-400 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
             <Link to="/contact">
-              <Button size="lg" className="bg-pickle hover:bg-pickle-dark group">
+              <Button size="lg" className="bg-pickle hover:bg-pickle-dark group btn-animated">
                 Get in Touch
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/services">
-              <Button size="lg" variant="outline" className="text-black border-white hover:bg-purple-500">
+              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 hover:text-white btn-animated">
                 Our Services
               </Button>
             </Link>
