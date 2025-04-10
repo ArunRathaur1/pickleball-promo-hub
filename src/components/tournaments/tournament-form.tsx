@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import CloudinaryImageUploader from "../admin-club/imageupload";
 import {
   MapContainer,
   TileLayer,
@@ -104,6 +105,8 @@ const TournamentForm = () => {
           return value >= this.parent.startDate;
         }
       ),
+      imageUrl: Yup.string().required("Image/logo is required"),
+
     description: Yup.string().required("Description is required"),
     locationCoords: Yup.array()
       .of(Yup.number())
@@ -171,6 +174,8 @@ const TournamentForm = () => {
           Tier: "",
           startDate: "",
           endDate: "",
+          imageUrl: "",
+
           description: "",
           locationCoords: initialLocation,
         }}
@@ -315,6 +320,19 @@ const TournamentForm = () => {
                 />
               </div>
             </div>
+
+            <div>
+  <Label className="block mb-2">Upload Tournament Logo</Label>
+  <CloudinaryImageUploader
+    onUploadSuccess={(url) => setFieldValue("imageUrl", url)}
+  />
+  <ErrorMessage
+    name="imageUrl"
+    component="div"
+    className="text-red-500 text-sm mt-1"
+  />
+</div>
+
 
             {/* Description */}
             <div>

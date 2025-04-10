@@ -6,7 +6,7 @@ const router = express.Router();
 // Add a new tournament with location (lat, lng)
 router.post('/add', async (req, res) => {
     try {
-        const { name, Organizer, location, country, Continent, Tier, startDate, endDate, description, locationCoords } = req.body;
+        const { name, Organizer, location, country, Continent, Tier, startDate, endDate,imageUrl, description, locationCoords } = req.body;
 
         if (!Array.isArray(locationCoords) || locationCoords.length !== 2) {
             return res.status(400).json({ message: "Invalid location coordinates. Provide [latitude, longitude]." });
@@ -21,6 +21,7 @@ router.post('/add', async (req, res) => {
             Tier,
             startDate,
             endDate,
+            imageUrl,
             description,
             locationCoords
         });

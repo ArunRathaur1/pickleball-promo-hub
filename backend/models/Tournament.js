@@ -34,6 +34,10 @@ const tournamentSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,
@@ -53,6 +57,7 @@ const tournamentSchema = new mongoose.Schema({
     enum: ["pending", "approved", "rejected"],
     default: "pending",
   },
+  
   createdAt: {
     type: Date,
     default: Date.now,
