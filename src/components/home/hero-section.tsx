@@ -68,7 +68,7 @@ export function HeroSection() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            Pickle <span className="text-pickle">Made</span> Social
+            Pickleball <span className="text-pickle">Made</span> Social
           </h1>
           
           <p 
@@ -91,7 +91,7 @@ export function HeroSection() {
               </Button>
             </Link>
             <Link to="/services">
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 hover:text-white btn-animated">
+              <Button size="lg" variant="outline" className="text-black border-white hover:bg-white/10 hover:text-white btn-animated">
                 Our Services
               </Button>
             </Link>

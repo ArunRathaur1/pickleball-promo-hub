@@ -63,7 +63,7 @@ export function CTASection() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white/10 btn-animated"
+                className="border-white text-black hover:bg-white/10 btn-animated"
               >
                 Contact Us
                 <ArrowRight className="ml-2 h-4 w-4" />

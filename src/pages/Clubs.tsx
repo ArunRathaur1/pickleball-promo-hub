@@ -85,8 +85,8 @@ export default function Clubs() {
       <Navbar />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Search and Filters */}
-        <div className="p-4 bg-card border border-border rounded-lg shadow-md mt-4 mb-6">
+        {/* Search and Filters - Fixed at the top */}
+        <div className="sticky top-0 z-10 p-4 bg-card border border-border rounded-lg shadow-md mt-4 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             {/* Name Search */}
             <div>
@@ -152,33 +152,23 @@ export default function Clubs() {
           Showing {filteredClubs.length} of {clubs.length} clubs
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 p-6 bg-card border border-border rounded-lg shadow-md">
-          {/* Desktop and Laptop View: Side by Side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Sticky Mapview on the left */}
-            <div
-              className="w-full"
-              style={{
-                position: "sticky",
-                top: "1rem",
-                height: "fit-content",
-                zIndex: 1,
-              }}
-            >
-              <Mapview clubs={filteredClubs} />
-            </div>
-
-            {/* Scrollable Listview */}
-            <div className="w-full" style={{ zIndex: 100 }}>
-              <Listview clubs={filteredClubs} />
-            </div>
+        {/* Main Content with Two Columns Layout for Desktop */}
+        <div className="flex flex-col md:flex-row gap-4">
+          {/* Map Section - Fixed position on desktop */}
+          <div className="md:w-1/2 md:sticky md:top-32 md:self-start md:h-screen md:max-h-[calc(100vh-180px)] overflow-hidden rounded-lg shadow-md border border-border bg-card">
+            <Mapview clubs={filteredClubs} />
           </div>
 
-          {/* Mobile View: Only Listview */}
-          <div className="md:hidden">
+          {/* Listview - Scrollable */}
+          <div className="md:w-1/2 p-6 bg-card border border-border rounded-lg shadow-md">
             <Listview clubs={filteredClubs} />
           </div>
+        </div>
+
+        {/* Mobile View: Responsive handling */}
+        <div className="md:hidden mt-6 p-6 bg-card border border-border rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-4">Club List</h2>
+          <Listview clubs={filteredClubs} />
         </div>
       </div>
     </div>
