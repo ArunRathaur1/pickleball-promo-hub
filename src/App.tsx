@@ -24,7 +24,7 @@ import Blogpage from "./pages/Blogpage.js";
 import Clubs from "./pages/Clubs.js";
 import Chatbot from "./components/Chatbot";
 import Sponser from './components/sponser/Sponser.js'
-import TournamentDetails from "./components/tournaments/tournamentDetails.tsx";
+import TournamentDetails from "./components/tournaments/tournamentdetails/tournamentDetails.tsx";
 import Clubdetails from "./components/userclubs/clubdetails.tsx";
 import { BlogDetail } from "./components/blogs/BlogDetail.tsx";
 import ClubForm from "./components/admin-club/form.tsx";

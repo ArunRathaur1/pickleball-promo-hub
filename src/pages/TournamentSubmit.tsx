@@ -1,7 +1,7 @@
 
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import  TournamentForm  from "@/components/tournaments/tournament-form";
+import  TournamentForm  from "@/components/tournaments/tournamentform/tournament-form";
 import { LoggedNavbar } from "@/components/layout/loggednavbar";
 
 const TournamentSubmit = () => {

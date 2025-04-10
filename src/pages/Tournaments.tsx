@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { TournamentList } from "@/components/tournaments/tournament-list";
-import { TournamentMap } from "@/components/tournaments/tournament-map";
+import { TournamentList } from "@/components/tournaments/tournamentdetails/tournament-list";
+import { TournamentMap } from "@/components/tournaments/tournamentdetails/tournament-map";
 import { Calendar, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Filter } from "lucide-react";
 
 const Tournaments = () => {
