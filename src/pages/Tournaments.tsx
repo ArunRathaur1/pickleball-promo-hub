@@ -521,7 +521,7 @@ const Tournaments = () => {
                         draggable
                         onDrag={(e) => {
                           if (e.clientX === 0) return; // Ignore end of drag
-                          const slider = e.target.parentElement;
+                          const slider = (e.target as HTMLElement).parentElement;
                           const rect = slider.getBoundingClientRect();
                           const position =
                             ((e.clientX - rect.left) / rect.width) * 100;
@@ -539,7 +539,7 @@ const Tournaments = () => {
                         draggable
                         onDrag={(e) => {
                           if (e.clientX === 0) return; // Ignore end of drag
-                          const slider = e.target.parentElement;
+                          const slider = (e.target as HTMLElement).parentElement;
                           const rect = slider.getBoundingClientRect();
                           const position =
                             ((e.clientX - rect.left) / rect.width) * 100;

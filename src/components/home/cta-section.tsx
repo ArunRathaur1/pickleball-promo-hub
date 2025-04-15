@@ -70,28 +70,28 @@ export function CTASection() {
             transition={{ duration: 0.5, delay: 0.6 }}
           >
             <Link to="/sponsor" target="_blank">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="bg-white text-[#123c2f] hover:bg-white/90 group transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Our Sponsors
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-[#123c2f] hover:bg-white/90 group transition-all duration-300"
+                >
+                  Our Sponsors
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </motion.div>
             </Link>
             <Link to="/contact">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white/10 transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Contact Us
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/10 transition-all duration-300"
+                >
+                  Contact Us
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </motion.div>
             </Link>
           </motion.div>
         </motion.div>

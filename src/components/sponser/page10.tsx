@@ -1,172 +1,266 @@
-"use client";
-import React, { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { Navbar } from "../layout/navbar";
+import { Footer } from "../layout/footer";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
-const CampaignForm: React.FC = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+export default function Page10() {
+  const [isVisible, setIsVisible] = useState(false);
 
-  const [shake, setShake] = useState(false);
-  const [status, setStatus] = useState<string | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setShake(true);
-    setTimeout(() => setShake(false), 500);
-
-    const form = e.currentTarget;
-    const formData = {
-      name: form.name.value,
-      company: form.company.value,
-      email: form.email.value,
-      message: form.message.value,
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      if (scrollPosition > 100) {
+        setIsVisible(true);
+      }
     };
 
-    try {
-      const response = await fetch("http://localhost:5000/inquary/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    window.addEventListener("scroll", handleScroll);
+    // Check on initial load too
+    handleScroll();
 
-      if (response.ok) {
-        console.log("Form submitted successfully!");
-        setStatus("Form submitted successfully!");
-        form.reset();
-      } else {
-        console.error("Failed to submit form");
-        setStatus("Failed to submit form.");
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setStatus("Error submitting form.");
-    }
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    setTimeout(() => setStatus(null), 3000); // Auto-clear after 3s
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+      },
+    },
   };
 
   return (
-    <div
-      id="container02"
-      className="w-full bg-white py-12 flex justify-center transition-all duration-500"
-    >
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 50 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-        className="max-w-4xl w-full px-6"
-      >
-        <div className="text-center mb-8">
-          <p className="text-lg font-semibold text-gray-600">
-            Let's hit your campaign goals
-          </p>
-          <motion.h2
-            className="text-3xl font-bold text-gray-900"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={isInView ? { scale: 1, opacity: 1 } : {}}
-            transition={{ duration: 0.4, delay: 0.2 }}
+    <>
+      <Navbar />
+      <div className="bg-gradient-to-b from-white to-gray-100 py-20">
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            What We Offer
-          </motion.h2>
-          <p className="text-gray-500 mt-2">
-            Product Launches, Brand Awareness, Events, Livestreams, Giveaways,
-            Travel & Getaways, PR & Announcements, B2B Lead Generation, Custom
-            Paddles
-          </p>
-        </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Our Sponsors
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              We're proud to partner with these amazing organizations who share
+              our passion for pickleball and community building.
+            </p>
+          </motion.div>
 
-        {/* Form */}
-        <motion.form
-          id="form01"
-          method="post"
-          onSubmit={handleSubmit}
-          className={`bg-white shadow-lg rounded-lg p-6 transition-all ${
-            shake ? "animate-shake" : ""
-          }`}
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Name Field */}
-            <motion.input
-              type="text"
-              name="name"
-              placeholder="Name"
-              maxLength={128}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all"
-              whileFocus={{ scale: 1.05 }}
-            />
-
-            {/* Company Name */}
-            <motion.input
-              type="text"
-              name="company"
-              placeholder="Company Name"
-              maxLength={128}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all"
-              whileFocus={{ scale: 1.05 }}
-            />
-
-            {/* Email */}
-            <motion.input
-              type="email"
-              name="email"
-              placeholder="Email"
-              maxLength={128}
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all"
-              whileFocus={{ scale: 1.05 }}
-            />
-          </div>
-
-          {/* Message Field */}
-          <motion.textarea
-            name="message"
-            placeholder="Message"
-            maxLength={16384}
-            required
-            className="w-full mt-4 p-3 border border-gray-300 rounded-lg h-32 resize-none focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all"
-            whileFocus={{ scale: 1.02 }}
-          ></motion.textarea>
-
-          {/* Status Message */}
-          {status && (
-            <p className="text-center text-sm text-gray-600 mt-4">{status}</p>
-          )}
-
-          {/* Submit Button */}
-          <div className="mt-6 flex justify-center">
-            <motion.button
-              type="submit"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-all shadow-md"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+          >
+            {/* Sponsor 1 */}
+            <motion.div
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              variants={itemVariants}
             >
-              <span>Send Request</span>
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+              <div className="h-48 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                <span className="text-white text-2xl font-bold">
+                  Sponsor Logo
+                </span>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Premium Sponsor
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Leading provider of premium pickleball equipment and
+                  accessories, supporting players at all levels.
+                </p>
+                <a
+                  href="#"
+                  className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center"
+                >
+                  Visit Website <ArrowRight className="ml-1 h-4 w-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Sponsor 2 */}
+            <motion.div
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              variants={itemVariants}
+            >
+              <div className="h-48 bg-gradient-to-r from-green-500 to-teal-600 flex items-center justify-center">
+                <span className="text-white text-2xl font-bold">
+                  Sponsor Logo
+                </span>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Event Partner
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Dedicated to creating exceptional pickleball events and
+                  tournaments across the country.
+                </p>
+                <a
+                  href="#"
+                  className="text-green-600 hover:text-green-800 font-medium inline-flex items-center"
+                >
+                  Visit Website <ArrowRight className="ml-1 h-4 w-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Sponsor 3 */}
+            <motion.div
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              variants={itemVariants}
+            >
+              <div className="h-48 bg-gradient-to-r from-amber-500 to-orange-600 flex items-center justify-center">
+                <span className="text-white text-2xl font-bold">
+                  Sponsor Logo
+                </span>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Community Supporter
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Focused on growing the pickleball community through grassroots
+                  initiatives and local programs.
+                </p>
+                <a
+                  href="#"
+                  className="text-amber-600 hover:text-amber-800 font-medium inline-flex items-center"
+                >
+                  Visit Website <ArrowRight className="ml-1 h-4 w-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Sponsor 4 */}
+            <motion.div
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              variants={itemVariants}
+            >
+              <div className="h-48 bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center">
+                <span className="text-white text-2xl font-bold">
+                  Sponsor Logo
+                </span>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Technology Partner
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Bringing innovative technology solutions to enhance the
+                  pickleball experience for players and fans.
+                </p>
+                <a
+                  href="#"
+                  className="text-red-600 hover:text-red-800 font-medium inline-flex items-center"
+                >
+                  Visit Website <ArrowRight className="ml-1 h-4 w-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Sponsor 5 */}
+            <motion.div
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              variants={itemVariants}
+            >
+              <div className="h-48 bg-gradient-to-r from-indigo-500 to-violet-600 flex items-center justify-center">
+                <span className="text-white text-2xl font-bold">
+                  Sponsor Logo
+                </span>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Apparel Sponsor
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Crafting high-performance pickleball apparel designed for
+                  comfort, style, and peak performance.
+                </p>
+                <a
+                  href="#"
+                  className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center"
+                >
+                  Visit Website <ArrowRight className="ml-1 h-4 w-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Sponsor 6 */}
+            <motion.div
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              variants={itemVariants}
+            >
+              <div className="h-48 bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center">
+                <span className="text-white text-2xl font-bold">
+                  Sponsor Logo
+                </span>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Nutrition Partner
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Providing athletes with premium nutrition products to fuel
+                  their pickleball performance and recovery.
+                </p>
+                <a
+                  href="#"
+                  className="text-cyan-600 hover:text-cyan-800 font-medium inline-flex items-center"
+                >
+                  Visit Website <ArrowRight className="ml-1 h-4 w-4" />
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            className="mt-16 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+          >
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+              Interested in becoming a sponsor?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+              Join our growing network of partners and connect with the
+              pickleball community. We offer various sponsorship packages to meet
+              your marketing goals.
+            </p>
+            <Link to="/contact">
+              <Button
+                size="lg"
+                className="bg-[#123c2f] hover:bg-[#0b2820] text-white px-8"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7"
-                ></path>
-              </svg>
-            </motion.button>
-          </div>
-
-          <input type="hidden" name="id" value="form01" />
-        </motion.form>
-      </motion.div>
-    </div>
+                Contact Us About Sponsorship
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </div>
+      <Footer />
+    </>
   );
-};
-
-export default CampaignForm;
+}
