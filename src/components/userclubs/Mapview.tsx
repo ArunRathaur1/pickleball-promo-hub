@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -40,7 +41,10 @@ const SearchControl = ({ userAddress }) => {
       }, 1000);
     }
 
-    return () => map.removeControl(searchControl);
+    // Return cleanup function
+    return () => {
+      map.removeControl(searchControl);
+    };
   }, [map, userAddress]);
 
   return null;
@@ -74,7 +78,7 @@ export default function MapView({ clubs }) {
         setUserCoordinates(coords);
 
         const provider = new OpenStreetMapProvider();
-        const results = await provider.search({ query: `${lat},${lon}` }); // ✅ Fixed string interpolation
+        const results = await provider.search({ query: `${lat},${lon}` });
         if (results[0]?.label) {
           setUserAddress(results[0].label);
         }
@@ -82,7 +86,7 @@ export default function MapView({ clubs }) {
     }
   }, []);
 
-  // ✅ Filter approved clubs only
+  // Filter approved clubs only
   const approvedClubs = clubs.filter((club) => club.status === "approved");
 
   return (
@@ -117,7 +121,7 @@ export default function MapView({ clubs }) {
                 )}
                 <Button
                   className="mt-2 w-full text-xs bg-green-600 hover:bg-green-700 text-white"
-                  onClick={() => navigate(`/clubdetails/${club._id}`)} // ✅ Fixed template string
+                  onClick={() => navigate(`/clubdetails/${club._id}`)}
                 >
                   View Details
                 </Button>

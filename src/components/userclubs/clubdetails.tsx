@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
@@ -194,8 +195,6 @@ export default function ClubDetails() {
                 </div>
               </div>
 
-              
-
               {club.description && (
                 <div className="mt-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-2">
@@ -229,7 +228,9 @@ export default function ClubDetails() {
                   ]}
                   zoom={13}
                   style={{ height: "100%", width: "100%", minHeight: "500px" }}
-                  whenCreated={(map) => (mapRef.current = map)}
+                  ref={(map) => {
+                    if (map) mapRef.current = map;
+                  }}
                 >
                   <TileLayer
                     attribution="&copy; OpenStreetMap contributors"
