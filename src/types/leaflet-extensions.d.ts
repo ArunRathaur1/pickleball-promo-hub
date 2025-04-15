@@ -5,9 +5,20 @@ import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 // Add additional properties to the L namespace
 declare module 'leaflet' {
   namespace Icon {
-    interface Default {
-      options: L.IconOptions;
-      _getIconUrl: () => string;
+    interface IconOptions {
+      iconRetinaUrl?: string;
+      iconUrl: string;
+      shadowUrl?: string;
+      iconSize?: [number, number];
+      iconAnchor?: [number, number];
+      popupAnchor?: [number, number];
+      shadowSize?: [number, number];
+    }
+
+    // Fix Default accessor
+    class Default extends L.Icon {
+      constructor(options?: IconOptions);
+      _getIconUrl(name: string): string;
     }
   }
 
@@ -16,7 +27,7 @@ declare module 'leaflet' {
     addControl: (control: any) => this;
     removeControl: (control: any) => this;
     on: (event: string, handler: any) => this;
-    off: (event: string, handler: any) => this;
+    off: (event: string, handler: any, context?: any) => this;
     setView: (center: L.LatLngExpression, zoom?: number, options?: L.ZoomPanOptions) => this;
   }
 

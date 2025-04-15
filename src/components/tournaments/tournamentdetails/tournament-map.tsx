@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -54,7 +55,9 @@ const SearchControl = ({ userAddress }: { userAddress: string }) => {
       }, 1000);
     }
 
-    return () => map.removeControl(searchControl);
+    return () => {
+      map.removeControl(searchControl);
+    };
   }, [map, userAddress]);
 
   return null;

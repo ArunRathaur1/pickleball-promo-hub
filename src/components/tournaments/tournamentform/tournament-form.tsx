@@ -6,30 +6,32 @@ import { useNavigate } from "react-router-dom";
 import CloudinaryImageUploader from "../../admin-club/imageupload";
 import L from "leaflet";
 import MapLocationSection from "./MapLocationSection";
-import TournamentFormFields from "./FormActions";
 import FormActions from "./FormActions";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 // Initialize Leaflet default icon
-(L as any).Marker.prototype.options.icon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
+useEffect(() => {
+  delete (L as any).Marker.prototype.options.icon;
+  (L as any).Marker.prototype.options.icon = L.icon({
+    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+    iconRetinaUrl:
+      "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+}, []);
 
 const TournamentForm = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
-  const [initialLocation, setInitialLocation] = useState([37.7749, -122.4194]); // Default: San Francisco
-  const [markerPosition, setMarkerPosition] = useState(initialLocation);
+  const [initialLocation, setInitialLocation] = useState<[number, number]>([37.7749, -122.4194]); // Default: San Francisco
+  const [markerPosition, setMarkerPosition] = useState<[number, number]>(initialLocation);
   const mapRef = useRef(null);
 
   // List of continents for the dropdown
@@ -88,7 +90,7 @@ const TournamentForm = () => {
         }
       ),
       imageUrl: Yup.string().required("Image/logo is required"),
-
+    
     description: Yup.string().required("Description is required"),
     locationCoords: Yup.array()
       .of(Yup.number())
@@ -183,9 +185,35 @@ const TournamentForm = () => {
                 endDate: "",
                 imageUrl: "",
                 description: "",
-                locationCoords: initialLocation,
+                locationCoords: initialLocation as [number, number],
               }}
-              validationSchema={validationSchema}
+              validationSchema={Yup.object().shape({
+                name: Yup.string().required("Tournament name is required"),
+                Organizer: Yup.string().required("Organizer is required"),
+                location: Yup.string().required("Location is required"),
+                country: Yup.string().required("Country is required"),
+                Continent: Yup.string().required("Continent is required"),
+                Tier: Yup.number()
+                  .integer("Tier must be an integer")
+                  .required("Tier is required"),
+                startDate: Yup.date().required("Start date is required"),
+                endDate: Yup.date()
+                  .required("End date is required")
+                  .test(
+                    "is-greater-than-start",
+                    "End date must be later than start date",
+                    function (value) {
+                      return value >= this.parent.startDate;
+                    }
+                  ),
+                  imageUrl: Yup.string().required("Image/logo is required"),
+                
+                description: Yup.string().required("Description is required"),
+                locationCoords: Yup.array()
+                  .of(Yup.number())
+                  .length(2, "Location coordinates must have exactly 2 values")
+                  .required("Location coordinates are required"),
+              })}
               onSubmit={handleSubmit}
               enableReinitialize
             >
@@ -212,7 +240,8 @@ const TournamentForm = () => {
                         </span>
                         Basic Information
                       </h2>
-                      <TournamentFormFields
+                      <FormActions
+                        isSubmitting={isSubmitting}
                         continents={continents}
                         tiers={tiers}
                       />
@@ -314,156 +343,154 @@ const TournamentForm = () => {
                           <path
                             fillRule="evenodd"
                             d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                      Tournament Location
-                    </h2>
-                    <p className="text-gray-600 mb-4">
-                      Set the exact location of your tournament by searching or
-                      clicking on the map
-                    </p>
-
-                    <MapLocationSection
-                      initialLocation={initialLocation}
-                      markerPosition={markerPosition}
-                      setMarkerPosition={setMarkerPosition}
-                      setFieldValue={setFieldValue}
-                    />
-
-                    <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="md:col-span-2">
-                        <Label
-                          htmlFor="locationCoords"
-                          className="block mb-2 font-medium"
-                        >
-                          Location Coordinates
-                        </Label>
-                        <Input
-                          type="text"
-                          id="locationCoords"
-                          value={`[${markerPosition[0].toFixed(
-                            4
-                          )}, ${markerPosition[1].toFixed(4)}]`}
-                          readOnly
-                          className="bg-gray-50 border-gray-300 text-gray-500"
-                        />
-                        <ErrorMessage
-                          name="locationCoords"
-                          component="div"
-                          className="text-red-500 text-sm mt-1"
-                        />
-                      </div>
-
-                      <div className="flex items-end">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            // Get user's current location
-                            if (navigator.geolocation) {
-                              navigator.geolocation.getCurrentPosition(
-                                (position) => {
-                                  const { latitude, longitude } =
-                                    position.coords;
-                                  setMarkerPosition([latitude, longitude]);
-                                  setFieldValue("locationCoords", [
-                                    latitude,
-                                    longitude,
-                                  ]);
-                                }
-                              );
-                            }
-                          }}
-                          className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 mr-2 text-gray-500"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                               clipRule="evenodd"
                             />
                           </svg>
-                          Use My Location
+                        </span>
+                        Tournament Location
+                      </h2>
+                      <p className="text-gray-600 mb-4">
+                        Set the exact location of your tournament by searching or
+                        clicking on the map
+                      </p>
+
+                      <MapLocationSection
+                        initialLocation={initialLocation}
+                        markerPosition={markerPosition}
+                        setMarkerPosition={setMarkerPosition}
+                        setFieldValue={setFieldValue}
+                      />
+
+                      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="md:col-span-2">
+                          <Label
+                            htmlFor="locationCoords"
+                            className="block mb-2 font-medium"
+                          >
+                            Location Coordinates
+                          </Label>
+                          <Input
+                            type="text"
+                            id="locationCoords"
+                            value={`[${markerPosition[0].toFixed(
+                              4
+                            )}, ${markerPosition[1].toFixed(4)}]`}
+                            readOnly
+                            className="bg-gray-50 border-gray-300 text-gray-500"
+                          />
+                          <ErrorMessage
+                            name="locationCoords"
+                            component="div"
+                            className="text-red-500 text-sm mt-1"
+                          />
+                        </div>
+
+                        <div className="flex items-end">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              // Get user's current location
+                              if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(
+                                  (position) => {
+                                    const { latitude, longitude } =
+                                      position.coords;
+                                    const coords: [number, number] = [latitude, longitude];
+                                    setMarkerPosition(coords);
+                                    setFieldValue("locationCoords", coords);
+                                  }
+                                );
+                              }
+                            }}
+                            className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-gray-500"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Use My Location
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Submit Section */}
+                    <div className="pt-6 border-t border-gray-200">
+                      <div className="flex flex-col sm:flex-row justify-end gap-3">
+                        <button
+                          type="button"
+                          className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                          onClick={() => {
+                            // Reset or go back logic
+                            if (
+                              window.confirm(
+                                "Are you sure you want to cancel? All entered data will be lost."
+                              )
+                            ) {
+                              window.history.back();
+                            }
+                          }}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="inline-flex items-center justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <svg
+                                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                              </svg>
+                              Creating...
+                            </>
+                          ) : (
+                            "Create Tournament"
+                          )}
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
 
-                  {/* Submit Section */}
-                  <div className="pt-6 border-t border-gray-200">
-                    <div className="flex flex-col sm:flex-row justify-end gap-3">
-                      <button
-                        type="button"
-                        className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                        onClick={() => {
-                          // Reset or go back logic
-                          if (
-                            window.confirm(
-                              "Are you sure you want to cancel? All entered data will be lost."
-                            )
-                          ) {
-                            window.history.back();
-                          }
-                        }}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="inline-flex items-center justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <svg
-                              className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                              ></circle>
-                              <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                              ></path>
-                            </svg>
-                            Creating...
-                          </>
-                        ) : (
-                          "Create Tournament"
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </Form>
-              )}
-            </Formik>
+          <div className="mt-8 text-center text-sm text-gray-500">
+            Need help? Check out our{" "}
+            <a href="#" className="text-green-600 hover:underline">
+              tournament creation guidelines
+            </a>
           </div>
         </div>
-
-        <div className="mt-8 text-center text-sm text-gray-500">
-          Need help? Check out our{" "}
-          <a href="#" className="text-green-600 hover:underline">
-            tournament creation guidelines
-          </a>
-        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default TournamentForm;
+  export default TournamentForm;

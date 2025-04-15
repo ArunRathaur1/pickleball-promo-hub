@@ -27,6 +27,17 @@ const MapController = ({ coords }: { coords: [number, number] | null }) => {
 };
 
 export const TournamentMap: React.FC<TournamentMapProps> = ({ locationCoords, tournament }) => {
+  // Initialize marker icon to fix the missing icon issue
+  React.useEffect(() => {
+    // Fix Leaflet default icon issues
+    delete (L.Icon.Default.prototype as any)._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    });
+  }, []);
+
   if (!locationCoords) {
     return (
       <div className="h-full w-full flex items-center justify-center bg-gray-100">

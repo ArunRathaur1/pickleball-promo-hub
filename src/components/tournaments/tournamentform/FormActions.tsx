@@ -1,6 +1,15 @@
+
 import { Button } from '@/components/ui/button';
 
-export default function FormActions({ isSubmitting }: { isSubmitting: boolean }) {
+export default function FormActions({ 
+  isSubmitting,
+  continents,
+  tiers 
+}: { 
+  isSubmitting: boolean;
+  continents?: string[];
+  tiers?: number[];
+}) {
   return (
     <div className="flex justify-end mt-8">
       <Button

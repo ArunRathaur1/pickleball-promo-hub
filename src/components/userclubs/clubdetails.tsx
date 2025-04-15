@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
@@ -16,15 +17,17 @@ import {
 } from "lucide-react";
 
 // Fix for Leaflet marker icons
-delete (L.Icon as any).Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-});
+useEffect(() => {
+  delete (L.Icon as any).Default.prototype._getIconUrl;
+  (L.Icon as any).Default.mergeOptions({
+    iconRetinaUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+    iconUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  });
+}, []);
 
 interface Club {
   _id: string;
@@ -102,6 +105,11 @@ export default function ClubDetails() {
       </div>
     );
   }
+
+  // Function to store the map reference when it's ready
+  const handleMapReady = (map: L.Map) => {
+    mapRef.current = map;
+  };
 
   return (
     <>
@@ -194,8 +202,6 @@ export default function ClubDetails() {
                 </div>
               </div>
 
-              
-
               {club.description && (
                 <div className="mt-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-2">
@@ -226,10 +232,10 @@ export default function ClubDetails() {
                   center={[
                     club.locationCoordinates[0],
                     club.locationCoordinates[1],
-                  ]}
+                  ] as [number, number]}
                   zoom={13}
                   style={{ height: "100%", width: "100%", minHeight: "500px" }}
-                  whenReady={(map) => (mapRef.current = map.target)}
+                  whenReady={(map) => handleMapReady(map.target)}
                 >
                   <TileLayer
                     attribution="&copy; OpenStreetMap contributors"
@@ -239,7 +245,7 @@ export default function ClubDetails() {
                     position={[
                       club.locationCoordinates[0],
                       club.locationCoordinates[1],
-                    ]}
+                    ] as [number, number]}
                   >
                     <Popup>
                       <strong>{club.name}</strong>
