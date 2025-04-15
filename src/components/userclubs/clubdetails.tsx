@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { Navbar } from "../layout/navbar";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import {
@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 // Fix for Leaflet marker icons
-delete L.Icon.Default.prototype._getIconUrl;
+delete (L.Icon as any).Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
@@ -229,7 +229,7 @@ export default function ClubDetails() {
                   ]}
                   zoom={13}
                   style={{ height: "100%", width: "100%", minHeight: "500px" }}
-                  whenCreated={(map) => (mapRef.current = map)}
+                  whenReady={(map) => (mapRef.current = map.target)}
                 >
                   <TileLayer
                     attribution="&copy; OpenStreetMap contributors"

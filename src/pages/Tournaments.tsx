@@ -4,10 +4,37 @@ import { Footer } from "@/components/layout/footer";
 import { TournamentList } from "@/components/tournaments/tournamentdetails/tournament-list";
 import { TournamentMap } from "@/components/tournaments/tournamentdetails/tournament-map";
 import { Calendar, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Filter } from "lucide-react";
+import { motion } from "framer-motion";
+
+interface Tournament {
+  _id: string;
+  name: string;
+  Organizer: string;
+  location: string;
+  country: string;
+  Continent: string;
+  Tier: number;
+  startDate: string;
+  endDate: string;
+  description: string;
+  locationCoords: [number, number];
+  status: string;
+  imageUrl: string;
+}
+
+// Function to format date properly
+const formatDate = (dateString: string) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
 const Tournaments = () => {
-  const [tournaments, setTournaments] = useState([]);
-  const [filteredTournaments, setFilteredTournaments] = useState([]);
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [filteredTournaments, setFilteredTournaments] = useState<Tournament[]>([]);
   const [search, setSearch] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
@@ -27,14 +54,14 @@ const Tournaments = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   // List of unique continents, countries, and tiers for dropdown filters
-  const [continents, setContinents] = useState([]);
-  const [countries, setCountries] = useState([]);
-  const [tiers, setTiers] = useState([]);
+  const [continents, setContinents] = useState<string[]>([]);
+  const [countries, setCountries] = useState<string[]>([]);
+  const [tiers, setTiers] = useState<number[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/tournaments/approved")
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: Tournament[]) => {
         setTournaments(data);
         setFilteredTournaments(data);
 
@@ -132,17 +159,18 @@ const Tournaments = () => {
   ]);
 
   // Helper function to format dates to YYYY-MM-DD
-  const formatDate = (date) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split("T")[0];
+  const displayDate = (dateString: string) => {
+    if (!dateString) return "";
+    const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   // Helper to display dates in a more user-friendly format
-  const displayDate = (dateString) => {
-    if (!dateString) return "";
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+  const calculateDaysRemaining = (startDate: string) => {
+    const start = new Date(startDate).getTime();
+    const now = new Date().getTime();
+    const diffTime = start - now;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
   // Generate months between two dates for the slider

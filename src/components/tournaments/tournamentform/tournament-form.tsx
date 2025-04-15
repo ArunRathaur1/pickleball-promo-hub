@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 import CloudinaryImageUploader from "../../admin-club/imageupload";
 import L from "leaflet";
 import MapLocationSection from "./MapLocationSection";
-import TournamentFormFields from "./TournamentFormFields";
+import TournamentFormFields from "./FormActions";
 import FormActions from "./FormActions";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 // Initialize Leaflet default icon
-L.Marker.prototype.options.icon = L.icon({
+(L as any).Marker.prototype.options.icon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   iconRetinaUrl:
     "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
@@ -51,10 +51,11 @@ const TournamentForm = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setInitialLocation([latitude, longitude]);
-          setMarkerPosition([latitude, longitude]);
+          const coords: [number, number] = [latitude, longitude];
+          setInitialLocation(coords);
+          setMarkerPosition(coords);
           if (mapRef.current) {
-            mapRef.current.flyTo([latitude, longitude], 13);
+            mapRef.current.flyTo(coords, 13);
           }
         },
         (error) => {
@@ -101,7 +102,7 @@ const TournamentForm = () => {
       const formattedValues = {
         ...values,
         Tier: Number(values.Tier), // Ensure Tier is a number
-        locationCoords: values.locationCoords.map((coord) => Number(coord)),
+        locationCoords: values.locationCoords.map((coord) => Number(coord)) as [number, number],
       };
 
       const response = await axios.post(

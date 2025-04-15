@@ -13,13 +13,13 @@ import { Badge } from "@/components/ui/badge";
 import { Users, MapPin, Calendar, Phone } from "lucide-react";
 
 // Component to add search control to the map and autofill it
-const SearchControl = ({ userAddress }) => {
+const SearchControl = ({ userAddress }: { userAddress: string }) => {
   const map = useMap();
 
   useEffect(() => {
     const provider = new OpenStreetMapProvider();
 
-    const searchControl = GeoSearchControl({
+    const searchControl = new GeoSearchControl({
       provider,
       style: "bar",
       showMarker: true,
@@ -51,7 +51,7 @@ const SearchControl = ({ userAddress }) => {
 };
 
 // Component to programmatically zoom to user's location
-const SetViewToUserLocation = ({ userCoordinates }) => {
+const SetViewToUserLocation = ({ userCoordinates }: { userCoordinates: [number, number] | null }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -63,9 +63,9 @@ const SetViewToUserLocation = ({ userCoordinates }) => {
   return null;
 };
 
-export default function MapView({ clubs }) {
-  const defaultCenter = [20.5937, 78.9629]; // Center of India
-  const [userCoordinates, setUserCoordinates] = useState(null);
+export default function MapView({ clubs }: { clubs: any[] }) {
+  const defaultCenter: [number, number] = [20.5937, 78.9629]; // Center of India
+  const [userCoordinates, setUserCoordinates] = useState<[number, number] | null>(null);
   const [userAddress, setUserAddress] = useState("");
   const navigate = useNavigate();
 
@@ -74,7 +74,7 @@ export default function MapView({ clubs }) {
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
-        const coords = [lat, lon];
+        const coords: [number, number] = [lat, lon];
         setUserCoordinates(coords);
 
         const provider = new OpenStreetMapProvider();

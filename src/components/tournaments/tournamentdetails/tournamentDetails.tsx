@@ -20,7 +20,7 @@ import L from "leaflet";
 
 // Fix for default marker icons in Leaflet
 // This is necessary because Leaflet's default icons have relative paths that don't work in React
-delete L.Icon.Default.prototype._getIconUrl;
+delete (L.Icon.Default as any).prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",

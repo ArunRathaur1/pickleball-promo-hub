@@ -13,6 +13,18 @@ declare module 'leaflet' {
 
   interface Map {
     _handlers: unknown[];
+    addControl: (control: any) => this;
+    removeControl: (control: any) => this;
+    on: (event: string, handler: any) => this;
+    off: (event: string, handler: any) => this;
+    setView: (center: L.LatLngExpression, zoom?: number, options?: L.ZoomPanOptions) => this;
+  }
+
+  namespace Marker {
+    interface Options {
+      icon?: L.Icon;
+      draggable?: boolean;
+    }
   }
 }
 
@@ -34,9 +46,16 @@ declare module 'leaflet-geosearch' {
     };
   }
 
-  class GeoSearchControl {
+  export class GeoSearchControl {
     constructor(options: GeoSearchControlOptions);
   }
+
+  export class OpenStreetMapProvider {
+    constructor();
+    search: (options: { query: string }) => Promise<any[]>;
+  }
+
+  export function SearchControl(options: GeoSearchControlOptions): any;
 }
 
 // Add custom property whileHover to Button

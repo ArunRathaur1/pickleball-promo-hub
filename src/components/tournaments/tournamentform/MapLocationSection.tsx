@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import {
   MapContainer,
@@ -5,7 +6,7 @@ import {
   Marker,
   Popup,
   useMap,
-  useMapEvents, // Make sure this is imported
+  useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -13,7 +14,7 @@ import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import "leaflet-geosearch/dist/geosearch.css";
 
 // Fix Leaflet marker icon issues
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon as any).Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
