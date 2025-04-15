@@ -26,9 +26,9 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				pickle: {
-					DEFAULT: '#4CAF50',
-					light: '#8BC34A',
-					dark: '#2E7D32',
+					DEFAULT: '#123c2f',
+					light: '#2a7d64',
+					dark: '#0b2820',
 					accent: '#FF9800',
 				},
 				primary: {
@@ -109,13 +109,22 @@ export default {
 					'50%': {
 						transform: 'translateY(-5px)'
 					}
+				},
+				'shimmer': {
+					'0%': {
+						backgroundPosition: '-200% 0'
+					},
+					'100%': {
+						backgroundPosition: '200% 0'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.5s ease-out',
-				'bounce-slight': 'bounce-slight 2s ease-in-out infinite'
+				'bounce-slight': 'bounce-slight 2s ease-in-out infinite',
+				'shimmer': 'shimmer 2s linear infinite'
 			}
 		}
 	},

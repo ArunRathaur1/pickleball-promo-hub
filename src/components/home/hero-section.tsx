@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 // Import images correctly
 import hero1 from "../../images/1.jpeg";
@@ -37,18 +38,42 @@ export function HeroSection() {
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  // Animated variants for staggered animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
   
   return (
     <div className="relative bg-black overflow-hidden">
       {/* Background image with overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40 z-10" />
       
-      {/* Background image carousel */}
+      {/* Background image carousel with smooth fade transitions */}
       <div className="absolute inset-0">
         {HERO_IMAGES.map((img, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
+            className={`absolute inset-0 transition-opacity duration-1500 ${
               index === currentImage ? "opacity-100" : "opacity-0"
             }`}
             style={{
@@ -61,42 +86,44 @@ export function HeroSection() {
       </div>
       
       {/* Content */}
-      <div className="container relative z-20 py-20 md:py-32 lg:py-40">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 
-            className={`text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 transition-all duration-1000 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+      <div className="container relative z-20 py-24 md:py-36 lg:py-44">
+        <motion.div 
+          className="max-w-3xl mx-auto text-center"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+        >
+          <motion.h1 
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
+            variants={itemVariants}
           >
-            Pickleball <span className="text-pickle">Made</span> Social
-          </h1>
+            Pickleball <span className="text-[#123c2f]">Official</span> Media
+          </motion.h1>
           
-          <p 
-            className={`text-lg md:text-xl text-white/90 mb-8 transition-all duration-1000 delay-200 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+          <motion.p 
+            className="text-lg md:text-xl text-white/90 mb-8"
+            variants={itemVariants}
           >
-            The premier digital marketing agency exclusively for pickleball athletes, tournaments, and brands.
-          </p>
+            The premier digital marketing agency exclusively for pickleball athletes, tournaments, and brands across Asia.
+          </motion.p>
           
-          <div 
-            className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-1000 delay-400 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            variants={itemVariants}
           >
             <Link to="/contact">
-              <Button size="lg" className="bg-pickle hover:bg-pickle-dark group btn-animated">
+              <Button size="lg" className="bg-[#123c2f] hover:bg-[#0b2820] group transition-all duration-300">
                 Get in Touch
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/services">
-              <Button size="lg" variant="outline" className="text-black border-white hover:bg-white/10 hover:text-white btn-animated">
+              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 transition-colors duration-300">
                 Our Services
               </Button>
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
       
       {/* Bottom wave shape */}

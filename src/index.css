@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 122 39% 49%;
+    --primary: 158 49% 15%;
     --primary-foreground: 355.7 100% 97.3%;
 
     --secondary: 210 40% 96.1%;
@@ -31,18 +31,23 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 122 39% 49%;
+    --ring: 158 49% 15%;
 
     --radius: 0.5rem;
 
+    --pickle-dark: 158 49% 15%;
+    --pickle: 158 49% 20%;
+    --pickle-light: 120 39% 49%;
+    --pickle-accent: 36 100% 50%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 122 39% 49%;
+    --sidebar-primary: 158 49% 15%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 122 39% 49%;
+    --sidebar-ring: 158 49% 15%;
   }
 
   .dark {
@@ -55,7 +60,7 @@
     --popover: 240 10% 6%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 122 39% 49%;
+    --primary: 158 49% 15%;
     --primary-foreground: 355.7 100% 97.3%;
 
     --secondary: 240 3.7% 15.9%;
@@ -74,9 +79,14 @@
     --input: 240 3.7% 15.9%;
     --ring: 142.4 71.8% 29.2%;
 
+    --pickle-dark: 158 49% 15%;
+    --pickle: 158 49% 25%;
+    --pickle-light: 120 39% 49%;
+    --pickle-accent: 36 100% 50%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 122 39% 49%;
+    --sidebar-primary: 158 49% 15%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
@@ -98,19 +108,19 @@
 
 @layer components {
   .hero-gradient {
-    @apply bg-gradient-to-r from-pickle-dark via-pickle to-pickle-light;
+    @apply bg-gradient-to-r from-[#123c2f] via-[#18503f] to-[#2a7d64];
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-pickle-dark to-pickle-accent bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#123c2f] to-[#ff9800] bg-clip-text text-transparent;
   }
   
   .btn-primary {
-    @apply bg-pickle hover:bg-pickle-dark text-white font-semibold py-2 px-4 rounded-md transition-colors;
+    @apply bg-[#123c2f] hover:bg-[#0b2820] text-white font-semibold py-2 px-4 rounded-md transition-colors;
   }
   
   .nav-link {
-    @apply text-foreground/80 hover:text-pickle transition-colors;
+    @apply text-foreground/80 hover:text-[#123c2f] transition-colors;
   }
   
   .card-hover {
@@ -120,4 +130,137 @@
   .glass-card {
     @apply backdrop-blur-md bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10;
   }
+}
+
+/* Page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms, transform 400ms;
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Navbar animations */
+.nav-item {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #123c2f;
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  width: 100%;
+}
+
+.nav-item.active {
+  color: #123c2f !important;
+  font-weight: 500;
+}
+
+/* Button animations */
+.btn-animated {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-animated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s;
+}
+
+.btn-animated:hover::before {
+  left: 100%;
+}
+
+/* Fade-in animation */
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered animations for lists */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stagger-appear {
+  animation: staggerAppear 0.5s ease forwards;
+}
+
+@keyframes staggerAppear {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulse animation */
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Hover lift effect */
+.hover-lift {
+  transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* Card effects */
+.card-hover-effect {
+  transition: all 0.3s ease;
+}
+
+.card-hover-effect:hover {
+  box-shadow: 0 10px 20px rgba(18, 60, 47, 0.2);
+  transform: translateY(-5px);
+}
+
+/* Badge styles */
+.badge-premium {
+  @apply bg-[#123c2f] text-white text-xs font-medium px-2.5 py-0.5 rounded;
+}
+
+.badge-featured {
+  @apply bg-[#ff9800] text-white text-xs font-medium px-2.5 py-0.5 rounded;
 }

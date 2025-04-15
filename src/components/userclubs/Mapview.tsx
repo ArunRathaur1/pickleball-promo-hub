@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -7,6 +8,9 @@ import "leaflet-geosearch/dist/geosearch.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { Users, MapPin, Calendar, Phone } from "lucide-react";
 
 // Component to add search control to the map and autofill it
 const SearchControl = ({ userAddress }) => {
@@ -15,7 +19,7 @@ const SearchControl = ({ userAddress }) => {
   useEffect(() => {
     const provider = new OpenStreetMapProvider();
 
-    const searchControl = new GeoSearchControl({
+    const searchControl = GeoSearchControl({
       provider,
       style: "bar",
       showMarker: true,
@@ -33,7 +37,7 @@ const SearchControl = ({ userAddress }) => {
       setTimeout(() => {
         const input = document.querySelector(
           ".leaflet-control-geosearch input"
-        );
+        ) as HTMLInputElement;
         if (input) {
           input.value = userAddress;
         }
@@ -74,7 +78,7 @@ export default function MapView({ clubs }) {
         setUserCoordinates(coords);
 
         const provider = new OpenStreetMapProvider();
-        const results = await provider.search({ query: `${lat},${lon}` }); // ✅ Fixed string interpolation
+        const results = await provider.search({ query: `${lat},${lon}` });
         if (results[0]?.label) {
           setUserAddress(results[0].label);
         }
@@ -82,11 +86,16 @@ export default function MapView({ clubs }) {
     }
   }, []);
 
-  // ✅ Filter approved clubs only
+  // Filter approved clubs only
   const approvedClubs = clubs.filter((club) => club.status === "approved");
 
   return (
-    <div className="w-full h-[500px] border border-border rounded-lg shadow-md overflow-hidden">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="w-full h-[500px] border border-border rounded-lg shadow-md overflow-hidden"
+    >
       <MapContainer
         center={userCoordinates || defaultCenter}
         zoom={5}
@@ -107,17 +116,21 @@ export default function MapView({ clubs }) {
             })}
           >
             <Popup>
-              <div className="text-sm space-y-1">
-                <h3 className="font-bold">{club.name}</h3>
-                <p>
+              <div className="text-sm space-y-1 p-1">
+                <h3 className="font-bold text-pickle-dark">{club.name}</h3>
+                <p className="flex items-center text-gray-700">
+                  <MapPin className="h-3.5 w-3.5 mr-1 text-pickle" />
                   {club.location}, {club.country}
                 </p>
                 {club.followers !== undefined && (
-                  <p>👥 {club.followers} Followers</p>
+                  <p className="flex items-center text-gray-700">
+                    <Users className="h-3.5 w-3.5 mr-1 text-pickle" />
+                    {club.followers} Followers
+                  </p>
                 )}
                 <Button
-                  className="mt-2 w-full text-xs bg-green-600 hover:bg-green-700 text-white"
-                  onClick={() => navigate(`/clubdetails/${club._id}`)} // ✅ Fixed template string
+                  className="mt-2 w-full text-xs bg-[#123c2f] hover:bg-[#0b2820] text-white transition-all duration-300"
+                  onClick={() => navigate(`/clubdetails/${club._id}`)}
                 >
                   View Details
                 </Button>
@@ -126,6 +139,6 @@ export default function MapView({ clubs }) {
           </Marker>
         ))}
       </MapContainer>
-    </div>
+    </motion.div>
   );
 }
