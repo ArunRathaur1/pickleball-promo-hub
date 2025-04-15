@@ -20,17 +20,15 @@ import L from "leaflet";
 
 // Fix for default marker icons in Leaflet
 // This is necessary because Leaflet's default icons have relative paths that don't work in React
-useEffect(() => {
-  delete (L.Icon as any).Default.prototype._getIconUrl;
-  (L.Icon as any).Default.mergeOptions({
-    iconRetinaUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-    iconUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-    shadowUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  });
-}, []);
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
 
 interface Tournament {
   _id: string;
@@ -142,7 +140,7 @@ export default function TournamentDetails() {
 
   // Default map center (fallback if coordinates aren't available)
   const defaultCenter: [number, number] = [0, 0];
-  const mapCenter = tournament?.locationCoords || defaultCenter;
+  const mapCenter = tournament.locationCoords || defaultCenter;
 
   return (
     <>
@@ -152,12 +150,12 @@ export default function TournamentDetails() {
       <div
         className="relative w-full h-[50vh] bg-center bg-cover flex items-center justify-center"
         style={{
-          backgroundImage: `url(${tournament?.imageUrl})`,
+          backgroundImage: `url(${tournament.imageUrl})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40" />
         <h1 className="relative text-4xl md:text-5xl text-white font-bold text-center z-10">
-          {tournament?.name}
+          {tournament.name}
         </h1>
       </div>
 
@@ -167,14 +165,12 @@ export default function TournamentDetails() {
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             {/* Left: Tournament Info */}
             <div>
-              {tournament && (
-                <TournamentDetailsInfo
-                  tournament={tournament}
-                  formatDate={formatDate}
-                  getDuration={getDuration}
-                  getStatusBadgeStyle={getStatusBadgeStyle}
-                />
-              )}
+              <TournamentDetailsInfo
+                tournament={tournament}
+                formatDate={formatDate}
+                getDuration={getDuration}
+                getStatusBadgeStyle={getStatusBadgeStyle}
+              />
             </div>
 
             {/* Right: Map */}
@@ -185,16 +181,14 @@ export default function TournamentDetails() {
                     Tournament Location
                   </h2>
                   <div className="h-80 w-full rounded-lg overflow-hidden">
-                    {tournament && (
-                      <TournamentMap
-                        locationCoords={tournament.locationCoords}
-                        tournament={{
-                          name: tournament.name,
-                          location: tournament.location,
-                          country: tournament.country,
-                        }}
-                      />
-                    )}
+                    <TournamentMap
+                      locationCoords={tournament.locationCoords}
+                      tournament={{
+                        name: tournament.name,
+                        location: tournament.location,
+                        country: tournament.country,
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -208,9 +202,9 @@ export default function TournamentDetails() {
             </h2>
             <p className="text-gray-700 mb-4">
               Registration is currently{" "}
-              {tournament?.status === "approved" ? "open" : "not available"} for
+              {tournament.status === "approved" ? "open" : "not available"} for
               this tournament.
-              {tournament?.status === "approved" &&
+              {tournament.status === "approved" &&
                 " Please contact the organizer for more information about how to register."}
             </p>
           </div>
@@ -228,4 +222,5 @@ export default function TournamentDetails() {
       </div>
     </>
   );
+
 }

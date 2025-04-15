@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -81,10 +80,7 @@ export default function View() {
           // Find profile links in the header
           const profileLinks = header.querySelectorAll('a[href*="instagram.com"]');
           profileLinks.forEach(link => {
-            if (link instanceof HTMLElement && 
-                link.textContent && 
-                link.textContent.includes('View') && 
-                link.textContent.includes('profile')) {
+            if (link.textContent.includes('View') && link.textContent.includes('profile')) {
               link.style.display = 'none';
             }
           });
@@ -93,13 +89,11 @@ export default function View() {
         // Alternative approach for different embed structures
         const viewProfileLinks = embed.querySelectorAll('a[href*="instagram.com"]');
         viewProfileLinks.forEach(link => {
-          if (link instanceof HTMLElement) {
-            const text = link.textContent ? link.textContent.toLowerCase() : '';
-            // Only hide if it's specifically a "view profile" link
-            // but NOT a "view more" link
-            if (text.includes('view') && text.includes('profile') && !text.includes('more')) {
-              link.style.display = 'none';
-            }
+          const text = link.textContent.toLowerCase();
+          // Only hide if it's specifically a "view profile" link
+          // but NOT a "view more" link
+          if (text.includes('view') && text.includes('profile') && !text.includes('more')) {
+            link.style.display = 'none';
           }
         });
       });
@@ -185,60 +179,58 @@ export default function View() {
             </div>
             
             {/* Custom CSS for improved spacing and to hide ONLY View Profile buttons */}
-            <style>
-              {`
+            <style jsx>{`
               /* Custom styles for the slider */
-              .instagram-slider .slick-track {
+              :global(.instagram-slider .slick-track) {
                 display: flex;
                 gap: 12px;
               }
               
-              .instagram-slider .slick-slide {
+              :global(.instagram-slider .slick-slide) {
                 height: auto;
                 margin: 0 8px;
               }
               
-              .instagram-slider .slick-list {
+              :global(.instagram-slider .slick-list) {
                 margin: 0 -8px;
                 padding: 10px 0;
                 overflow: visible;
               }
               
-              .slick-dots {
+              :global(.slick-dots) {
                 bottom: -30px;
               }
               
               /* Fix for Instagram embeds */
-              .instagram-embed-container {
+              :global(.instagram-embed-container) {
                 min-height: 500px;
               }
               
-              .instagram-embed-container iframe {
+              :global(.instagram-embed-container iframe) {
                 min-height: 500px !important;
               }
               
               /* Hide ONLY profile links in header */
-              .instagram-media header a[href*="instagram.com"][role="link"] {
+              :global(.instagram-media header a[href*="instagram.com"][role="link"]) {
                 display: none !important;
               }
               
               /* More specific targeting for the View Profile button */
-              .instagram-media header a[href*="instagram.com"]:not([aria-label*="Like"]):not([aria-label*="Comment"]) {
+              :global(.instagram-media header a[href*="instagram.com"]:not([aria-label*="Like"]):not([aria-label*="Comment"])) {
                 display: none !important;
               }
               
               /* Target specifically view profile text links but NOT view more */
-              .instagram-media a[href*="instagram.com"]:not([href*="p%2F"]):not([href*="reel%2F"]) {
+              :global(.instagram-media a[href*="instagram.com"]:not([href*="p%2F"]):not([href*="reel%2F"])) {
                 display: none !important;
               }
               
               /* Ensure the "View more" button remains visible */
-              .instagram-media a[href*="p%2F"], 
-              .instagram-media a[href*="reel%2F"] {
+              :global(.instagram-media a[href*="p%2F"]), 
+              :global(.instagram-media a[href*="reel%2F"]) {
                 display: inline-block !important;
               }
-              `}
-            </style>
+            `}</style>
           </div>
         )}
 

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -8,12 +7,9 @@ import "leaflet-geosearch/dist/geosearch.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
-import { Users, MapPin, Calendar, Phone } from "lucide-react";
 
 // Component to add search control to the map and autofill it
-const SearchControl = ({ userAddress }: { userAddress: string }) => {
+const SearchControl = ({ userAddress }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -37,7 +33,7 @@ const SearchControl = ({ userAddress }: { userAddress: string }) => {
       setTimeout(() => {
         const input = document.querySelector(
           ".leaflet-control-geosearch input"
-        ) as HTMLInputElement;
+        );
         if (input) {
           input.value = userAddress;
         }
@@ -51,7 +47,7 @@ const SearchControl = ({ userAddress }: { userAddress: string }) => {
 };
 
 // Component to programmatically zoom to user's location
-const SetViewToUserLocation = ({ userCoordinates }: { userCoordinates: [number, number] | null }) => {
+const SetViewToUserLocation = ({ userCoordinates }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -63,9 +59,9 @@ const SetViewToUserLocation = ({ userCoordinates }: { userCoordinates: [number, 
   return null;
 };
 
-export default function MapView({ clubs }: { clubs: any[] }) {
-  const defaultCenter: [number, number] = [20.5937, 78.9629]; // Center of India
-  const [userCoordinates, setUserCoordinates] = useState<[number, number] | null>(null);
+export default function MapView({ clubs }) {
+  const defaultCenter = [20.5937, 78.9629]; // Center of India
+  const [userCoordinates, setUserCoordinates] = useState(null);
   const [userAddress, setUserAddress] = useState("");
   const navigate = useNavigate();
 
@@ -74,11 +70,11 @@ export default function MapView({ clubs }: { clubs: any[] }) {
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
-        const coords: [number, number] = [lat, lon];
+        const coords = [lat, lon];
         setUserCoordinates(coords);
 
         const provider = new OpenStreetMapProvider();
-        const results = await provider.search({ query: `${lat},${lon}` });
+        const results = await provider.search({ query: `${lat},${lon}` }); // ✅ Fixed string interpolation
         if (results[0]?.label) {
           setUserAddress(results[0].label);
         }
@@ -86,16 +82,11 @@ export default function MapView({ clubs }: { clubs: any[] }) {
     }
   }, []);
 
-  // Filter approved clubs only
+  // ✅ Filter approved clubs only
   const approvedClubs = clubs.filter((club) => club.status === "approved");
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="w-full h-[500px] border border-border rounded-lg shadow-md overflow-hidden"
-    >
+    <div className="w-full h-[500px] border border-border rounded-lg shadow-md overflow-hidden">
       <MapContainer
         center={userCoordinates || defaultCenter}
         zoom={5}
@@ -116,21 +107,17 @@ export default function MapView({ clubs }: { clubs: any[] }) {
             })}
           >
             <Popup>
-              <div className="text-sm space-y-1 p-1">
-                <h3 className="font-bold text-pickle-dark">{club.name}</h3>
-                <p className="flex items-center text-gray-700">
-                  <MapPin className="h-3.5 w-3.5 mr-1 text-pickle" />
+              <div className="text-sm space-y-1">
+                <h3 className="font-bold">{club.name}</h3>
+                <p>
                   {club.location}, {club.country}
                 </p>
                 {club.followers !== undefined && (
-                  <p className="flex items-center text-gray-700">
-                    <Users className="h-3.5 w-3.5 mr-1 text-pickle" />
-                    {club.followers} Followers
-                  </p>
+                  <p>👥 {club.followers} Followers</p>
                 )}
                 <Button
-                  className="mt-2 w-full text-xs bg-[#123c2f] hover:bg-[#0b2820] text-white transition-all duration-300"
-                  onClick={() => navigate(`/clubdetails/${club._id}`)}
+                  className="mt-2 w-full text-xs bg-green-600 hover:bg-green-700 text-white"
+                  onClick={() => navigate(`/clubdetails/${club._id}`)} // ✅ Fixed template string
                 >
                   View Details
                 </Button>
@@ -139,6 +126,6 @@ export default function MapView({ clubs }: { clubs: any[] }) {
           </Marker>
         ))}
       </MapContainer>
-    </motion.div>
+    </div>
   );
 }

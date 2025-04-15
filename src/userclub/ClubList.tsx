@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useToast } from "@/components/ui/use-toast";
@@ -40,7 +41,7 @@ const ClubList = () => {
         const uniqueCountries = Array.from(
           new Set(response.data.map((club: Club) => club.country))
         );
-        setCountries(uniqueCountries as string[]);
+        setCountries(uniqueCountries);
       } catch (error) {
         console.error('Error fetching clubs:', error);
         toast({

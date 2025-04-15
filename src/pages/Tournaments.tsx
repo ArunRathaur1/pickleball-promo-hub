@@ -1,42 +1,13 @@
-
 import { useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { TournamentList } from "@/components/tournaments/tournamentdetails/tournament-list";
 import { TournamentMap } from "@/components/tournaments/tournamentdetails/tournament-map";
 import { Calendar, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Filter } from "lucide-react";
-import { motion } from "framer-motion";
-
-interface Tournament {
-  _id: string;
-  name: string;
-  Organizer: string;
-  location: string;
-  country: string;
-  Continent: string;
-  Tier: number;
-  startDate: string;
-  endDate: string;
-  description: string;
-  locationCoords: [number, number];
-  status: string;
-  imageUrl: string;
-  organizerContact?: string; // Optional since it's required by one type but not another
-}
-
-// Function to format date properly
-const formatDate = (dateString: string) => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  return new Date(dateString).toLocaleDateString(undefined, options);
-};
 
 const Tournaments = () => {
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [filteredTournaments, setFilteredTournaments] = useState<Tournament[]>([]);
+  const [tournaments, setTournaments] = useState([]);
+  const [filteredTournaments, setFilteredTournaments] = useState([]);
   const [search, setSearch] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [countryFilter, setCountryFilter] = useState("");
@@ -47,11 +18,7 @@ const Tournaments = () => {
     endDate: "",
   });
   const [view, setView] = useState("list");
-  const [dateRange, setDateRange] = useState<{
-    min: Date | null;
-    max: Date | null;
-    current: { start: Date | null; end: Date | null };
-  }>({
+  const [dateRange, setDateRange] = useState({
     min: null,
     max: null,
     current: { start: null, end: null },
@@ -60,14 +27,14 @@ const Tournaments = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   // List of unique continents, countries, and tiers for dropdown filters
-  const [continents, setContinents] = useState<string[]>([]);
-  const [countries, setCountries] = useState<string[]>([]);
-  const [tiers, setTiers] = useState<number[]>([]);
+  const [continents, setContinents] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [tiers, setTiers] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/tournaments/approved")
       .then((res) => res.json())
-      .then((data: Tournament[]) => {
+      .then((data) => {
         setTournaments(data);
         setFilteredTournaments(data);
 
@@ -79,10 +46,10 @@ const Tournaments = () => {
         // Find min and max dates for the date slider
         if (data.length > 0) {
           const sortedByStartDate = [...data].sort(
-            (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+            (a, b) => new Date(a.startDate) - new Date(b.startDate)
           );
           const sortedByEndDate = [...data].sort(
-            (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+            (a, b) => new Date(a.endDate) - new Date(b.endDate)
           );
 
           const minDate = new Date(sortedByStartDate[0].startDate);
@@ -98,8 +65,8 @@ const Tournaments = () => {
 
           // Initialize the date filter
           setDateFilter({
-            startDate: minDate.toISOString().split('T')[0],
-            endDate: maxDate.toISOString().split('T')[0],
+            startDate: formatDate(minDate),
+            endDate: formatDate(maxDate),
           });
         }
       })
@@ -139,8 +106,7 @@ const Tournaments = () => {
 
         // Check if tournament dates overlap with filter dates
         dateMatch = !(
-          tournamentEnd.getTime() < filterStart.getTime() || 
-          tournamentStart.getTime() > filterEnd.getTime()
+          tournamentEnd < filterStart || tournamentStart > filterEnd
         );
       }
 
@@ -166,22 +132,21 @@ const Tournaments = () => {
   ]);
 
   // Helper function to format dates to YYYY-MM-DD
-  const displayDate = (dateString: string) => {
-    if (!dateString) return "";
-    const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+  const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return d.toISOString().split("T")[0];
   };
 
   // Helper to display dates in a more user-friendly format
-  const calculateDaysRemaining = (startDate: string) => {
-    const start = new Date(startDate).getTime();
-    const now = new Date().getTime();
-    const diffTime = start - now;
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const displayDate = (dateString) => {
+    if (!dateString) return "";
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   // Generate months between two dates for the slider
-  const getMonthsBetween = (startDate: Date | null, endDate: Date | null) => {
+  const getMonthsBetween = (startDate, endDate) => {
     if (!startDate || !endDate) return [];
 
     const start = new Date(startDate);
@@ -199,25 +164,24 @@ const Tournaments = () => {
   };
 
   // Calculate the position for the date slider thumbs
-  const calculateThumbPosition = (date: string) => {
+  const calculateThumbPosition = (date) => {
     if (!dateRange.min || !dateRange.max || !date) return 0;
 
-    const totalDays = (dateRange.max.getTime() - dateRange.min.getTime()) / (1000 * 60 * 60 * 24);
-    const daysDiff = (new Date(date).getTime() - dateRange.min.getTime()) / (1000 * 60 * 60 * 24);
+    const totalDays = (dateRange.max - dateRange.min) / (1000 * 60 * 60 * 24);
+    const daysDiff = (new Date(date) - dateRange.min) / (1000 * 60 * 60 * 24);
 
     return (daysDiff / totalDays) * 100;
   };
 
   // Handle slider thumb movement
-  const handleThumbMove = (isStart: boolean, position: number) => {
+  const handleThumbMove = (isStart, position) => {
     if (!dateRange.min || !dateRange.max) return;
 
-    const totalDays = (dateRange.max.getTime() - dateRange.min.getTime()) / (1000 * 60 * 60 * 24);
+    const totalDays = (dateRange.max - dateRange.min) / (1000 * 60 * 60 * 24);
     const dayOffset = Math.round((position / 100) * totalDays);
 
     const newDate = new Date(dateRange.min);
     newDate.setDate(newDate.getDate() + dayOffset);
-    const formattedDate = newDate.toISOString().split('T')[0];
 
     if (isStart) {
       // Ensure start date doesn't go past end date
@@ -225,7 +189,7 @@ const Tournaments = () => {
 
       setDateFilter({
         ...dateFilter,
-        startDate: formattedDate,
+        startDate: formatDate(newDate),
       });
       setDateRange({
         ...dateRange,
@@ -240,7 +204,7 @@ const Tournaments = () => {
 
       setDateFilter({
         ...dateFilter,
-        endDate: formattedDate,
+        endDate: formatDate(newDate),
       });
       setDateRange({
         ...dateRange,
@@ -253,7 +217,7 @@ const Tournaments = () => {
   };
 
   // Move date range by a specific time period
-  const moveDateRange = (direction: string, unit: string) => {
+  const moveDateRange = (direction, unit) => {
     const startDate = new Date(dateFilter.startDate);
     const endDate = new Date(dateFilter.endDate);
 
@@ -268,17 +232,17 @@ const Tournaments = () => {
     }
 
     // Check if new dates are within overall range
-    if (dateRange.min && startDate < dateRange.min) {
+    if (startDate < dateRange.min) {
       startDate.setTime(dateRange.min.getTime());
     }
 
-    if (dateRange.max && endDate > dateRange.max) {
+    if (endDate > dateRange.max) {
       endDate.setTime(dateRange.max.getTime());
     }
 
     setDateFilter({
-      startDate: startDate.toISOString().split('T')[0],
-      endDate: endDate.toISOString().split('T')[0],
+      startDate: formatDate(startDate),
+      endDate: formatDate(endDate),
     });
     setDateRange({
       ...dateRange,
@@ -300,8 +264,8 @@ const Tournaments = () => {
     // Reset dates to full range
     if (dateRange.min && dateRange.max) {
       setDateFilter({
-        startDate: dateRange.min.toISOString().split('T')[0],
-        endDate: dateRange.max.toISOString().split('T')[0],
+        startDate: formatDate(dateRange.min),
+        endDate: formatDate(dateRange.max),
       });
       setDateRange({
         ...dateRange,
@@ -325,10 +289,8 @@ const Tournaments = () => {
       tierFilter ||
       (dateFilter.startDate &&
         dateFilter.endDate &&
-        dateRange.min &&
-        dateRange.max &&
-        (dateFilter.startDate !== dateRange.min.toISOString().split('T')[0] ||
-          dateFilter.endDate !== dateRange.max.toISOString().split('T')[0]))
+        (dateFilter.startDate !== formatDate(dateRange.min) ||
+          dateFilter.endDate !== formatDate(dateRange.max)))
     );
   };
 
@@ -531,28 +493,25 @@ const Tournaments = () => {
 
                       {/* Month markers */}
                       <div className="absolute top-8 left-0 right-0 flex justify-between">
-                        {months.map((month, index) => {
-                          const position = calculateThumbPosition(month.toISOString());
-                          return (
-                            <div
-                              key={index}
-                              className="relative"
-                              style={{
-                                left: `${position}%`,
-                                transform: "translateX(-50%)",
-                              }}
-                            >
-                              <div className="h-2 w-1 bg-gray-300"></div>
-                              {index % 2 === 0 && (
-                                <div className="text-xs text-gray-500 mt-1">
-                                  {month.toLocaleDateString(undefined, {
-                                    month: "short",
-                                  })}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
+                        {months.map((month, index) => (
+                          <div
+                            key={index}
+                            className="relative"
+                            style={{
+                              left: `${calculateThumbPosition(month)}%`,
+                              transform: "translateX(-50%)",
+                            }}
+                          >
+                            <div className="h-2 w-1 bg-gray-300"></div>
+                            {index % 2 === 0 && (
+                              <div className="text-xs text-gray-500 mt-1">
+                                {month.toLocaleDateString(undefined, {
+                                  month: "short",
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
 
                       {/* Start thumb */}
@@ -562,8 +521,7 @@ const Tournaments = () => {
                         draggable
                         onDrag={(e) => {
                           if (e.clientX === 0) return; // Ignore end of drag
-                          const slider = (e.target as HTMLElement).parentElement;
-                          if (!slider) return;
+                          const slider = e.target.parentElement;
                           const rect = slider.getBoundingClientRect();
                           const position =
                             ((e.clientX - rect.left) / rect.width) * 100;
@@ -581,8 +539,7 @@ const Tournaments = () => {
                         draggable
                         onDrag={(e) => {
                           if (e.clientX === 0) return; // Ignore end of drag
-                          const slider = (e.target as HTMLElement).parentElement;
-                          if (!slider) return;
+                          const slider = e.target.parentElement;
                           const rect = slider.getBoundingClientRect();
                           const position =
                             ((e.clientX - rect.left) / rect.width) * 100;
@@ -605,7 +562,7 @@ const Tournaments = () => {
                             <input
                               type="date"
                               value={dateFilter.startDate}
-                              min={dateRange.min ? dateRange.min.toISOString().split('T')[0] : ""}
+                              min={dateRange.min ? formatDate(dateRange.min) : ""}
                               max={dateFilter.endDate}
                               onChange={(e) => {
                                 const newDate = e.target.value;
@@ -632,7 +589,7 @@ const Tournaments = () => {
                               type="date"
                               value={dateFilter.endDate}
                               min={dateFilter.startDate}
-                              max={dateRange.max ? dateRange.max.toISOString().split('T')[0] : ""}
+                              max={dateRange.max ? formatDate(dateRange.max) : ""}
                               onChange={(e) => {
                                 const newDate = e.target.value;
                                 setDateFilter({
@@ -662,8 +619,8 @@ const Tournaments = () => {
                               thirtyDaysLater.setDate(today.getDate() + 30);
 
                               setDateFilter({
-                                startDate: today.toISOString().split('T')[0],
-                                endDate: thirtyDaysLater.toISOString().split('T')[0],
+                                startDate: formatDate(today),
+                                endDate: formatDate(thirtyDaysLater),
                               });
                               setDateRange({
                                 ...dateRange,
@@ -685,8 +642,8 @@ const Tournaments = () => {
                               threeMonthsLater.setMonth(today.getMonth() + 3);
 
                               setDateFilter({
-                                startDate: today.toISOString().split('T')[0],
-                                endDate: threeMonthsLater.toISOString().split('T')[0],
+                                startDate: formatDate(today),
+                                endDate: formatDate(threeMonthsLater),
                               });
                               setDateRange({
                                 ...dateRange,
@@ -703,19 +660,17 @@ const Tournaments = () => {
                           <button
                             onClick={() => {
                               // Set to all dates
-                              if (dateRange.min && dateRange.max) {
-                                setDateFilter({
-                                  startDate: dateRange.min.toISOString().split('T')[0],
-                                  endDate: dateRange.max.toISOString().split('T')[0],
-                                });
-                                setDateRange({
-                                  ...dateRange,
-                                  current: {
-                                    start: dateRange.min,
-                                    end: dateRange.max,
-                                  },
-                                });
-                              }
+                              setDateFilter({
+                                startDate: formatDate(dateRange.min),
+                                endDate: formatDate(dateRange.max),
+                              });
+                              setDateRange({
+                                ...dateRange,
+                                current: {
+                                  start: dateRange.min,
+                                  end: dateRange.max,
+                                },
+                              });
                             }}
                             className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"
                           >
@@ -761,9 +716,8 @@ const Tournaments = () => {
                 </span>
               )}
               {dateFilter.startDate && dateFilter.endDate && 
-                dateRange.min && dateRange.max && 
-                (dateFilter.startDate !== dateRange.min.toISOString().split('T')[0] || 
-                dateFilter.endDate !== dateRange.max.toISOString().split('T')[0]) && (
+                (dateFilter.startDate !== formatDate(dateRange.min) || 
+                dateFilter.endDate !== formatDate(dateRange.max)) && (
                 <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full flex items-center">
                   Dates: {displayDate(dateFilter.startDate)} - {displayDate(dateFilter.endDate)}
                 </span>
@@ -775,10 +729,10 @@ const Tournaments = () => {
         <div className="w-full flex justify-center">
           <div className="w-11/12 lg:w-3/4 border border-gray-300 rounded-lg p-4">
             {view === "list" && (
-              <TournamentList tournaments={filteredTournaments as any} />
+              <TournamentList tournaments={filteredTournaments} />
             )}
             {view === "map" && (
-              <TournamentMap tournaments={filteredTournaments as any} />
+              <TournamentMap tournaments={filteredTournaments} />
             )}
           </div>
         </div>

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -55,9 +54,7 @@ const SearchControl = ({ userAddress }: { userAddress: string }) => {
       }, 1000);
     }
 
-    return () => {
-      map.removeControl(searchControl);
-    };
+    return () => map.removeControl(searchControl);
   }, [map, userAddress]);
 
   return null;
@@ -80,7 +77,7 @@ const SetViewToUserLocation = ({
   return null;
 };
 
-export function TournamentMap({ tournaments }: TournamentMapProps) {
+export  function TournamentMap({ tournaments }: TournamentMapProps) {
   const defaultCenter: [number, number] = [20.5937, 78.9629]; // Center of India
   const [userCoordinates, setUserCoordinates] = useState<
     [number, number] | null

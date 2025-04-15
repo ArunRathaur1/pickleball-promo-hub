@@ -13,8 +13,6 @@ import {
 import "leaflet/dist/leaflet.css";
 import { icon } from "leaflet";
 import "leaflet-geosearch/dist/geosearch.css";
-import { GeoSearchControl, OpenStreetMapProvider, SearchControl as GeoSearchControlFn } from "leaflet-geosearch";
-
 
 // Default marker icon fix for Leaflet
 const defaultIcon = icon({
@@ -27,31 +25,39 @@ const defaultIcon = icon({
 });
 
 // Component to get current location and set up search
-const MapController = ({ setFieldValue }: { setFieldValue: (field: string, value: any) => void }) => {
+const MapController = ({ setFieldValue }) => {
   const map = useMap();
 
   useEffect(() => {
     // Only import and use these when component mounts
-    const provider = new OpenStreetMapProvider();
-    const searchControl = new GeoSearchControl({
-      provider,
-      style: "bar",
-      showMarker: false, // We'll handle markers ourselves
-      showPopup: false,
-      autoClose: true,
-      retainZoomLevel: false,
-      animateZoom: true,
-      keepResult: true,
-      searchLabel: "Search for location",
-    });
+    import("leaflet-geosearch").then(
+      ({ GeoSearchControl, OpenStreetMapProvider }) => {
+        const provider = new OpenStreetMapProvider();
+        const searchControl = new GeoSearchControl({
+          provider,
+          style: "bar",
+          showMarker: false, // We'll handle markers ourselves
+          showPopup: false,
+          autoClose: true,
+          retainZoomLevel: false,
+          animateZoom: true,
+          keepResult: true,
+          searchLabel: "Search for location",
+        });
 
-    map.addControl(searchControl);
+        map.addControl(searchControl);
 
-    // Handle search results
-    map.on("geosearch/showlocation", (e: any) => {
-      const { lat, lng } = e.location;
-      setFieldValue("locationCoordinates", [lat, lng]);
-    });
+        // Handle search results
+        map.on("geosearch/showlocation", (e) => {
+          const { lat, lng } = e.location;
+          setFieldValue("locationCoordinates", [lat, lng]);
+        });
+
+        return () => {
+          map.removeControl(searchControl);
+        };
+      }
+    );
 
     // Get current location
     navigator.geolocation.getCurrentPosition(
@@ -64,10 +70,6 @@ const MapController = ({ setFieldValue }: { setFieldValue: (field: string, value
         // Fallback to default view if geolocation fails
       }
     );
-
-    return () => {
-      map.removeControl(searchControl);
-    };
   }, [map, setFieldValue]);
 
   return null;
