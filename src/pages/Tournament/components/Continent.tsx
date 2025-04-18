@@ -1,4 +1,10 @@
 import React from "react";
+import asia from "../../../images/asia.jpg";
+import europe from "../../../images/europe1.jpg";
+import aus from "../../../images/aus.jpg";
+import africa from "../../../images/europe.png";
+import norame from "../../../images/northamerica.avif";
+import souame from "../../../images/southamerica.jpg";
 
 interface ContinentSelectorProps {
   selectedContinent: string | null;
@@ -8,31 +14,27 @@ interface ContinentSelectorProps {
 const continents = [
   {
     name: "Asia",
-    image: "https://source.unsplash.com/1600x900/?asia",
+    image: asia,
   },
   {
     name: "Europe",
-    image: "https://source.unsplash.com/1600x900/?europe",
+    image: europe,
   },
   {
     name: "Africa",
-    image: "https://source.unsplash.com/1600x900/?africa",
+    image: africa,
   },
   {
     name: "North America",
-    image: "https://source.unsplash.com/1600x900/?north-america",
+    image: norame,
   },
   {
     name: "South America",
-    image: "https://source.unsplash.com/1600x900/?south-america",
+    image:souame,
   },
   {
     name: "Australia",
-    image: "https://source.unsplash.com/1600x900/?australia",
-  },
-  {
-    name: "Antarctica",
-    image: "https://source.unsplash.com/1600x900/?antarctica",
+    image: aus,
   },
 ];
 

@@ -35,7 +35,7 @@ const ThankYouSection: React.FC = () => {
                   d="M9 5l7 7-7 7"
                 ></path>
               </svg>
-              <span>Continue</span>
+              <span>Back to home page</span>
             </a>
           </li>
         </ul>

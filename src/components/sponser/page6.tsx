@@ -61,10 +61,10 @@ export default function PickleballPodcast() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="mt-10 text-xl font-semibold"
         >
-          Where to Listen:
+          {/* Where to Listen: */}
         </motion.p>
 
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
@@ -88,7 +88,7 @@ export default function PickleballPodcast() {
             width={50}
             height={50}
           />
-        </motion.div>
+        </motion.div> */}
       </div>
     </div>
   );
