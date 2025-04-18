@@ -41,10 +41,10 @@ const TournamentFilters: React.FC<TournamentFiltersProps> = ({
   tiers,
 }) => {
   return (
-    <div className="w-11/12 lg:w-3/4">
+    <div >
       {showFilters && (
-        <div className="p-6 border-t border-green-200 rounded-xl bg-white shadow-md shadow-green-100">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+        <div className="p-6  bg-white shadow-md shadow-green-100">
+          <div style={{display:"flex",justifyContent:'space-between'}}>
             {/* Search by name */}
             <div>
               <label className="block text-sm font-semibold text-green-700 mb-1">

@@ -309,9 +309,9 @@ const FilterManager: React.FC<FilterManagerProps> = ({
 
   return (
     <>
-      <div >
+      <div>
         {/* Month and Year Selector Section */}
-        <div >
+        <div>
           <MonthYearSelector
             tournaments={tournaments}
             selectedMonth={selectedMonth}
@@ -324,33 +324,41 @@ const FilterManager: React.FC<FilterManagerProps> = ({
         </div>
 
         {/* Tournament Filters Section */}
-        <div >
-          <TournamentFilters
-            search={search}
-            setSearch={setSearch}
-            locationFilter={locationFilter}
-            setLocationFilter={setLocationFilter}
-            countryFilter={countryFilter}
-            setCountryFilter={setCountryFilter}
-            continentFilter={continentFilter}
-            setContinentFilter={setContinentFilter}
-            tierFilter={tierFilter}
-            setTierFilter={setTierFilter}
-            showFilters={showFilters}
-            setShowFilters={setShowFilters}
-            hasActiveFilters={hasActiveFilters}
-            resetFilters={resetFilters}
-            countries={countries}
-            continents={continents}
-            tiers={tiers}
-          />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "1rem",
+          }}
+        >
+          <div style={{ flex: 1}}>
+            <TournamentFilters
+              search={search}
+              setSearch={setSearch}
+              locationFilter={locationFilter}
+              setLocationFilter={setLocationFilter}
+              countryFilter={countryFilter}
+              setCountryFilter={setCountryFilter}
+              continentFilter={continentFilter}
+              setContinentFilter={setContinentFilter}
+              tierFilter={tierFilter}
+              setTierFilter={setTierFilter}
+              showFilters={showFilters}
+              setShowFilters={setShowFilters}
+              hasActiveFilters={hasActiveFilters}
+              resetFilters={resetFilters}
+              countries={countries}
+              continents={continents}
+              tiers={tiers}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <ContinentSelector
+              selectedContinent={selectedContinent}
+              setSelectedContinent={setSelectedContinent}
+            />
+          </div>
         </div>
-      </div>
-      <div >
-        <ContinentSelector
-          selectedContinent={selectedContinent}
-          setSelectedContinent={setSelectedContinent}
-        />
       </div>
       {/* Filter Summary Section */}
       <div className="w-full max-w-7xl mx-auto px-4 mt-6">

@@ -47,7 +47,7 @@ const ContinentSelector: React.FC<ContinentSelectorProps> = ({
   };
 
   return (
-    <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 mb-4">
+    <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 mb-4" style={{paddingTop:'15px'}}>
       <div className="flex w-max gap-3 items-center">
         {continents.map(({ name, image }) => (
           <button

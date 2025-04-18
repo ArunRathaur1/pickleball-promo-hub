@@ -55,7 +55,7 @@ const MonthYearSelector: React.FC<DateSelectorProps> = ({
   };
 
   return (
-    <div className="w-full p-5 shadow-xl rounded-xl bg-white">
+    <div className="w-full p-5  bg-white">
       {/* Filter status and reset button in header */}
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold text-green-700">
