@@ -7,7 +7,7 @@ import { useState } from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Tournaments from "./pages/Tournaments";
+import Tournaments from "./pages/Tournament/Tournaments.tsx";
 import TournamentSubmit from "./pages/TournamentSubmit";
 import Services from "./pages/Services";
 import AdminDashboard from "./pages/AdminDashboard";

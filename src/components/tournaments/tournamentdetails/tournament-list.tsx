@@ -26,12 +26,13 @@ const TournamentList = ({ tournaments }: TournamentListProps) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
       <h2 className="text-3xl font-bold text-center mb-8 text-green-700">
         Tournament List
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* Adjusted grid structure */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {tournaments.length > 0 ? (
           tournaments.map((tournament) => (
             <div
@@ -43,10 +44,12 @@ const TournamentList = ({ tournaments }: TournamentListProps) => {
                 <img
                   src={tournament.imageUrl}
                   alt={tournament.name}
-                  className="h-48 w-full object-cover"
+                  className="h-40 w-full object-cover" // Reduced height
                 />
               ) : (
-                <div className="bg-green-700 h-48 flex items-center justify-center p-4">
+                <div className="bg-green-700 h-40 flex items-center justify-center p-4">
+                  {" "}
+                  {/* Reduced height */}
                   <h3 className="text-2xl font-bold text-white text-center break-words">
                     {tournament.name}
                   </h3>
