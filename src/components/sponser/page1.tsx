@@ -53,26 +53,7 @@ export default function Page1() {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
       >
-        <li>
-          <motion.a
-            role="button"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="flex flex-col items-center justify-center bg-green-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-green-700 transition"
-          >
-            <svg
-              className="w-6 h-6"
-              aria-labelledby="icons03-icon-1-title"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 40 40"
-            >
-              <title id="icons03-icon-1-title">Chevron Down</title>
-              <polygon points="3.6,10.5 3.6,29.5 20,39 36.4,29.5 36.4,10.5 20,1" />
-            </svg>
-            <span className="text-xs font-medium mt-2">Chevron</span>
-          </motion.a>
-        </li>
+        
       </motion.ul>
     </div>
   );
