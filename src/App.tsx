@@ -32,38 +32,38 @@ import ClubForm from "./components/admin-club/form.tsx";
 const queryClient = new QueryClient();
 
 // Create a ChatbotWrapper to manage global chatbot state
-const ChatbotWrapper = () => {
-  const [chatOpen, setChatOpen] = useState(false);
+// const ChatbotWrapper = () => {
+//   const [chatOpen, setChatOpen] = useState(false);
 
-  return (
-    <div style={{ position: "relative", zIndex: 10000 }}>
-      {/* Chatbot Button */}
-      <button
-        onClick={() => setChatOpen(!chatOpen)}
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          backgroundColor: "#2e7d32",
-          color: "white",
-          border: "none",
-          borderRadius: "50%",
-          width: "50px",
-          height: "50px",
-          cursor: "pointer",
-          fontSize: "24px",
-          zIndex: 10000,
-          boxShadow: "0px 2px 5px rgba(0,0,0,0.2)",
-        }}
-      >
-        💬
-      </button>
+//   return (
+//     <div style={{ position: "relative", zIndex: 10000 }}>
+//       {/* Chatbot Button */}
+//       <button
+//         onClick={() => setChatOpen(!chatOpen)}
+//         style={{
+//           position: "fixed",
+//           bottom: "20px",
+//           right: "20px",
+//           backgroundColor: "#2e7d32",
+//           color: "white",
+//           border: "none",
+//           borderRadius: "50%",
+//           width: "50px",
+//           height: "50px",
+//           cursor: "pointer",
+//           fontSize: "24px",
+//           zIndex: 10000,
+//           boxShadow: "0px 2px 5px rgba(0,0,0,0.2)",
+//         }}
+//       >
+//         💬
+//       </button>
 
-      {/* Chatbot Component */}
-      {chatOpen && <Chatbot onClose={() => setChatOpen(false)} />}
-    </div>
-  );
-};
+//       {/* Chatbot Component */}
+//       {chatOpen && <Chatbot onClose={() => setChatOpen(false)} />}
+//     </div>
+//   );
+// };
 
 const App = () => {
   return (
@@ -73,7 +73,7 @@ const App = () => {
         <Sonner />
 
         {/* ChatbotWrapper comes before the BrowserRouter to ensure it's on top layer */}
-        <ChatbotWrapper />
+        {/* <ChatbotWrapper /> */}
 
         <BrowserRouter>
           <Routes>
