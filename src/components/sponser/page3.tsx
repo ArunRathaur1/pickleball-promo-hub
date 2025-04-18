@@ -52,7 +52,7 @@ export default function TrustedBrands() {
         {brands.map((brand, index) => (
           <motion.div
           key={index}
-          className="bg-black border border-green-400 p-8 rounded-2xl shadow-2xl flex items-center justify-center transition-transform duration-300 ease-in-out"
+          className="bg-black border border-green-400 p-8 rounded-2xl shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-300 ease-in-out hover:bg-green-100 hover:text-black"
           variants={{
             hidden: { opacity: 0, scale: 0.9, y: 20 },
             visible: {
@@ -64,13 +64,14 @@ export default function TrustedBrands() {
           }}
         >
           <a href={brand.link} target="_blank" rel="noopener noreferrer">
-            <img
-              src={brand.src}
-              alt={brand.alt}
-              className="w-full max-h-24 object-contain transition-all duration-300"
-            />
+          <img
+            src={brand.src}
+            alt={brand.alt}
+            className="w-full max-h-24 object-contain grayscale hover:grayscale-0 transition-all duration-300"
+          />
           </a>
         </motion.div>
+        
         
         ))}
       </motion.div>
