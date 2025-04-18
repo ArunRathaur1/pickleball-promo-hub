@@ -98,7 +98,7 @@ export function ServicesPreview() {
               </CardContent>
               <CardFooter>
                 <Link to={service.link} className="text-pickle hover:text-pickle-dark text-sm font-medium inline-flex items-center group transition-all">
-                  Learn more 
+                  Learn more
                   <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
                 </Link>
               </CardFooter>

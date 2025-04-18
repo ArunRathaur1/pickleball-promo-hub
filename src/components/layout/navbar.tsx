@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { label: "Athletes", href: "/athletes" },
   { label: "Tournaments", href: "/tournaments" },
   { label: "Clubs", href: "/clubs" },
-  { label: "Contact", href: "/contact" },
+  { label: "About us", href: "/contact" },
 ];
 
 export function Navbar() {
