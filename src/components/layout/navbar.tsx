@@ -97,7 +97,7 @@ export function Navbar() {
             <Link to="/" className="flex-shrink-0 flex items-center space-x-2 group">
               <img src={image} alt="Pickleball Logo" className="h-10 w-auto dark:bg-white bg-black rounded-full p-1 transition-transform group-hover:scale-110 duration-300" />
               <span className="text-foreground font-semibold text-lg hidden sm:block">
-                Pickle<span className="text-pickle">ball</span>Hub
+                Pickle<span className="text-pickle">ball</span>Official
               </span>
             </Link>
           </div>
