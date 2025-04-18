@@ -44,17 +44,7 @@ export function ServiceCard({ title, description, icon, features, popular, link 
         </ul>
       </CardContent>
       
-      <CardFooter>
-        <Link to={link} className="w-full">
-          <Button 
-            className={`w-full group ${popular ? "bg-pickle hover:bg-pickle-dark" : ""}`}
-            variant={popular ? "default" : "outline"}
-          >
-            <span>Learn More</span>
-            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
-        </Link>
-      </CardFooter>
+      
     </Card>
   );
 }
