@@ -19,7 +19,7 @@ import PlayerProfile from "./pages/Playerprofile.tsx";
 import AdminLogin from "./components/admin/admin-login.js";
 import AdminSingup from "./components/admin/admin-signup.js";
 import CourtSubmit from "./pages/CourtSubmit.js";
-import ContactPage from "./pages/ContactPage.js";
+import ContactPage from "./pages/contact/ContactPage.js";
 import Blogpage from "./pages/Blogpage.js";
 import Clubs from "./pages/Clubs.js";
 import Chatbot from "./components/Chatbot";
