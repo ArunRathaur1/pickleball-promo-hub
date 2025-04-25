@@ -11,6 +11,7 @@ import FormActions from "./FormActions";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Navbar } from "@/components/layout/navbar";
 
 // Initialize Leaflet default icon
 L.Marker.prototype.options.icon = L.icon({
@@ -132,69 +133,164 @@ const TournamentForm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-white to-gray-50">
-      <div className="container mx-auto p-6 max-w-4xl">
-        {/* Header Section */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-green-700">
-            Create Tournament
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Fill out the details below to set up your new tournament
-          </p>
-        </div>
-
-        {/* Status Message */}
-        {message && (
-          <div
-            className={`mb-8 p-4 rounded-lg shadow-sm border ${
-              success
-                ? "bg-green-50 border-green-200 text-green-800"
-                : "bg-red-50 border-red-200 text-red-800"
-            }`}
-          >
-            <div className="flex items-center">
-              <span
-                className={`mr-2 text-xl ${
-                  success ? "text-green-500" : "text-red-500"
-                }`}
-              >
-                {success ? "✓" : "✗"}
-              </span>
-              {message}
-            </div>
+    <>
+      <div style={{zIndex:"1000"}}>
+        <Navbar></Navbar>
+      </div>
+      <div className="bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto p-6 max-w-4xl">
+          {/* Header Section */}
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold text-green-700">
+              Create Tournament
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Fill out the details below to set up your new tournament
+            </p>
           </div>
-        )}
 
-        {/* Form Card */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div className="p-1 bg-gradient-to-r from-green-500 to-emerald-500" />
-          <div className="p-6">
-            <Formik
-              initialValues={{
-                name: "",
-                Organizer: "",
-                location: "",
-                country: "",
-                Continent: "",
-                Tier: "",
-                startDate: "",
-                endDate: "",
-                imageUrl: "",
-                description: "",
-                locationCoords: initialLocation,
-              }}
-              validationSchema={validationSchema}
-              onSubmit={handleSubmit}
-              enableReinitialize
+          {/* Status Message */}
+          {message && (
+            <div
+              className={`mb-8 p-4 rounded-lg shadow-sm border ${
+                success
+                  ? "bg-green-50 border-green-200 text-green-800"
+                  : "bg-red-50 border-red-200 text-red-800"
+              }`}
             >
-              {({ isSubmitting, setFieldValue, values }) => (
-                <Form className="space-y-8">
-                  {/* Form Sections with Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Basic Information */}
-                    <div className="space-y-6 md:col-span-2">
-                      <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+              <div className="flex items-center">
+                <span
+                  className={`mr-2 text-xl ${
+                    success ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {success ? "✓" : "✗"}
+                </span>
+                {message}
+              </div>
+            </div>
+          )}
+
+          {/* Form Card */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="p-1 bg-gradient-to-r from-green-500 to-emerald-500" />
+            <div className="p-6">
+              <Formik
+                initialValues={{
+                  name: "",
+                  Organizer: "",
+                  location: "",
+                  country: "",
+                  Continent: "",
+                  Tier: "",
+                  startDate: "",
+                  endDate: "",
+                  imageUrl: "",
+                  description: "",
+                  locationCoords: initialLocation,
+                }}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+                enableReinitialize
+              >
+                {({ isSubmitting, setFieldValue, values }) => (
+                  <Form className="space-y-8">
+                    {/* Form Sections with Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {/* Basic Information */}
+                      <div className="space-y-6 md:col-span-2">
+                        <TournamentFormFields
+                          continents={continents}
+                          tiers={tiers}
+                        />
+                      </div>
+
+                      {/* Tournament Logo */}
+                      <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h2 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
+                          <span className="bg-green-100 p-1 rounded-full text-green-600 mr-2">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4V5h12v10z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                          Tournament Logo
+                        </h2>
+                        <Label className="block mb-2">
+                          Upload your tournament's official logo
+                        </Label>
+                        <div className="bg-white p-4 rounded-lg border border-dashed border-gray-300">
+                          <CloudinaryImageUploader
+                            onUploadSuccess={(url) =>
+                              setFieldValue("imageUrl", url)
+                            }
+                          />
+                          {values.imageUrl && (
+                            <div className="mt-4 flex justify-center">
+                              <img
+                                src={values.imageUrl}
+                                alt="Preview"
+                                className="h-40 object-contain rounded"
+                              />
+                            </div>
+                          )}
+                        </div>
+                        <ErrorMessage
+                          name="imageUrl"
+                          component="div"
+                          className="text-red-500 text-sm mt-2"
+                        />
+                      </div>
+
+                      {/* Description */}
+                      <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h2 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
+                          <span className="bg-green-100 p-1 rounded-full text-green-600 mr-2">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                          Description
+                        </h2>
+                        <Label htmlFor="description" className="block mb-2">
+                          Tournament details and information
+                        </Label>
+                        <Field
+                          as={Textarea}
+                          id="description"
+                          name="description"
+                          rows="6"
+                          placeholder="Provide details about the tournament, rules, prizes, eligibility criteria..."
+                          className="w-full resize-none focus:ring-green-500 focus:border-green-500"
+                        />
+                        <ErrorMessage
+                          name="description"
+                          component="div"
+                          className="text-red-500 text-sm mt-2"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Map Section */}
+                    <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 md:col-span-2">
+                      <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
                         <span className="bg-green-100 p-1.5 rounded-full text-green-600 mr-2">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -204,264 +300,157 @@ const TournamentForm = () => {
                           >
                             <path
                               fillRule="evenodd"
-                              d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 100-12 6 6 0 000 12z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </span>
-                        Basic Information
-                      </h2>
-                      <TournamentFormFields
-                        continents={continents}
-                        tiers={tiers}
-                      />
-                    </div>
-
-                    {/* Tournament Logo */}
-                    <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
-                      <h2 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                        <span className="bg-green-100 p-1 rounded-full text-green-600 mr-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4V5h12v10z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </span>
-                        Tournament Logo
-                      </h2>
-                      <Label className="block mb-2">
-                        Upload your tournament's official logo
-                      </Label>
-                      <div className="bg-white p-4 rounded-lg border border-dashed border-gray-300">
-                        <CloudinaryImageUploader
-                          onUploadSuccess={(url) =>
-                            setFieldValue("imageUrl", url)
-                          }
-                        />
-                        {values.imageUrl && (
-                          <div className="mt-4 flex justify-center">
-                            <img
-                              src={values.imageUrl}
-                              alt="Preview"
-                              className="h-40 object-contain rounded"
-                            />
-                          </div>
-                        )}
-                      </div>
-                      <ErrorMessage
-                        name="imageUrl"
-                        component="div"
-                        className="text-red-500 text-sm mt-2"
-                      />
-                    </div>
-
-                    {/* Description */}
-                    <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
-                      <h2 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                        <span className="bg-green-100 p-1 rounded-full text-green-600 mr-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </span>
-                        Description
-                      </h2>
-                      <Label htmlFor="description" className="block mb-2">
-                        Tournament details and information
-                      </Label>
-                      <Field
-                        as={Textarea}
-                        id="description"
-                        name="description"
-                        rows="6"
-                        placeholder="Provide details about the tournament, rules, prizes, eligibility criteria..."
-                        className="w-full resize-none focus:ring-green-500 focus:border-green-500"
-                      />
-                      <ErrorMessage
-                        name="description"
-                        component="div"
-                        className="text-red-500 text-sm mt-2"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Map Section */}
-                  <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 md:col-span-2">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                      <span className="bg-green-100 p-1.5 rounded-full text-green-600 mr-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                      Tournament Location
-                    </h2>
-                    <p className="text-gray-600 mb-4">
-                      Set the exact location of your tournament by searching or
-                      clicking on the map
-                    </p>
-
-                    <MapLocationSection
-                      initialLocation={initialLocation}
-                      markerPosition={markerPosition}
-                      setMarkerPosition={setMarkerPosition}
-                      setFieldValue={setFieldValue}
-                    />
-
-                    <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="md:col-span-2">
-                        <Label
-                          htmlFor="locationCoords"
-                          className="block mb-2 font-medium"
-                        >
-                          Location Coordinates
-                        </Label>
-                        <Input
-                          type="text"
-                          id="locationCoords"
-                          value={`[${markerPosition[0].toFixed(
-                            4
-                          )}, ${markerPosition[1].toFixed(4)}]`}
-                          readOnly
-                          className="bg-gray-50 border-gray-300 text-gray-500"
-                        />
-                        <ErrorMessage
-                          name="locationCoords"
-                          component="div"
-                          className="text-red-500 text-sm mt-1"
-                        />
-                      </div>
-
-                      <div className="flex items-end">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            // Get user's current location
-                            if (navigator.geolocation) {
-                              navigator.geolocation.getCurrentPosition(
-                                (position) => {
-                                  const { latitude, longitude } =
-                                    position.coords;
-                                  setMarkerPosition([latitude, longitude]);
-                                  setFieldValue("locationCoords", [
-                                    latitude,
-                                    longitude,
-                                  ]);
-                                }
-                              );
-                            }
-                          }}
-                          className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 mr-2 text-gray-500"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
                               d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                               clipRule="evenodd"
                             />
                           </svg>
-                          Use My Location
+                        </span>
+                        Tournament Location
+                      </h2>
+                      <p className="text-gray-600 mb-4">
+                        Set the exact location of your tournament by searching
+                        or clicking on the map
+                      </p>
+
+                      <MapLocationSection
+                        initialLocation={initialLocation}
+                        markerPosition={markerPosition}
+                        setMarkerPosition={setMarkerPosition}
+                        setFieldValue={setFieldValue}
+                      />
+
+                      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="md:col-span-2">
+                          <Label
+                            htmlFor="locationCoords"
+                            className="block mb-2 font-medium"
+                          >
+                            Location Coordinates
+                          </Label>
+                          <Input
+                            type="text"
+                            id="locationCoords"
+                            value={`[${markerPosition[0].toFixed(
+                              4
+                            )}, ${markerPosition[1].toFixed(4)}]`}
+                            readOnly
+                            className="bg-gray-50 border-gray-300 text-gray-500"
+                          />
+                          <ErrorMessage
+                            name="locationCoords"
+                            component="div"
+                            className="text-red-500 text-sm mt-1"
+                          />
+                        </div>
+
+                        <div className="flex items-end">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              // Get user's current location
+                              if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(
+                                  (position) => {
+                                    const { latitude, longitude } =
+                                      position.coords;
+                                    setMarkerPosition([latitude, longitude]);
+                                    setFieldValue("locationCoords", [
+                                      latitude,
+                                      longitude,
+                                    ]);
+                                  }
+                                );
+                              }
+                            }}
+                            className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 mr-2 text-gray-500"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Use My Location
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Submit Section */}
+                    <div className="pt-6 border-t border-gray-200">
+                      <div className="flex flex-col sm:flex-row justify-end gap-3">
+                        <button
+                          type="button"
+                          className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                          onClick={() => {
+                            // Reset or go back logic
+                            if (
+                              window.confirm(
+                                "Are you sure you want to cancel? All entered data will be lost."
+                              )
+                            ) {
+                              window.history.back();
+                            }
+                          }}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="inline-flex items-center justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <svg
+                                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                              </svg>
+                              Creating...
+                            </>
+                          ) : (
+                            "Create Tournament"
+                          )}
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
 
-                  {/* Submit Section */}
-                  <div className="pt-6 border-t border-gray-200">
-                    <div className="flex flex-col sm:flex-row justify-end gap-3">
-                      <button
-                        type="button"
-                        className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                        onClick={() => {
-                          // Reset or go back logic
-                          if (
-                            window.confirm(
-                              "Are you sure you want to cancel? All entered data will be lost."
-                            )
-                          ) {
-                            window.history.back();
-                          }
-                        }}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="inline-flex items-center justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <svg
-                              className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                              ></circle>
-                              <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                              ></path>
-                            </svg>
-                            Creating...
-                          </>
-                        ) : (
-                          "Create Tournament"
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </Form>
-              )}
-            </Formik>
+          <div className="mt-8 text-center text-sm text-gray-500">
+            Need help? Check out our{" "}
+            <a href="#" className="text-green-600 hover:underline">
+              tournament creation guidelines
+            </a>
           </div>
         </div>
-
-        <div className="mt-8 text-center text-sm text-gray-500">
-          Need help? Check out our{" "}
-          <a href="#" className="text-green-600 hover:underline">
-            tournament creation guidelines
-          </a>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -5,7 +5,7 @@ import {
   Marker,
   Popup,
   useMap,
-  useMapEvents, // Make sure this is imported
+  useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -97,20 +97,86 @@ const SearchControl = ({
 };
 
 // Component to handle map clicks
-export function MapClickHandler({
+const MapClickHandler = ({
   setMarkerPosition,
   setFieldValue,
-}: Pick<MapLocationProps, "setMarkerPosition" | "setFieldValue">) {
-  // Fix: properly use useMapEvents
-  useMapEvents({
+}: {
+  setMarkerPosition: (position: [number, number]) => void;
+  setFieldValue: (field: string, value: any) => void;
+}) => {
+  const map = useMapEvents({
     click: (e) => {
       const { lat, lng } = e.latlng;
-      setMarkerPosition([lat, lng]);
-      setFieldValue("locationCoords", [lat, lng]);
+      const newPosition: [number, number] = [lat, lng];
+      setMarkerPosition(newPosition);
+      setFieldValue("locationCoords", newPosition);
+
+      // Use reverse geocoding to get the address (optional)
+      fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.display_name) {
+            setFieldValue("location", data.display_name);
+          }
+        })
+        .catch((error) => console.error("Error getting address:", error));
     },
   });
+
   return null;
-}
+};
+
+// Component to update map view when geolocation is obtained
+const LocationMarker = ({
+  setMarkerPosition,
+  setFieldValue,
+}: {
+  setMarkerPosition: (position: [number, number]) => void;
+  setFieldValue: (field: string, value: any) => void;
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    // Get user's location immediately when the component mounts
+    map.locate({ setView: true, maxZoom: 16 });
+
+    // Set up event listener for location found
+    const onLocationFound = (e: L.LocationEvent) => {
+      const userCoords: [number, number] = [e.latlng.lat, e.latlng.lng];
+      setMarkerPosition(userCoords);
+      setFieldValue("locationCoords", userCoords);
+
+      // Optionally get the address based on coordinates
+      fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}&format=json`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.display_name) {
+            setFieldValue("location", data.display_name);
+          }
+        })
+        .catch((error) => console.error("Error getting address:", error));
+    };
+
+    // Set up event listener for location error
+    const onLocationError = (e: L.ErrorEvent) => {
+      console.error("Error obtaining location:", e.message);
+    };
+
+    map.on("locationfound", onLocationFound);
+    map.on("locationerror", onLocationError);
+
+    return () => {
+      map.off("locationfound", onLocationFound);
+      map.off("locationerror", onLocationError);
+    };
+  }, [map, setMarkerPosition, setFieldValue]);
+
+  return null;
+};
 
 export default function MapLocationSection({
   initialLocation,
@@ -119,11 +185,58 @@ export default function MapLocationSection({
   setFieldValue,
   initialAddress,
 }: MapLocationProps) {
+  const [currentCenter, setCurrentCenter] =
+    useState<[number, number]>(initialLocation);
+
+  // This useEffect will run once when the component mounts
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userCoords: [number, number] = [
+            position.coords.latitude,
+            position.coords.longitude,
+          ];
+          setCurrentCenter(userCoords); // update map center
+          setMarkerPosition(userCoords); // place marker
+          setFieldValue("locationCoords", userCoords); // update form field
+
+          // Optionally get the address based on coordinates
+          fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${userCoords[0]}&lon=${userCoords[1]}&format=json`
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.display_name) {
+                setFieldValue("location", data.display_name);
+              }
+            })
+            .catch((error) => console.error("Error getting address:", error));
+        },
+        (error) => {
+          console.error("Error fetching location:", error.message);
+          // Handle errors - maybe show an alert to the user
+          if (error.code === 1) {
+            // Permission denied
+            console.warn("User denied geolocation permission");
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser");
+    }
+  }, [setFieldValue, setMarkerPosition]);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="h-80 w-full rounded-lg overflow-hidden border border-gray-300">
         <MapContainer
-          center={initialLocation}
+          center={currentCenter}
           zoom={13}
           style={{ height: "100%", width: "100%" }}
         >
@@ -140,6 +253,10 @@ export default function MapLocationSection({
             setMarkerPosition={setMarkerPosition}
             setFieldValue={setFieldValue}
           />
+          <LocationMarker
+            setMarkerPosition={setMarkerPosition}
+            setFieldValue={setFieldValue}
+          />
           <Marker position={markerPosition}>
             <Popup>
               Selected Location: {markerPosition[0].toFixed(4)},{" "}
@@ -149,7 +266,6 @@ export default function MapLocationSection({
         </MapContainer>
       </div>
 
-      {/* Current coordinates display */}
       <div className="text-sm text-gray-600">
         Selected coordinates: {markerPosition[0].toFixed(6)},{" "}
         {markerPosition[1].toFixed(6)}

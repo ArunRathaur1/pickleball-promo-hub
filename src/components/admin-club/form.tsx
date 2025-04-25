@@ -176,8 +176,8 @@ const ClubForm = () => {
     // Add background gradient to the body
     document.body.classList.add(
       "bg-gradient-to-br",
-      "from-green-50",
-      "to-green-100",
+      "from-white-50",
+      "to-white-100",
       "min-h-screen"
     );
 
@@ -185,8 +185,8 @@ const ClubForm = () => {
       // Clean up when component unmounts
       document.body.classList.remove(
         "bg-gradient-to-br",
-        "from-green-50",
-        "to-green-100",
+        "from-white-50",
+        "to-white-100",
         "min-h-screen"
       );
     };
@@ -198,10 +198,10 @@ const ClubForm = () => {
         <Navbar />
       </div>
 
-      <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-green-50 to-green-100">
+      <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8  " >
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-extrabold text-green-800 tracking-tight">
+            <h1 className="text-4xl font-extrabold text-white-800 tracking-tight">
               Club Registration
             </h1>
             <p className="mt-3 text-xl text-gray-600">
@@ -210,7 +210,7 @@ const ClubForm = () => {
           </div>
 
           <div className="bg-white shadow-2xl rounded-2xl overflow-hidden">
-            <div className="bg-gradient-to-r from-green-600 to-green-600 px-6 py-4">
+            <div className="bg-gradient-to-r from-white-600 to-white-600 px-6 py-4">
               <h2 className="text-xl font-bold text-white">
                 Submit Club Details
               </h2>
@@ -228,9 +228,9 @@ const ClubForm = () => {
                   {/* Basic Info Section */}
                   <div>
                     <div className="flex items-center mb-4">
-                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-white-100 flex items-center justify-center">
                         <svg
-                          className="h-5 w-5 text-green-600"
+                          className="h-5 w-5 text-white-600"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -257,7 +257,7 @@ const ClubForm = () => {
                         <Field
                           type="text"
                           name="name"
-                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-white-500 focus:border-white-500"
                           placeholder="Enter club name"
                         />
                         <ErrorMessage
@@ -274,7 +274,7 @@ const ClubForm = () => {
                         <Field
                           type="email"
                           name="email"
-                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-white-500 focus:border-white-500"
                           placeholder="club@example.com"
                         />
                         <ErrorMessage
@@ -291,7 +291,7 @@ const ClubForm = () => {
                         <Field
                           type="text"
                           name="contact"
-                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-white-500 focus:border-white-500"
                           placeholder="+1 (555) 123-4567"
                         />
                         <ErrorMessage
@@ -311,7 +311,7 @@ const ClubForm = () => {
                         <Field
                           type="text"
                           name="bookinglink"
-                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-white-500 focus:border-white-500"
                           placeholder="https://yourbookinglink.com"
                         />
                         <ErrorMessage
@@ -330,7 +330,7 @@ const ClubForm = () => {
                         as="textarea"
                         name="description"
                         rows={4}
-                        className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-white-500 focus:border-white-500"
                         placeholder="Provide a detailed description of your club..."
                       />
                       <ErrorMessage
@@ -344,9 +344,9 @@ const ClubForm = () => {
                   {/* Location Section */}
                   <div className="pt-6 border-t border-gray-200">
                     <div className="flex items-center mb-4">
-                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-white-100 flex items-center justify-center">
                         <svg
-                          className="h-5 w-5 text-green-600"
+                          className="h-5 w-5 text-white-600"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -379,7 +379,7 @@ const ClubForm = () => {
                         <Field
                           type="text"
                           name="location"
-                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-white-500 focus:border-white-500"
                           placeholder="123 Main Street, Suite 100"
                         />
                         <ErrorMessage
@@ -396,7 +396,7 @@ const ClubForm = () => {
                         <Field
                           type="text"
                           name="country"
-                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500"
+                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-white-500 focus:border-white-500"
                           placeholder="United States"
                         />
                         <ErrorMessage
@@ -427,7 +427,7 @@ const ClubForm = () => {
                       </div>
                       <div className="mt-2 flex items-center text-sm text-gray-600">
                         <svg
-                          className="h-5 w-5 text-green-500 mr-2"
+                          className="h-5 w-5 text-white-500 mr-2"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -460,9 +460,9 @@ const ClubForm = () => {
                   {/* Media Section */}
                   <div className="pt-6 border-t border-gray-200">
                     <div className="flex items-center mb-4">
-                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-white-100 flex items-center justify-center">
                         <svg
-                          className="h-5 w-5 text-green-600"
+                          className="h-5 w-5 text-white-600"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -493,7 +493,7 @@ const ClubForm = () => {
                           />
                           {clubImageUrl && (
                             <div className="mt-3">
-                              <div className="flex items-center text-green-600 mb-2">
+                              <div className="flex items-center text-white-600 mb-2">
                                 <svg
                                   className="h-5 w-5 mr-1"
                                   fill="currentColor"
@@ -536,7 +536,7 @@ const ClubForm = () => {
                           />
                           {logoImageUrl && (
                             <div className="mt-3">
-                              <div className="flex items-center text-green-600 mb-2">
+                              <div className="flex items-center text-white-600 mb-2">
                                 <svg
                                   className="h-5 w-5 mr-1"
                                   fill="currentColor"
@@ -595,11 +595,11 @@ const ClubForm = () => {
                   )}
 
                   {status?.success && (
-                    <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded">
+                    <div className="bg-white-50 border-l-4 border-white-400 p-4 rounded">
                       <div className="flex">
                         <div className="flex-shrink-0">
                           <svg
-                            className="h-5 w-5 text-green-400"
+                            className="h-5 w-5 text-white-400"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
@@ -611,7 +611,7 @@ const ClubForm = () => {
                           </svg>
                         </div>
                         <div className="ml-3">
-                          <p className="text-sm text-green-700">
+                          <p className="text-sm text-white-700">
                             {status.success}
                           </p>
                         </div>
@@ -623,7 +623,7 @@ const ClubForm = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 font-medium text-lg transition duration-150 ease-in-out disabled:opacity-70"
+                      className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white bg-gradient-to-r from-green-600 to-green-600 hover:from-white-700 hover:to-white-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-500 font-medium text-lg transition duration-150 ease-in-out disabled:opacity-70"
                     >
                       {isSubmitting ? (
                         <div className="flex items-center">
@@ -670,7 +670,7 @@ const ClubForm = () => {
                   </div>
                   {showResponse && formResponse && (
                     <div className="flex justify-center mt-6">
-                      <div className="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg shadow-md text-center font-medium">
+                      <div className="bg-white-100 border border-white-400 text-white-700 px-6 py-4 rounded-lg shadow-md text-center font-medium">
                         ✅ Details Submitted for Verification
                       </div>
                     </div>
@@ -689,7 +689,7 @@ const ClubForm = () => {
               Need help? Contact{" "}
               <a
                 href="mailto:support@example.com"
-                className="text-green-600 hover:text-green-800"
+                className="text-white-600 hover:text-white-800"
               >
                 support@example.com
               </a>
