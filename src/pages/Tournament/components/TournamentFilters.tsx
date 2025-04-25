@@ -1,5 +1,4 @@
 import React from "react";
-import { Filter, ChevronUp, ChevronDown } from "lucide-react";
 
 interface TournamentFiltersProps {
   search: string;
@@ -24,34 +23,28 @@ interface TournamentFiltersProps {
 const TournamentFilters: React.FC<TournamentFiltersProps> = ({
   search,
   setSearch,
-  locationFilter,
-  setLocationFilter,
   countryFilter,
   setCountryFilter,
-  continentFilter,
-  setContinentFilter,
   tierFilter,
   setTierFilter,
   showFilters,
-  setShowFilters,
-  hasActiveFilters,
   resetFilters,
   countries,
-  continents,
   tiers,
 }) => {
   return (
-    <div >
+    <div>
       {showFilters && (
-        <div className="p-6  bg-white shadow-md shadow-green-100">
-          <div style={{display:"flex",justifyContent:'space-between'}}>
-            {/* Search by name */}
+        <div className="" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Search */}
             <div>
               <label className="block text-sm font-semibold text-green-700 mb-1">
                 Search by Name
               </label>
               <input
                 type="text"
+                style={{ height: "50px" }}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full px-3 py-2 border border-green-300 focus:ring-2 focus:ring-green-400 rounded-md outline-none"
@@ -59,26 +52,31 @@ const TournamentFilters: React.FC<TournamentFiltersProps> = ({
               />
             </div>
 
-            {/* Country filter */}
+            {/* Country */}
             <div>
               <label className="block text-sm font-semibold text-green-700 mb-1">
                 Country
               </label>
               <select
+                style={{ height: "50px" }}
                 value={countryFilter}
                 onChange={(e) => setCountryFilter(e.target.value)}
                 className="w-full px-3 py-2 border border-green-300 focus:ring-2 focus:ring-green-400 rounded-md outline-none bg-white"
               >
                 <option value="">All Countries</option>
                 {countries.map((country) => (
-                  <option key={country} value={country}>
+                  <option
+                    key={country}
+                    value={country}
+                    style={{ height: "50px" }}
+                  >
                     {country}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Tier filter */}
+            {/* Tier */}
             <div>
               <label className="block text-sm font-semibold text-green-700 mb-1">
                 Tier
@@ -86,6 +84,7 @@ const TournamentFilters: React.FC<TournamentFiltersProps> = ({
               <select
                 value={tierFilter}
                 onChange={(e) => setTierFilter(e.target.value)}
+                style={{ height: "50px" }}
                 className="w-full px-3 py-2 border border-green-300 focus:ring-2 focus:ring-green-400 rounded-md outline-none bg-white"
               >
                 <option value="">All Tiers</option>
@@ -95,6 +94,17 @@ const TournamentFilters: React.FC<TournamentFiltersProps> = ({
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Reset Button - Always visible */}
+            <div className="flex items-end">
+              <button
+                style={{ height: "50px" }}
+                onClick={resetFilters}
+                className="w-full px-4 py-2 text-sm font-semibold text-white rounded-md bg-gradient-to-r bg-green-500 hover:from-blue-600 hover:to-blue-600 transition"
+              >
+                Reset Filters
+              </button>
             </div>
           </div>
         </div>

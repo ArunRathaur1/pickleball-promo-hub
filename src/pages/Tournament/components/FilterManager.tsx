@@ -325,11 +325,7 @@ const FilterManager: React.FC<FilterManagerProps> = ({
 
         {/* Tournament Filters Section */}
         <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "1rem",
-          }}
+          
         >
           <div style={{ flex: 1}}>
             <TournamentFilters
@@ -352,7 +348,7 @@ const FilterManager: React.FC<FilterManagerProps> = ({
               tiers={tiers}
             />
           </div>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1 ,paddingTop:'10px'}}>
             <ContinentSelector
               selectedContinent={selectedContinent}
               setSelectedContinent={setSelectedContinent}

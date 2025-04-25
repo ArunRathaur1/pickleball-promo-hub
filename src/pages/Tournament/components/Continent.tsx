@@ -12,30 +12,12 @@ interface ContinentSelectorProps {
 }
 
 const continents = [
-  {
-    name: "Asia",
-    image: asia,
-  },
-  {
-    name: "Europe",
-    image: europe,
-  },
-  {
-    name: "Africa",
-    image: africa,
-  },
-  {
-    name: "North America",
-    image: norame,
-  },
-  {
-    name: "South America",
-    image:souame,
-  },
-  {
-    name: "Australia",
-    image: aus,
-  },
+  { name: "Asia", image: asia },
+  { name: "Europe", image: europe },
+  { name: "Africa", image: africa },
+  { name: "North America", image: norame },
+  { name: "South America", image: souame },
+  { name: "Australia", image: aus },
 ];
 
 const ContinentSelector: React.FC<ContinentSelectorProps> = ({
@@ -47,25 +29,36 @@ const ContinentSelector: React.FC<ContinentSelectorProps> = ({
   };
 
   return (
-    <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 mb-4" style={{paddingTop:'15px'}}>
-      <div className="flex w-max gap-3 items-center">
+    <div className="w-full mb-4">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap", // ✅ wrap images to next row if needed
+          gap: "20px", // space between items
+        }}
+      >
         {continents.map(({ name, image }) => (
-          <button
+          <div
             key={name}
             onClick={() => handleSelect(name)}
-            className={`flex flex-col items-center p-2 rounded-md border transition-all min-w-[80px] ${
+            className={`${
               selectedContinent === name
                 ? "bg-blue-100 border-blue-500"
                 : "bg-gray-100 hover:bg-gray-200"
-            }`}
+            } p-2 rounded-md`}
           >
             <img
               src={image}
               alt={name}
-              className="w-12 h-12 object-contain mb-1"
+              style={{
+                width: "200px",
+                height: "100px",
+                objectFit: "cover",
+                borderRadius: "8px",
+              }}
             />
-            <span className="text-xs font-medium text-center">{name}</span>
-          </button>
+          </div>
         ))}
       </div>
     </div>

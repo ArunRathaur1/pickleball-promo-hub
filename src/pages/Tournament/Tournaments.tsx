@@ -25,7 +25,7 @@ const Tournaments = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
       <main>
-        <div className="pl-[5%] bg-green-50 border border-green-300 rounded-2xl shadow-lg shadow-green-200 p-6">
+        <div >
           <FilterManager
             tournaments={tournaments}
             setFilteredTournaments={setFilteredTournaments}

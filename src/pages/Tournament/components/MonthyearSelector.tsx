@@ -1,4 +1,5 @@
 import React from "react";
+import { styleText } from "util";
 
 interface DateSelectorProps {
   tournaments: any[];
@@ -55,33 +56,18 @@ const MonthYearSelector: React.FC<DateSelectorProps> = ({
   };
 
   return (
-    <div className="w-full p-5  bg-white">
-      {/* Filter status and reset button in header */}
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-semibold text-green-700">
-          📅 Filter by Month & Year
-        </h3>
-        {activeFilters && (
-          <div className="flex items-center">
-            <button
-              onClick={resetFilters}
-              className="ml-4 text-sm text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 transition-all duration-200 ease-in-out shadow-md hover:shadow-lg"
-              style={{ fontSize: "20px" }}
-            >
-              Reset
-            </button>
-          </div>
-        )}
-      </div>
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-5 "style={{background:"lightgray",marginBottom:'10px'}}>
+      {/* Header */}
 
-      {/* Flex Row for Year and Month */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        {/* Year Dropdown (20%) */}
+      {/* Filters Row */}
+      <div className="flex flex-col sm:flex-row gap-4 w-full">
+        {/* Year Selector */}
         <div className="sm:w-1/5 w-full">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Select Year:
           </label>
           <select
+            style={{ height: "50px" }}
             value={selectedYear || ""}
             onChange={(e) => setSelectedYear(e.target.value || null)}
             className="w-full border border-gray-300 px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
@@ -95,40 +81,28 @@ const MonthYearSelector: React.FC<DateSelectorProps> = ({
           </select>
         </div>
 
-        {/* Month Scroll (80%) */}
-        <div className="sm:w-4/5 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-green-300 scrollbar-track-green-100">
-          <div className="flex gap-2 min-w-max">
+        {/* Month Selector */}
+        <div className="sm:w-4/5 w-full overflow-x-auto pt-6">
+          <div
+            className="flex min-w-full border-b border-gray-300 bg-gray-100 rounded-md py-2 px-4"
+            style={{ gap: "24px" }}
+          >
             {months.map((month, index) => (
-              <button
+              <div
                 key={month}
                 onClick={() => handleSelectMonth(month)}
-                className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-all duration-200 font-medium flex-shrink-0 shadow-sm ${
+                className={`text-center cursor-pointer transition-all duration-200 font-semibold text-base px-2 py-1 ${
                   selectedMonth === String(index + 1)
-                    ? "bg-green-600 text-white"
-                    : "bg-green-50 hover:bg-green-100 text-gray-800"
+                    ? "border-b-4 border-green-600 text-green-700"
+                    : "text-gray-700 hover:text-black"
                 }`}
               >
                 {month}
-              </button>
+              </div>
             ))}
           </div>
         </div>
       </div>
-
-      {/* Selected Info */}
-      {(selectedMonth || selectedYear) && (
-        <div className="mt-3 text-sm text-gray-700 flex flex-wrap items-center justify-between gap-2">
-          <span>
-            Showing tournaments in{" "}
-            <span className="font-semibold text-green-700">
-              {selectedMonth
-                ? months[parseInt(selectedMonth) - 1]
-                : "any month"}{" "}
-              {selectedYear || "any year"}
-            </span>
-          </span>
-        </div>
-      )}
     </div>
   );
 };
