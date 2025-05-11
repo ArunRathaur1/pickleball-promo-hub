@@ -5,7 +5,7 @@ import { Menu, X, LogOut, User, Moon, Sun } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
-import image from './pickelballlogo.png';
+import image from './pickleballoriginal.png';
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
@@ -95,9 +95,9 @@ export function Navbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center space-x-2 group">
-              <img src={image} alt="Pickleball Logo" className="h-10 w-auto dark:bg-white bg-black rounded-full p-1 transition-transform group-hover:scale-110 duration-300" />
+              <img src={image} alt="Pickleball Logo" className="h-20 w-auto dark:bg-white rounded-full p-1 transition-transform group-hover:scale-110 duration-300" />
               <span className="text-foreground font-semibold text-lg hidden sm:block">
-                Pickle<span className="text-pickle">ball</span>Official
+                PickleballOfficial
               </span>
             </Link>
           </div>
