@@ -6,8 +6,8 @@ import TournamentFiltersCombined from "./CombinedFilters";
 interface FilterManagerProps {
   tournaments: any[];
   setFilteredTournaments: (tournaments: any[]) => void;
-  view:any;
-  setView:any
+  view: any;
+  setView: any;
 }
 
 const FilterManager: React.FC<FilterManagerProps> = ({
@@ -242,14 +242,14 @@ const FilterManager: React.FC<FilterManagerProps> = ({
   ]);
 
   // Helper function to format dates to YYYY-MM-DD
-  const formatDate = (date: Date | null) => {
+  const formatDate = (date: Date | null): string => {
     if (!date) return "";
     const d = new Date(date);
     return d.toISOString().split("T")[0];
   };
 
   // Helper to display dates in a more user-friendly format
-  const displayDate = (dateString: string) => {
+  const displayDate = (dateString: string): string => {
     if (!dateString) return "";
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -289,9 +289,9 @@ const FilterManager: React.FC<FilterManagerProps> = ({
     }
   };
 
-  // Check if any filter is active
-  const hasActiveFilters = () => {
-    return (
+  // Check if any filter is active - fixed to return only boolean
+  const hasActiveFilters = (): boolean => {
+    return Boolean(
       search ||
       locationFilter ||
       countryFilter ||
