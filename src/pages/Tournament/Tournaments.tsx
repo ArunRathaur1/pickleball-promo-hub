@@ -1,9 +1,9 @@
-
 import { useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { TournamentList } from "@/components/tournaments/tournamentdetails/tournament-list";
 import { TournamentMap } from "@/components/tournaments/tournamentdetails/tournament-map";
+import ViewToggle from "./components/ViewToggle";
 import FilterManager from "./components/FilterManager";
 
 const Tournaments = () => {
@@ -22,36 +22,22 @@ const Tournaments = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-green-600 to-blue-600 py-16 px-4">
-          <div className="container mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-              Tournament Directory
-            </h1>
-            <p className="text-xl text-green-100 max-w-2xl mx-auto">
-              Discover and participate in pickleball tournaments worldwide
-            </p>
-          </div>
+      <main>
+        <div>
+          <FilterManager
+            tournaments={tournaments}
+            setFilteredTournaments={setFilteredTournaments}
+            view={view}
+            setView={setView}
+          />
         </div>
 
-        {/* Filter Section */}
-        <div className="sticky top-0 z-40 bg-white shadow-lg border-b">
-          <div className="container mx-auto px-4">
-            <FilterManager
-              tournaments={tournaments}
-              setFilteredTournaments={setFilteredTournaments}
-              view={view}
-              setView={setView}
-            />
-          </div>
-        </div>
+        {/* <ViewToggle view={view} setView={setView} /> */}
 
-        {/* Content Section */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+        <div className="w-full flex justify-center">
+          <div className="w-full lg:w-full border border-gray-300 rounded-lg p-4">
             {view === "list" && (
               <TournamentList tournaments={filteredTournaments} />
             )}
@@ -59,21 +45,17 @@ const Tournaments = () => {
               <TournamentMap tournaments={filteredTournaments} />
             )}
           </div>
-
-          {filteredTournaments.length === 0 && (
-            <div className="text-center py-16">
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-12 max-w-md mx-auto">
-                <div className="text-6xl mb-4">🏆</div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  No tournaments found
-                </h3>
-                <p className="text-gray-600">
-                  Try adjusting your search criteria to find more tournaments.
-                </p>
-              </div>
-            </div>
-          )}
         </div>
+
+        {filteredTournaments.length === 0 && (
+          <div className="w-full flex justify-center mt-6">
+            <div className="w-full lg:w-full text-center py-6 bg-white rounded-lg border border-gray-200">
+              <p className="text-gray-500">
+                No tournaments found matching your search criteria.
+              </p>
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </div>
