@@ -25,14 +25,16 @@ const Tournaments = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
       <main>
-        <div >
+        <div>
           <FilterManager
             tournaments={tournaments}
             setFilteredTournaments={setFilteredTournaments}
+            view={view}
+            setView={setView}
           />
         </div>
 
-        <ViewToggle view={view} setView={setView} />
+        {/* <ViewToggle view={view} setView={setView} /> */}
 
         <div className="w-full flex justify-center">
           <div className="w-full lg:w-full border border-gray-300 rounded-lg p-4">

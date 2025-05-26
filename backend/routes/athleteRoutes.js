@@ -38,9 +38,21 @@ router.get("/", async (req, res) => {
 });
 
 // 📌 3️⃣ Get a single athlete by ID
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const athlete = await Athlete.findById(req.params.id);
+//     if (!athlete) {
+//       return res.status(404).json({ message: "Athlete not found" });
+//     }
+//     res.json(athlete);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
 router.get("/:id", async (req, res) => {
   try {
-    const athlete = await Athlete.findById(req.params.id);
+    const athlete = await Athlete.findOne({ playerid: req.params.id }); 
     if (!athlete) {
       return res.status(404).json({ message: "Athlete not found" });
     }
@@ -50,7 +62,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// 📌 4️⃣ Update an athlete
 router.put("/:id", async (req, res) => {
   try {
     const updatedAthlete = await Athlete.findByIdAndUpdate(req.params.id, req.body, {

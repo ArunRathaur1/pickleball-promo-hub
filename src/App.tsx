@@ -93,7 +93,7 @@ const App = () => {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="/addclubs" element={<ClubForm/>} />
-            <Route path="/playerprofile/:id" element={<PlayerProfile />} />
+            <Route path="/:id" element={<PlayerProfile />} />
             <Route path="/signup" element={<Register></Register>}></Route>
             <Route path="/tournament/:id" element={<TournamentDetails />} />
             <Route path="*" element={<NotFound />} />

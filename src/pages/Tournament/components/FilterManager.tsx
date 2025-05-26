@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-import TournamentFilters from "./TournamentFilters";
 import FilterSummary from "./FilterSummary";
-import MonthYearSelector from "./MonthyearSelector";
 import ContinentSelector from "./Continent";
+import TournamentFiltersCombined from "./CombinedFilters";
 
 interface FilterManagerProps {
   tournaments: any[];
   setFilteredTournaments: (tournaments: any[]) => void;
+  view:any;
+  setView:any
 }
 
 const FilterManager: React.FC<FilterManagerProps> = ({
   tournaments,
   setFilteredTournaments,
+  view,
+  setView
 }) => {
   const [search, setSearch] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
@@ -311,49 +314,30 @@ const FilterManager: React.FC<FilterManagerProps> = ({
     <>
       <div>
         {/* Month and Year Selector Section */}
-        <div>
-          <MonthYearSelector
-            tournaments={tournaments}
-            selectedMonth={selectedMonth}
-            selectedYear={selectedYear}
-            setSelectedMonth={setSelectedMonth}
-            setSelectedYear={setSelectedYear}
-            activeFilters={hasActiveFilters}
-            resetFilters={resetFilters}
-          />
-        </div>
+        <TournamentFiltersCombined
+          tournaments={tournaments}
+          search={search}
+          setSearch={setSearch}
+          selectedMonth={selectedMonth}
+          setSelectedMonth={setSelectedMonth}
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
+          countryFilter={countryFilter}
+          setCountryFilter={setCountryFilter}
+          tierFilter={tierFilter}
+          setTierFilter={setTierFilter}
+          resetFilters={resetFilters}
+          countries={countries}
+          tiers={tiers}
+          view={view}
+          setView={setView}
+        />
 
-        {/* Tournament Filters Section */}
-        <div
-          
-        >
-          <div style={{ flex: 1}}>
-            <TournamentFilters
-              search={search}
-              setSearch={setSearch}
-              locationFilter={locationFilter}
-              setLocationFilter={setLocationFilter}
-              countryFilter={countryFilter}
-              setCountryFilter={setCountryFilter}
-              continentFilter={continentFilter}
-              setContinentFilter={setContinentFilter}
-              tierFilter={tierFilter}
-              setTierFilter={setTierFilter}
-              showFilters={showFilters}
-              setShowFilters={setShowFilters}
-              hasActiveFilters={hasActiveFilters}
-              resetFilters={resetFilters}
-              countries={countries}
-              continents={continents}
-              tiers={tiers}
-            />
-          </div>
-          <div style={{ flex: 1 ,paddingTop:'10px'}}>
-            <ContinentSelector
-              selectedContinent={selectedContinent}
-              setSelectedContinent={setSelectedContinent}
-            />
-          </div>
+        <div style={{ flex: 1, paddingTop: "10px" }}>
+          <ContinentSelector
+            selectedContinent={selectedContinent}
+            setSelectedContinent={setSelectedContinent}
+          />
         </div>
       </div>
       {/* Filter Summary Section */}

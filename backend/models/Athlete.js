@@ -6,6 +6,9 @@ const athleteSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  playerid: {
+    type: String,
+  },
   age: {
     type: Number,
     required: true,
@@ -56,7 +59,7 @@ const athleteSchema = new mongoose.Schema({
     {
       imageUrl: { type: String, required: true },
       title: { type: String, required: true },
-      youtubeLink: { 
+      youtubeLink: {
         type: String,
         required: true,
         // match: [/^https:\/\/www\.youtube\.com\/watch\?v=[A-Za-z0-9_-]+$/, "Invalid YouTube URL format"],
